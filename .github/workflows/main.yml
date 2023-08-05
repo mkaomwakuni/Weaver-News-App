@@ -1,7 +1,7 @@
 name: Weaver CI/CD
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -58,15 +58,6 @@ jobs:
         run: ./gradlew spotbugs
         continue-on-error: true
 
-  notify_on_failure:
-    needs: build_and_test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Notify on Failure
-        if: failure()
-        run: echo "The workflow failed. Check the build logs for details."
-
   generate_docs:
     runs-on: ubuntu-latest
     
@@ -77,8 +68,5 @@ jobs:
       - name: Generate Documentation
         run: ./gradlew dokkaHtml
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Print Documentation Path
+        run: echo "Documentation generated in $(pwd)/app/build/dokka/html/index.html"
