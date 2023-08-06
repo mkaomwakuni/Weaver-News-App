@@ -19,7 +19,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '11'
+          java-version: '11.0.15'  # Use JetBrains JDK version
+          distribution: 'adopt'
 
       - name: Cache Gradle Dependencies
         uses: actions/cache@v2
@@ -47,14 +48,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-      
-      - name: Setup Node.js 16
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11.0.15'  # Use JetBrains JDK version
+          distribution: 'adopt'
 
       - name: Run Linting
         run: ./gradlew lint
@@ -65,36 +64,29 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-      
-      - name: Setup Node.js 16
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11.0.15'  # Use JetBrains JDK version
+          distribution: 'adopt'
 
       - name: Run Security Scan
         run: ./gradlew spotbugs
         continue-on-error: true
 
-  generate_docs:
+  code_quality:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-      
-      - name: Setup Node.js 16
-        uses: actions/setup-node@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
         with:
-          node-version: 16
+          java-version: '11.0.15'  # Use JetBrains JDK version
+          distribution: 'adopt'
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Generate Documentation
-        run: ./gradlew dokkaHtml
-
-      - name: Print Documentation Path
-        run: echo "Documentation generated in $(pwd)/app/build/dokka/html/index.html"
+      - name: Run Detekt Code Quality Check
+        run: ./gradlew detektCheck
