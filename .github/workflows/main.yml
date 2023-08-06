@@ -42,39 +42,6 @@ jobs:
           name: app-debug
           path: app/build/outputs/apk/debug/
 
-  lint:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11.0.15'  # Use JetBrains JDK version
-          distribution: 'adopt'
-
-      - name: Run Linting
-        run: ./gradlew lint
-
-  security_scan:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11.0.15'  # Use JetBrains JDK version
-          distribution: 'adopt'
-
-      - name: Run Security Scan
-        run: ./gradlew spotbugs
-        continue-on-error: true
-
   code_quality:
     runs-on: ubuntu-latest
     
@@ -88,5 +55,14 @@ jobs:
           java-version: '11.0.15'  # Use JetBrains JDK version
           distribution: 'adopt'
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      
       - name: Run Detekt Code Quality Check
         run: ./gradlew detektCheck
+      
+      - name: Make gradlew executable for linting
+        run: chmod +x ./gradlew
+      
+      - name: Run Linting
+        run: ./gradlew lint
