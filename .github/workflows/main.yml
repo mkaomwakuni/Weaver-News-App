@@ -20,7 +20,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
-          distribution: 'adopt'
 
       - name: Cache Gradle Dependencies
         uses: actions/cache@v2
@@ -30,10 +29,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Build and Test
-        run: |
-          chmod +x ./gradlew
-          ./gradlew clean assembleDebug test
+        run: ./gradlew clean assembleDebug test
           
       - name: Archive APK
         uses: actions/upload-artifact@v2
