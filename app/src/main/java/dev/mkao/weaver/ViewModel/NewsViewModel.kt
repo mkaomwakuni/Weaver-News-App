@@ -12,14 +12,14 @@ import kotlinx.coroutines.launch
 
 class NewsViewModel (private val repository: Repository) :ViewModel() {
 	
-	var newsArticle by mutableStateOf<List<Article>>(emptyList())
+	var newsArticles by mutableStateOf<List<Article>>(emptyList())
 	
 	private  fun getNewsArticle(category :String){
 		viewModelScope.launch {
 			val result = repository.getTopHeadlines(category = category)
 			when (result){
 				is  Assets.SuccessResponse -> {
-					newsArticle = result.data ?: emptyList()
+					newsArticles = result.data ?: emptyList()
 				}
 				is Assets.ErrorResponse -> TODO()
 			}
