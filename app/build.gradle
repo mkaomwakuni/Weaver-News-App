@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -19,6 +20,9 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+    }
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
     }
 
     buildTypes {
@@ -66,7 +70,18 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 
     implementation "com.google.dagger:hilt-android:2.44"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03"
     kapt "com.google.dagger:hilt-android-compiler:2.44"
+
+
+    // Compose navigation
+    implementation "androidx.navigation:navigation-compose:2.5.3"
+
+    // Coil
+    implementation "io.coil-kt:coil-compose:2.2.2"
+
+    //Desugaring
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
 
 
 }
