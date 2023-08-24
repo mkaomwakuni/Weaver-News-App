@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.mkao.weaver.domain.model.Article
+import dev.mkao.weaver.ui.componet.LoadingImage
 
 @Composable
 fun ArticleCard(
@@ -19,6 +20,7 @@ fun ArticleCard(
 ) {
 	Card(modifier = modifier.clickable{onClickingCard(article)}){
 		Column(modifier = Modifier.padding(10.dp)) {
+			LoadingImage(imageUrl = article.urlToImage)
 		Text(
 			text = article.title,
 		    style = MaterialTheme.typography.subtitle2,
