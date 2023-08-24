@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
-
+  workflow_run:
+    workflows: ["build_and_test"]
+    types:
+      - manual
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
