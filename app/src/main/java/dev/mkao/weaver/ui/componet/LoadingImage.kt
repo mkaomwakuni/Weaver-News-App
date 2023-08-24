@@ -33,5 +33,4 @@ AsyncImage(model = ImageRequest
     placeholder = painterResource(R.drawable.ic_launcher_foreground),
 	error = painterResource(id = coil.base.R.drawable.abc_vector_test)
 )
-
 }
