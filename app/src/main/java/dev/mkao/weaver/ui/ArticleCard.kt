@@ -2,9 +2,9 @@ package dev.mkao.weaver.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -23,7 +23,7 @@ fun ArticleCard(
 			LoadingImage(imageUrl = article.urlToImage)
 		Text(
 			text = article.title,
-		    style = MaterialTheme.typography.subtitle2,
+		    style = MaterialTheme.typography.bodyMedium,
 		    maxLines = 1,
 		    overflow = TextOverflow.Ellipsis)
 			Spacer(modifier = Modifier.height(5.dp))
@@ -31,11 +31,12 @@ fun ArticleCard(
 				modifier = Modifier.fillMaxWidth(),
 			    horizontalArrangement = Arrangement.SpaceBetween) {
 				Text(
-					text = article.source?.name ?:"",
-				    style = MaterialTheme.typography.body2,
+					text = article.source.name ?:"",
+				    style = MaterialTheme.typography.bodySmall,
 				)
-				Text(text = article.publishedAt ?:"",
-				style = MaterialTheme.typography.body2)
+				Text(
+					text = article.publishedAt,
+					style = MaterialTheme.typography.bodySmall)
 			}
 		}
 		
