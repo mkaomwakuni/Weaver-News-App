@@ -16,8 +16,7 @@ import dev.mkao.weaver.R
 
 @Composable
 fun LoadingImage (
-	imageUrl: String?,
-	modifier: Modifier = Modifier
+	imageUrl: String?
 ){
 AsyncImage(model = ImageRequest
 	.Builder(LocalContext.current)
@@ -30,7 +29,7 @@ AsyncImage(model = ImageRequest
 		.clip(RoundedCornerShape(4.dp))
 		.fillMaxSize()
 		.aspectRatio(15 / 8f),
-    placeholder = painterResource(R.drawable.ic_launcher_foreground),
-	error = painterResource(id = coil.base.R.drawable.abc_vector_test)
+    placeholder = painterResource(R.drawable.newsbg2),
+	error = painterResource(R.drawable.newsbg2)
 )
 }
