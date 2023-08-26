@@ -1,16 +1,12 @@
-name: Weaver CI/CD
+name: Continuous Integration and Deployment
 
 on:
   push:
     branches:
       - main
-
-  pull_request:
-    types:
-      - closed
+  workflow_dispatch:
     branches:
       - main
-
 
 jobs:
   build_and_test:
@@ -23,7 +19,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '11.0.15'  # Use JetBrains JDK version
+          java-version: '11.0.15'
           distribution: 'adopt'
 
       - name: Cache Gradle Dependencies
@@ -39,7 +35,7 @@ jobs:
 
       - name: Build and Test
         run: ./gradlew clean assembleDebug test
-          
+
       - name: Archive APK
         uses: actions/upload-artifact@v2
         with:
