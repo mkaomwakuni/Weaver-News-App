@@ -1,7 +1,7 @@
 package dev.mkao.weaver.domain.model
 
 data class NewsApiResponse(
-	val article: List<Article>,
-	val ApiStatus :String,
-	val ReturnedResult: Int
+	val articles: List<Article>,
+	val Status :String,
+	val totalResults: Int
 )
