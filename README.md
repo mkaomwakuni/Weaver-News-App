@@ -39,11 +39,13 @@
 - **[Retrofit](https://github.com/square/retrofit):** HTTP client for making API requests.
 - **[Glide](https://github.com/bumptech/glide):** Image loading library for smooth image rendering.
 - **[Room](https://github.com/android/architecture-components-samples/tree/main/RoomSample):** Local database for efficient data storage.
+- **[Coil](https://github.com/coil-kt/coil):** Image loading library for fast and efficient image loading.
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository.
 2. Open the project in Android Studio.
+3. Set up your API key from [NewsAPI](https://newsapi.org/) in the appropriate location.
 
 ## Usage
 
@@ -56,6 +58,7 @@
 The Weaver News App fetches the latest news articles using the [NewsAPI](https://newsapi.org/). This API provides a comprehensive collection of news articles from various sources.
 
 ## Screenshots
+
 Here are some screenshots of the Weaver News App in action:
 
 ![Screenshot 1](screenshot_1.png)
@@ -65,6 +68,10 @@ Here are some screenshots of the Weaver News App in action:
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or pull requests for bug fixes, improvements, or new features. Please follow our code of conduct and contribution guidelines.
+
+## About the Developer
+
+Hi there! I'm [Your Name], a passionate Android developer with a strong interest in creating user-friendly and engaging apps. Weaver News App showcases my skills in integrating modern technologies, delivering a seamless user experience, and staying up-to-date with the latest industry practices.
 
 ## License
 
