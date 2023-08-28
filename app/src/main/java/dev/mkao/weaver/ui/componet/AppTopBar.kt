@@ -9,9 +9,11 @@ import androidx.compose.ui.text.font.FontWeight
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar (
-	onSearchIconClick : () -> Unit
+	onSearchIconClick : () -> Unit,
+	scrollBehavior: TopAppBarScrollBehavior
 ) {
 	TopAppBar(
+		scrollBehavior = scrollBehavior,
 		title = { Text(text = "Weaver News", fontWeight = FontWeight.Bold)},
 		actions = {
 			IconButton(onClick = onSearchIconClick) {
