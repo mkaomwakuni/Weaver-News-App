@@ -1,17 +1,15 @@
-name: Continuous Integration and Deployment
+name:Weaver CI/CD
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    branches:
-      - main
+      - feature_Branch
 
 jobs:
-  build_and_test:
+  build_and_deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -41,3 +39,6 @@ jobs:
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/
+
+      - name: Notify Team
+        run: echo "Build and test completed successfully"
