@@ -1,5 +1,4 @@
 name:Weaver CI/CD
-
 on:
   push:
     branches:
