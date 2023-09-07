@@ -7,6 +7,5 @@ interface Repository {
 	suspend fun getTopHeadlines(
 		category: String
 	) :Assets<List<Article>>
-	
 	suspend fun searchForNews(query: String): Assets<List<Article>>
 }
