@@ -3,9 +3,11 @@ package dev.mkao.weaver
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dev.mkao.weaver.ui.ArticleScreen
 import dev.mkao.weaver.ui.theme.WeaverTheme
+import dev.mkao.weaver.viewModel.ArticleScreenViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -13,7 +15,11 @@ class MainActivity : ComponentActivity() {
 		super.onCreate(savedInstanceState)
 		setContent {
 			WeaverTheme {
-				ArticleScreen()
+				val viewModel: ArticleScreenViewModel = hiltViewModel()
+				ArticleScreen(
+					states = viewModel.state,
+					onUserEvent = viewModel::onUserEvent
+				)
 			}
 		}
 	}

@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.repository.Repository
+import dev.mkao.weaver.ui.ArticleStates
+import dev.mkao.weaver.ui.EventsHolder
 import dev.mkao.weaver.util.Assets
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,13 +20,36 @@ class ArticleScreenViewModel @Inject constructor(
 ) : ViewModel() {
 	
 	var newsArticles by mutableStateOf<List<Article>>(emptyList())
+	var state by mutableStateOf(ArticleStates())
 	
+	fun onUserEvent(event: EventsHolder){
+		when(event){
+			is EventsHolder.OnCategoryClicked-> {
+				state = state.copy(category = event.category)
+				getNewsArticles(state.category)
+			}
+			is EventsHolder.OnCloseIconClicked-> {
+			
+			}
+			is EventsHolder.OnSearchCategoryChanged -> {
+			
+			}
+			is EventsHolder.OnSearchIconClicked -> {
+			
+			}
+		}
+	}
+	init {
+		getNewsArticles(category = "top-headlines")
+	}
 	fun getNewsArticles(category: String) {
 		viewModelScope.launch {
 			val result = repository.getTopHeadlines(category)
 			when (result) {
 				is Assets.Success -> {
-					newsArticles = result.data ?: emptyList()
+					state = state.copy(
+						article = result.data?: emptyList()
+					)
 				}
 				is Assets.Error -> {
 				
