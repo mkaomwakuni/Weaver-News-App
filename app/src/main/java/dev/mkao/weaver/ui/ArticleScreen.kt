@@ -10,32 +10,43 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import dev.mkao.weaver.ui.componet.AppTopBar
 import dev.mkao.weaver.ui.componet.NewsCategories
-import dev.mkao.weaver.viewModel.ArticleScreenViewModel
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun ArticleScreen(viewModel: ArticleScreenViewModel = hiltViewModel()) {
+fun ArticleScreen(
+	states: ArticleStates,
+	onUserEvent: (EventsHolder) -> Unit)
+ {
 	val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 	val pagerState = rememberPagerState()
-	val categories = listOf("General", "Business","Health","Science","Sports","Technology","Entertainment")
+	val categories = listOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment")
 	val coroutine = rememberCoroutineScope()
+	
+	LaunchedEffect(key1 = pagerState) {
+		snapshotFlow { pagerState.currentPage }
+			.collect { page ->
+				onUserEvent(EventsHolder.OnCategoryClicked(category = categories[page]))
+			}
+	}
+
 	Scaffold(
 		modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
 		topBar = {
-			AppTopBar (
+			AppTopBar(
 				scrollBehavior = scrollBehavior,
 				onSearchIconClick = {})
 		}
-	) {padding ->
+	) { padding ->
 		Column(modifier = Modifier
 			.fillMaxSize()
 			.padding(padding)) {
@@ -49,13 +60,12 @@ fun ArticleScreen(viewModel: ArticleScreenViewModel = hiltViewModel()) {
 			HorizontalPager(
 				pageCount = categories.size,
 				state = pagerState
-			)
-			{
+			) {
 				LazyColumn(
 					verticalArrangement = Arrangement.spacedBy(10.dp),
 					contentPadding = PaddingValues(10.dp),
 				) {
-					items(viewModel.newsArticles) { newsArticle ->
+					items(states.article) { newsArticle ->
 						ArticleCard(
 							article = newsArticle,
 							onClickingCard = {}
@@ -64,7 +74,8 @@ fun ArticleScreen(viewModel: ArticleScreenViewModel = hiltViewModel()) {
 				}
 			}
 		}
-   }
+	}
 }
+
 //state
 //event
