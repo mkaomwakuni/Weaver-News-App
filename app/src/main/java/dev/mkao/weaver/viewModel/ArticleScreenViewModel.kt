@@ -44,11 +44,13 @@ class ArticleScreenViewModel @Inject constructor(
 	}
 	fun getNewsArticles(category: String) {
 		viewModelScope.launch {
+			state = state.copy(isLoading = true)
 			val result = repository.getTopHeadlines(category)
 			when (result) {
 				is Assets.Success -> {
 					state = state.copy(
-						article = result.data?: emptyList()
+						article = result.data?: emptyList(),
+						isLoading = false
 					)
 				}
 				is Assets.Error -> {
