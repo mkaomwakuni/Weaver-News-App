@@ -37,6 +37,9 @@ class ArticleScreenViewModel @Inject constructor(
 			is EventsHolder.OnSearchIconClicked -> {
 			
 			}
+			is EventsHolder.OnArticleCardClicked -> {
+				state = state.copy(isSelected = event.article)
+			}
 		}
 	}
 	init {
@@ -50,11 +53,16 @@ class ArticleScreenViewModel @Inject constructor(
 				is Assets.Success -> {
 					state = state.copy(
 						article = result.data?: emptyList(),
-						isLoading = false
+						isLoading = false,
+						error = null
 					)
 				}
 				is Assets.Error -> {
-				
+				state = state.copy(
+					error = result.message,
+					isLoading = false,
+					article = emptyList()
+				)
 				}
 			}
 		}

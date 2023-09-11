@@ -20,20 +20,20 @@ fun NewsCategories(
 ) {
 	ScrollableTabRow(
 		selectedTabIndex = pagerState.currentPage,
-	    edgePadding = 0.dp,
+		edgePadding = 0.dp,
 		containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-		contentColor = MaterialTheme.colorScheme.onPrimaryContainer)
-	{
-		categories.forEachIndexed { index,category ->
+		contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+	) {
+		categories.forEachIndexed { index, category ->
 			Tab(
-				selected = pagerState.currentPage == index ,
-				onClick = {onCategorySelected},
-			    content = {
-				Text(
-					text = category,
-					modifier = Modifier.padding(vertical = 8.dp , horizontal = 2.dp )
-				)
-			  }
+				selected = pagerState.currentPage == index,
+				onClick = { onCategorySelected(index) }, // Pass the index to onCategorySelected
+				content = {
+					Text(
+						text = category,
+						modifier = Modifier.padding(vertical = 8.dp, horizontal = 2.dp)
+					)
+				}
 			)
 		}
 	}
