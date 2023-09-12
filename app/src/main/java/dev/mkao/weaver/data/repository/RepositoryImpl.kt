@@ -25,6 +25,6 @@ class RepositoryImpl(
 			Assets.Success(data = response.articles)
 		} catch (e: Exception) {
 			Assets.Error(message = "Failed to fetch news ${e.message}")
-		}
+		} 
 	}
 }

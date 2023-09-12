@@ -17,6 +17,7 @@ import dev.mkao.weaver.R
 @Composable
 fun LoadingImage (
 	imageUrl: String?
+
 ){
 AsyncImage(model = ImageRequest
 	.Builder(LocalContext.current)

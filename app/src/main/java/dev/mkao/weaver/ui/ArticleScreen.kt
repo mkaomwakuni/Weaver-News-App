@@ -1,32 +1,125 @@
 package dev.mkao.weaver.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import BottomDialog
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import dev.mkao.weaver.viewModel.ArticleScreenViewModel
+import dev.mkao.weaver.domain.model.Article
+import dev.mkao.weaver.ui.componet.AppTopBar
+import dev.mkao.weaver.ui.componet.ErrorHandler
+import dev.mkao.weaver.ui.componet.NewsCategories
+import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun ArticleScreen(viewModel: ArticleScreenViewModel = hiltViewModel()) {
+fun ArticleScreen(
+	states: ArticleStates,
+	onUserEvent: (EventsHolder) -> Unit
+)
+ {
+	 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+	 val pagerState = rememberPagerState()
+	 val categories = listOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment")
+	 val coroutine = rememberCoroutineScope()
+	 
+	 val bottomSheetstate = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+	 var bottomsheetToshow  by remember { mutableStateOf(false) }
+	 if (bottomsheetToshow){
+		 ModalBottomSheet(
+			 onDismissRequest = { bottomsheetToshow = false },
+			 sheetState = bottomSheetstate ,
+			 content = {
+				 states.isSelected?.let {
+					 BottomDialog(
+						 article = it,
+						 onReadFullArticle = {
+							 coroutine.launch {bottomSheetstate.hide() }.invokeOnCompletion {
+								 if (!bottomSheetstate.isVisible) bottomsheetToshow = false
+							 }
+						 })
+				 }
+			 }
+		 )
+	 }
 	
-	val category = "business"
-	
-	// Trigger data fetching when the Composable becomes active
-	LaunchedEffect(category) {
-		viewModel.getNewsArticles(category)
+	LaunchedEffect(key1 = pagerState) {
+		snapshotFlow { pagerState.currentPage }
+			.collect { page ->
+				onUserEvent(EventsHolder.OnCategoryClicked(category = categories[page]))
+			}
 	}
-	
+
+	Scaffold(
+		modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+		topBar = {
+			AppTopBar(
+				scrollBehavior = scrollBehavior,
+				onSearchIconClick = {})
+		}
+	) { padding ->
+		Column(modifier = Modifier
+			.fillMaxSize()
+			.padding(padding)) {
+			NewsCategories(
+				categories = categories,
+				pagerState = pagerState,
+				onCategorySelected = { index ->
+					coroutine.launch { pagerState.animateScrollToPage(index) }
+				}
+			)
+			HorizontalPager(
+				pageCount = categories.size,
+				state = pagerState
+			) {
+				NewsArticleBanner(
+					states = states,
+					onArticleCardClicked = {article ->
+						bottomsheetToshow = true
+						onUserEvent(EventsHolder.OnArticleCardClicked(article = article)) },
+					onReload = {
+						onUserEvent(EventsHolder.OnCategoryClicked(states.category))
+					}
+				)
+			}
+		}
+	}
+}
+@Composable
+fun NewsArticleBanner(
+	states: ArticleStates,
+	onReload: () -> Unit,
+	onArticleCardClicked: (Article) -> Unit
+){
 	LazyColumn(
-		verticalArrangement = Arrangement.spacedBy(10.dp),
-		contentPadding = PaddingValues(10.dp)
+		verticalArrangement = Arrangement.spacedBy(15.dp),
+		contentPadding = PaddingValues(15.dp)
+	){
+		items(states.article){ article ->
+			ArticleCard(
+				article =article ,
+				onClickingCard = onArticleCardClicked
+			)
+		}
+	}
+	Box(
+		modifier = Modifier.fillMaxSize(),
+	    contentAlignment = Alignment.Center
 	) {
-		items(viewModel.newsArticles) { newsArticle ->
-			ArticleCard(article = newsArticle, onClickingCard = {})
+		if (states.isLoading){
+			LinearProgressIndicator()
+		}
+		if (states.error!=null){
+			ErrorHandler(error = states.error, onReload = onReload)
 		}
 	}
 }
