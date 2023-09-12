@@ -42,7 +42,7 @@ fun ArticleScreen(
 				 states.isSelected?.let {
 					 BottomDialog(
 						 article = it,
-						 onReadFullArticle = {
+						 onReadFullStoryButtonClicked = {
 							 coroutine.launch {bottomSheetstate.hide() }.invokeOnCompletion {
 								 if (!bottomSheetstate.isVisible) bottomsheetToshow = false
 							 }

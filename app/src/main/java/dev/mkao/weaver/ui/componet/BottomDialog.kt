@@ -16,21 +16,29 @@ import dev.mkao.weaver.ui.componet.LoadingImage
 @Composable
 fun BottomDialog(
 	article: Article,
-	onReadFullArticle: () -> Unit
+	onReadFullStoryButtonClicked: () -> Unit
 ) {
-	Surface(modifier = Modifier.padding(15.dp)) {
+	Surface(
+		modifier = Modifier.padding(16.dp)
+	) {
 		Column(horizontalAlignment = Alignment.CenterHorizontally) {
 			Text(
 				text = article.title,
 				style = MaterialTheme.typography.titleMedium
 			)
-			Spacer(modifier = Modifier.height(10.dp))
+			Spacer(modifier = Modifier.height(8.dp))
 			Text(
-				text = article.content ?: "",
-				style = MaterialTheme.typography.bodyMedium // Fix typo here
+				text = article.description ?: "",
+				style = MaterialTheme.typography.bodyMedium
 			)
-			Spacer(modifier = Modifier.height(10.dp))
+			Spacer(modifier = Modifier.height(8.dp))
 			LoadingImage(imageUrl = article.urlToImage)
+			Spacer(modifier = Modifier.height(8.dp))
+			Text(
+				text = article.content,
+				style = MaterialTheme.typography.bodyMedium
+			)
+			Spacer(modifier = Modifier.height(8.dp))
 			Row(
 				modifier = Modifier.fillMaxWidth(),
 				horizontalArrangement = Arrangement.SpaceBetween
@@ -41,19 +49,20 @@ fun BottomDialog(
 					fontWeight = FontWeight.Bold
 				)
 				Text(
-					text = article.content, // Replace with your text
+					text = article.source.name ?: "",
 					style = MaterialTheme.typography.bodySmall,
 					fontWeight = FontWeight.Bold
 				)
 			}
-			Spacer(modifier = Modifier.height(10.dp))
+			Spacer(modifier = Modifier.height(8.dp))
 			Button(
-				onClick = onReadFullArticle,
-				modifier = Modifier.fillMaxWidth()
+				modifier = Modifier.fillMaxWidth(),
+				onClick = onReadFullStoryButtonClicked
 			) {
-				Text(text = "Get Full Story")
+				Text(text = "Read Full Story")
 			}
-			Spacer(modifier = Modifier.height(10.dp))
 		}
 	}
 }
+
+
