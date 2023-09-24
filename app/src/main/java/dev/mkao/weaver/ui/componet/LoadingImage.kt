@@ -33,5 +33,5 @@ fun LoadingImage (
 			.aspectRatio(16 / 9f),
     placeholder = painterResource(R.drawable.newsbg2),
 	error = painterResource(R.drawable.newsbg2)
-)
+	)
 }
