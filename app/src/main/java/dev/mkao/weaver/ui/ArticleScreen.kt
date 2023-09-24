@@ -24,7 +24,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun ArticleScreen(
 	states: ArticleStates,
-	onUserEvent: (EventsHolder) -> Unit
+	onUserEvent: (EventsHolder) -> Unit,
+	onReadFullStoryBottonClick:(String)-> Unit
 )
  {
 	 val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -43,6 +44,7 @@ fun ArticleScreen(
 					 BottomDialog(
 						 article = it,
 						 onReadFullStoryButtonClicked = {
+							 onReadFullStoryBottonClick(it.url)
 							 coroutine.launch {bottomSheetstate.hide() }.invokeOnCompletion {
 								 if (!bottomSheetstate.isVisible) bottomsheetToshow = false
 							 }

@@ -24,7 +24,8 @@ fun BottomDialog(
 		Column(horizontalAlignment = Alignment.CenterHorizontally) {
 			Text(
 				text = article.title,
-				style = MaterialTheme.typography.titleMedium
+				style = MaterialTheme.typography.titleMedium,
+				fontWeight = FontWeight.Bold
 			)
 			Spacer(modifier = Modifier.height(8.dp))
 			Text(
