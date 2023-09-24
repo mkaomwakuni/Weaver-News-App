@@ -14,7 +14,7 @@ fun AppTopBar (
 ) {
 	TopAppBar(
 		scrollBehavior = scrollBehavior,
-		title = { Text(text = "Weaver News", fontWeight = FontWeight.Bold)},
+		title = { Text(text = "Weaver", fontWeight = FontWeight.Bold)},
 		actions = {
 			IconButton(onClick = onSearchIconClick) {
 			Icon(imageVector = Icons.Default.Search, contentDescription ="Search" )
