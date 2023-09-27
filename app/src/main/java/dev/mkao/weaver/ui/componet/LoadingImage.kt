@@ -1,7 +1,7 @@
 package dev.mkao.weaver.ui.componet
 
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,21 +16,22 @@ import dev.mkao.weaver.R
 
 @Composable
 fun LoadingImage (
-	imageUrl: String?
-
-){
-AsyncImage(model = ImageRequest
-	.Builder(LocalContext.current)
-	.data(imageUrl)
-	.crossfade(true)
-	.build(),
-	contentScale = ContentScale.Crop,
-	contentDescription = "Loading Image",
-	modifier = Modifier
-		.clip(RoundedCornerShape(4.dp))
-		.fillMaxSize()
-		.aspectRatio(15 / 8f),
+	imageUrl: String?,
+	modifier: Modifier = Modifier
+) {
+	AsyncImage(
+		model = ImageRequest
+			.Builder(LocalContext.current)
+			.data(imageUrl)
+			.crossfade(true)
+			.build(),
+		contentDescription = "Image",
+		contentScale = ContentScale.Crop,
+		modifier = modifier
+			.clip(RoundedCornerShape(4.dp))
+			.fillMaxWidth()
+			.aspectRatio(16 / 9f),
     placeholder = painterResource(R.drawable.newsbg2),
 	error = painterResource(R.drawable.newsbg2)
-)
+	)
 }
