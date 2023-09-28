@@ -26,10 +26,11 @@ fun NewsNavGraph(
 			ArticleScreen(
 				states = viewModel.state,
 				onUserEvent =  viewModel::onUserEvent,
-				onReadFullStoryBottonClick = { url ->
-					navController.navigate("article_screen?$argKey=$url")
+				onReadFullStoryButtonClick = { url ->
+					navController.navigate("news_article?$argKey=$url")
 				}
 			)
+			
 		}
 		composable(
 			route = "news_article?$argKey={$argKey}",
