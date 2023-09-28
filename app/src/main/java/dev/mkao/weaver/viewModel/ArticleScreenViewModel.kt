@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.repository.Repository
 import dev.mkao.weaver.ui.ArticleStates
 import dev.mkao.weaver.ui.EventsHolder
@@ -16,10 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArticleScreenViewModel @Inject constructor(
-	private val repository: Repository
-) : ViewModel() {
+	private val repository: Repository) : ViewModel() {
 	
-	var newsArticles by mutableStateOf<List<Article>>(emptyList())
 	var state by mutableStateOf(ArticleStates())
 	
 	fun onUserEvent(event: EventsHolder){
@@ -41,9 +38,6 @@ class ArticleScreenViewModel @Inject constructor(
 				state = state.copy(isSelected = event.article)
 			}
 		}
-	}
-	init {
-		getNewsArticles(category = "top-headlines")
 	}
 	fun getNewsArticles(category: String) {
 		viewModelScope.launch {
