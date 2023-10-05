@@ -26,13 +26,13 @@ class ArticleScreenViewModel @Inject constructor(
 				getNewsArticles(state.category)
 			}
 			is EventsHolder.OnCloseIconClicked-> {
-			
+				state = state.copy(isSearchBarVisible = false)
 			}
 			is EventsHolder.OnSearchCategoryChanged -> {
-			
+
 			}
 			is EventsHolder.OnSearchIconClicked -> {
-			
+				state = state.copy(isResultsVisible = true)
 			}
 			is EventsHolder.OnArticleCardClicked -> {
 				state = state.copy(isSelected = event.article)
