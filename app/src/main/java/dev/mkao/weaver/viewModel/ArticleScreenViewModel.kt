@@ -10,15 +10,18 @@ import dev.mkao.weaver.domain.repository.Repository
 import dev.mkao.weaver.ui.ArticleStates
 import dev.mkao.weaver.ui.EventsHolder
 import dev.mkao.weaver.util.Assets
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ArticleScreenViewModel @Inject constructor(
 	private val repository: Repository) : ViewModel() {
-	
+
 	var state by mutableStateOf(ArticleStates())
-	
+	private var searchJob: Job? = null
+
 	fun onUserEvent(event: EventsHolder){
 		when(event){
 			is EventsHolder.OnCategoryClicked-> {
@@ -26,13 +29,21 @@ class ArticleScreenViewModel @Inject constructor(
 				getNewsArticles(state.category)
 			}
 			is EventsHolder.OnCloseIconClicked-> {
-			
+				state = state.copy(isSearchBarVisible = false)
+				getNewsArticles(category = state.category)
 			}
 			is EventsHolder.OnSearchCategoryChanged -> {
-			
+				state = state.copy(SearchRequest = event.searchRequest)
+				searchForNews(query = state.SearchRequest)
+				searchJob?.cancel()
+				searchJob = viewModelScope.launch {
+					delay(1000)
+					searchForNews(query = state.SearchRequest)
+				}
+
 			}
 			is EventsHolder.OnSearchIconClicked -> {
-			
+				state = state.copy(isResultsVisible = true)
 			}
 			is EventsHolder.OnArticleCardClicked -> {
 				state = state.copy(isSelected = event.article)
@@ -42,7 +53,7 @@ class ArticleScreenViewModel @Inject constructor(
 	fun getNewsArticles(category: String) {
 		viewModelScope.launch {
 			state = state.copy(isLoading = true)
-			val result = repository.getTopHeadlines(category)
+			val result = repository.getTopHeadlines(category = category)
 			when (result) {
 				is Assets.Success -> {
 					state = state.copy(
@@ -57,6 +68,33 @@ class ArticleScreenViewModel @Inject constructor(
 					isLoading = false,
 					article = emptyList()
 				)
+				}
+			}
+		}
+	}
+	fun searchForNews(query: String) {
+		if (query.isEmpty()){
+			return
+		}
+		else {
+			viewModelScope.launch {
+				state = state.copy(isLoading = true)
+				val result = repository.searchForNews(query = query)
+				when (result) {
+					is Assets.Success -> {
+						state = state.copy(
+							article = result.data ?: emptyList(),
+							isLoading = false,
+							error = null
+						)
+					}
+					is Assets.Error -> {
+						state = state.copy(
+							error = result.message,
+							isLoading = false,
+							article = emptyList()
+						)
+					}
 				}
 			}
 		}

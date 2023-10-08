@@ -22,12 +22,13 @@ fun NewsCategories(
 		selectedTabIndex = pagerState.currentPage,
 		edgePadding = 0.dp,
 		containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-		contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+		contentColor = MaterialTheme.colorScheme.primaryContainer
 	) {
 		categories.forEachIndexed { index, category ->
 			Tab(
 				selected = pagerState.currentPage == index,
-				onClick = { onCategorySelected(index) }, // Pass the index to onCategorySelected
+				onClick = { onCategorySelected(index) },
+				// Pass the index to onCategorySelected
 				content = {
 					Text(
 						text = category,

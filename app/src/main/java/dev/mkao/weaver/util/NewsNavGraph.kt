@@ -24,8 +24,8 @@ fun NewsNavGraph(
 		composable(route = "article_screen") {
 			val viewModel: ArticleScreenViewModel = hiltViewModel()
 			ArticleScreen(
-				states = viewModel.state,
-				onUserEvent =  viewModel::onUserEvent,
+				state = viewModel.state,
+				onEvent =  viewModel::onUserEvent,
 				onReadFullStoryButtonClick = { url ->
 					navController.navigate("news_article?$argKey=$url")
 				}
