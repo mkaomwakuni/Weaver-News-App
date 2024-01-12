@@ -20,11 +20,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -42,6 +44,7 @@ import dev.mkao.weaver.ui.componet.SearchBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ArticleScreen(
@@ -57,10 +60,44 @@ fun ArticleScreen(
 		"General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment"
 	)
 
-	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-	var shouldBottomSheetShow by remember { mutableStateOf(false) }
+	val focusRequester = remember { FocusRequester() }
 	val focusManager = LocalFocusManager.current
 	val keyboardController = LocalSoftwareKeyboardController.current
+
+	LaunchedEffect(key1 = pagerState) {
+		snapshotFlow { pagerState.currentPage }.collect { page ->
+			onEvent(EventsHolder.OnCategoryClicked(category = categories[page]))
+		}
+	}
+
+	LaunchedEffect(key1 = Unit) {
+		if (state.SearchRequest.isNotEmpty()) {
+			onEvent(EventsHolder.OnSearchCategoryChanged(searchRequest = state.SearchRequest))
+		}
+	}
+
+	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+	var shouldBottomSheetShow by remember { mutableStateOf(false) }
+
+	if (shouldBottomSheetShow) {
+		ModalBottomSheet(
+			onDismissRequest = { shouldBottomSheetShow = false },
+			sheetState = sheetState,
+			content = {
+				state.isSelected?.let {
+					BottomDialog(
+						article = it,
+						onReadFullStoryButtonClicked = {
+							onReadFullStoryButtonClick(it.url)
+							coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
+								if (!sheetState.isVisible) shouldBottomSheetShow = false
+							}
+						}
+					)
+				}
+			}
+		)
+	}
 
 	Column(
 		modifier = Modifier.fillMaxSize()
@@ -68,8 +105,6 @@ fun ArticleScreen(
 		Crossfade(targetState = state.isSearchBarVisible, label = "") { isVisible ->
 			if (isVisible) {
 				Column {
-					val focusRequester = remember { FocusRequester() }
-
 					SearchBar(
 						modifier = Modifier.focusRequester(focusRequester),
 						value = state.SearchRequest,
@@ -103,7 +138,6 @@ fun ArticleScreen(
 								onEvent(EventsHolder.OnSearchIconClicked)
 								coroutineScope.launch {
 									delay(500)
-									val focusRequester = FocusRequester()
 									focusRequester.requestFocus()
 								}
 							}
@@ -141,29 +175,8 @@ fun ArticleScreen(
 				}
 			}
 		}
-
-		if (shouldBottomSheetShow) {
-			ModalBottomSheet(
-				onDismissRequest = { shouldBottomSheetShow = false },
-				sheetState = sheetState,
-				content = {
-					state.isSelected?.let {
-						BottomDialog(
-							article = it,
-							onReadFullStoryButtonClicked = {
-								onReadFullStoryButtonClick(it.url)
-								coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
-									if (!sheetState.isVisible) shouldBottomSheetShow = false
-								}
-							}
-						)
-					}
-				}
-			)
-		}
 	}
 }
-
 @Composable
 fun NewsArticleList(
 	state: ArticleStates,
