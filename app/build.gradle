@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace 'dev.mkao.weaver'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "dev.mkao.weaver"
@@ -59,7 +59,8 @@ dependencies {
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.compose.material3:material3:1.1.0-rc01'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.compose.material3:material3:1.1.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -67,6 +68,8 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    debugImplementation "com.google.accompanist:accompanist-insets:0.23.1"
+    debugImplementation "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
 
     // Compose navigation
     implementation "androidx.navigation:navigation-compose:2.5.3"
@@ -91,5 +94,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
 
     implementation 'androidx.core:core-splashscreen:1.0.1'
+
+
 
 }
