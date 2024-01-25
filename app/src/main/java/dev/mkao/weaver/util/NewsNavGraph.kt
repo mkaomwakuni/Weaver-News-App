@@ -16,7 +16,7 @@ fun NewsNavGraph(
 	navController: NavHostController
 ){
 	val argKey = "web_url"
-	
+
 	NavHost(
 		navController = navController,
 		startDestination = "article_screen"
@@ -30,7 +30,7 @@ fun NewsNavGraph(
 					navController.navigate("news_article?$argKey=$url")
 				}
 			)
-			
+
 		}
 		composable(
 			route = "news_article?$argKey={$argKey}",
