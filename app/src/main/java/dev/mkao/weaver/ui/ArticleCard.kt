@@ -26,7 +26,8 @@ fun ArticleCard(
 	onClickingCard:(Article) -> Unit
 ) {
 	val date = dateFormat(article.publishedAt)
-	Card(modifier = modifier.clickable{onClickingCard(article)}){
+	Card(modifier = modifier
+		.clickable{onClickingCard(article)}){
 		Column(modifier = Modifier.padding(10.dp)) {
 			LoadingImage(imageUrl = article.urlToImage)
 		Text(

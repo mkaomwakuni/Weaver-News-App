@@ -3,6 +3,7 @@ package dev.mkao.weaver.ui
 import BottomDialog
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -55,10 +57,8 @@ fun ArticleScreen(
 	val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 	val pagerState = rememberPagerState()
 	val coroutineScope = rememberCoroutineScope()
-
-	val categories = listOf(
-		"General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment"
-	)
+	val dynamicColors = MaterialTheme.colorScheme
+	val categories = listOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment"	)
 
 	val focusRequester = remember { FocusRequester() }
 	val focusManager = LocalFocusManager.current
@@ -100,7 +100,9 @@ fun ArticleScreen(
 	}
 
 	Column(
-		modifier = Modifier.fillMaxSize()
+		modifier = Modifier
+			.fillMaxSize()
+			.background(dynamicColors.onPrimary)
 	) {
 		Crossfade(targetState = state.isSearchBarVisible, label = "") { isVisible ->
 			if (isVisible) {
@@ -130,7 +132,9 @@ fun ArticleScreen(
 				}
 			} else {
 				Scaffold(
-					modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+					modifier = Modifier
+						.nestedScroll(scrollBehavior.nestedScrollConnection)
+						.background(dynamicColors.onPrimaryContainer),
 					topBar = {
 						AppTopBar(
 							scrollBehavior = scrollBehavior,
