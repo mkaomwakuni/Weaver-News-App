@@ -17,10 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,9 +81,17 @@ fun CardArticle(
                 Icon(painter = painterResource(id = R.drawable.ic_time),
                     contentDescription = null,
                     modifier = Modifier.size(IconSize),
-                    tint = colorResource(id = R.color.body)
-                )
+                    tint = colorResource(id = R.color.body))
                 }
+            Spacer(modifier = Modifier.width(ExtraSmallPadding1))
+            article.author?.let {
+                Text(text = it,
+                    color = Color.Black,
+                    fontFamily = FontFamily.Cursive,
+                    style = MaterialTheme.typography.labelSmall
+                        .copy(fontWeight = FontWeight.Bold)
+                )
+            }
             }
         }
     }
@@ -92,7 +102,7 @@ fun CardArticle(
 fun ArticleCardPreview() {
         CardArticle(
             article = Article(
-                author = "",
+                author = "John Doe",
                 content = "",
                 description = "",
                 publishedAt = "2 hours",
