@@ -48,7 +48,7 @@ fun BottomDialog(
 			LoadingImage(imageUrl = article.urlToImage)
 			Spacer(modifier = Modifier.height(8.dp))
 			Text(
-				text = article.description?:"none",
+				text = article.content?.take(550)?:"none",
 				maxLines = 5,
 				overflow = TextOverflow.Ellipsis,
 				style = MaterialTheme.typography.bodyMedium
