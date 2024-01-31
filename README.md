@@ -1,12 +1,18 @@
-<h1 align="center">
+<h1 align="left">
   Weaver News App
 </h1>
-
-<p align="center">
+<p align="left">
   <b>Stay Informed with the Global Latest News</b>
+  <p align="left">
+  <a href ="https://dribbble.com/rzlartnto" >Inspired by the Rizal🔥 Conecpt 
+    </p>
+<p align ="left">
+   <img src="https://cdn.dribbble.com/userupload/4987025/file/original-8039e9f39ace527b8e75f19223e6b303.png?resize=500x400" alt="App Screenshots">
+  <br>
+   <b> All Design Credits/Concept Goes to respective Owner</b>
 </p>
 
-<p align="center">
+<p align="left">
   <a href="#key-features">Key Features</a> •
   <a href="#technologies">Technologies</a> •
   <a href="#installation">Installation</a> •
@@ -17,11 +23,11 @@
   <a href="#license">License</a>
 </p>
 
-<p align="center">
+<p align="left">
   <b>Screenshots</b>
 </p>
 
-<p align="center">
+<p align="left">
   <img src="screenshots.png" alt="App Screenshots">
 </p>
 
@@ -71,7 +77,7 @@ Contributions are welcome! Feel free to open issues or pull requests for bug fix
 
 ## About the Developer
 
-Hi there! I'm [Your Name], a passionate Android developer with a strong interest in creating user-friendly and engaging apps. Weaver News App showcases my skills in integrating modern technologies, delivering a seamless user experience, and staying up-to-date with the latest industry practices.
+Hi there! I'm Mkao, a passionate Android developer with a strong interest in creating user-friendly and engaging apps. Weaver News App showcases my skills in integrating modern technologies, delivering a seamless user experience, and staying up-to-date with the latest industry practices.
 
 ## License
 
