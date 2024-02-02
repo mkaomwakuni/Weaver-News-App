@@ -20,7 +20,7 @@ interface NewsApi {
 		@Query("apiKey") apiKey: String = API_KEY
 	): NewsApiResponse
 	companion object{
-		const val API_KEY = "2d8537ffd9a94e55b63b570ff2674a3a"
+		const val API_KEY = "f36d74acc142444f96809b7b9395716b"
 		const val BASE_URL = "https://newsapi.org/v2/"
 	}
 }

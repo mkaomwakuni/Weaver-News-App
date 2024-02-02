@@ -1,5 +1,6 @@
 package dev.mkao.weaver.util
 
+import ArticleScreen
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -7,7 +8,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import dev.mkao.weaver.ui.ArticleScreen
 import dev.mkao.weaver.ui.article.NewsArticleUi
 import dev.mkao.weaver.viewModel.ArticleScreenViewModel
 
@@ -16,7 +16,7 @@ fun NewsNavGraph(
 	navController: NavHostController
 ){
 	val argKey = "web_url"
-	
+
 	NavHost(
 		navController = navController,
 		startDestination = "article_screen"
@@ -30,7 +30,7 @@ fun NewsNavGraph(
 					navController.navigate("news_article?$argKey=$url")
 				}
 			)
-			
+
 		}
 		composable(
 			route = "news_article?$argKey={$argKey}",
