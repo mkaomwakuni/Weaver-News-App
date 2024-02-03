@@ -3,7 +3,8 @@
     <color name="small_FontDisplay">#FFFFFFFF</color>
     <color name="medium_text">#FFB0B3B8</color>
     <color name="text_title">#E4E6EB</color>
-    <color name="body">#B0B3B8</color>
+    <color name="body">#1E1C1C</color>
+    <color name="bar">#00FFFFFF</color>
     <color name="background_textField">#3A3B3C</color>
     <color name="placeholder">#DDDDDD</color>
     <color name="shine_effect">#414243</color>

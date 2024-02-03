@@ -2,6 +2,6 @@
 <resources>
 
     <style name="Theme.Weaver" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/body</item>
+        <item name="android:statusBarColor">@color/bar</item>
     </style>
 </resources>
