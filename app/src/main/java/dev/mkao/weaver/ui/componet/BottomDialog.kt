@@ -18,13 +18,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.model.Source
-import dev.mkao.weaver.ui.article.NewsArticleUi
+import dev.mkao.weaver.util.NewsArticleUi
 
 
 @Composable
@@ -32,7 +33,7 @@ fun BottomDialog(
 	article: Article,
 	onReadFullStoryButtonClicked: () -> Unit
 ) {
-	val dynamicColors = MaterialTheme.colorScheme
+
 	var showNewsArticleUi by remember { mutableStateOf(false) }
 
 	if (showNewsArticleUi) {
@@ -42,13 +43,14 @@ fun BottomDialog(
 		)
 	} else {
 		Surface(
-			modifier = Modifier.fillMaxWidth(),
-			color = dynamicColors.primaryContainer
+			modifier = Modifier
+				.fillMaxWidth(),
+			color = Color.White
 		) {
 			Column(
 				modifier = Modifier
 					.padding(16.dp)
-					.background(dynamicColors.primaryContainer)
+					.background(Color.White)
 					.fillMaxWidth()
 					.padding(bottom = 16.dp),
 				horizontalAlignment = Alignment.CenterHorizontally

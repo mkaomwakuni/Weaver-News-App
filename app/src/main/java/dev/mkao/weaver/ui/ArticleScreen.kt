@@ -1,4 +1,4 @@
-
+package dev.mkao.weaver.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -14,15 +14,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -45,7 +44,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,21 +60,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.ui.ArticleStates
-import dev.mkao.weaver.ui.EventsHolder
 import dev.mkao.weaver.ui.componet.BottomDialog
 import dev.mkao.weaver.ui.componet.DateFormat
 import dev.mkao.weaver.util.Dimens
 import kotlinx.coroutines.launch
 
-@OptIn(
-	ExperimentalMaterial3Api::class,
-	ExperimentalPagerApi::class
-)
+@OptIn( ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ArticleScreen(
@@ -84,24 +75,19 @@ fun ArticleScreen(
 	onReadFullStoryButtonClick: (String) -> Unit,
 	onEvent: (EventsHolder) -> Unit
 ) {
-	var selectedTab by remember { mutableIntStateOf(0) }
+	val selectedTab by remember { mutableIntStateOf(0) }
 	val coroutineScope = rememberCoroutineScope()
 	val categories = listOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment")
-	val pagerState = rememberPagerState()
 	var shouldBottomSheetShow by remember { mutableStateOf(false) }
 	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-	LaunchedEffect(key1 = pagerState) {
-		snapshotFlow { pagerState.currentPage }.collect { page ->
-			onEvent(EventsHolder.OnCategoryClicked(category = categories[page]))
-		}
+	LaunchedEffect(selectedTab) {
+		val category = categories[selectedTab]
+		onEvent(EventsHolder.OnCategoryClicked(category))
 	}
-
-	LaunchedEffect(key1 = Unit) {
-		if (state.SearchRequest.isNotEmpty()) {
-			onEvent(EventsHolder.OnSearchCategoryChanged(searchRequest = state.SearchRequest))
-		}
-	}
+	SearchBar(onSearchCategoryChanged = {
+		onEvent(EventsHolder.OnSearchCategoryChanged(searchRequest = it))},
+		onKeyboardDismissed = {})
 
 	if (shouldBottomSheetShow) {
 		ModalBottomSheet(
@@ -126,49 +112,45 @@ fun ArticleScreen(
 
 	Scaffold(
 		topBar = {
-			Column(
-				modifier = Modifier
-					.fillMaxWidth()
-					.padding(top = 10.dp)
-					.statusBarsPadding()
-			) {
-				IconButton(onClick = { /*TODO*/ }) {
-					Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
-				}
-				Spacer(modifier = Modifier.height(20.dp))
+				Spacer(modifier = Modifier.height(50.dp))
 
 				Column(
 					modifier = Modifier
-						.padding(start = 16.dp)
-						.fillMaxWidth(),
+						.padding(start = 7.dp)
+						.fillMaxWidth()
+						.padding(top = 100.dp),
 					verticalArrangement = Arrangement.SpaceBetween,
 					horizontalAlignment = Alignment.Start
 				) {
 					Text(
-						text = "Discover",
+						text = "Discovery",
 						color = Color.Black,
-						fontSize = 28.sp,
+						fontSize = 30.sp,
 						fontWeight = FontWeight.Bold,
 					)
 					Spacer(modifier = Modifier.height(5.dp))
 					Text(
 						text = "News from all around the world",
 						color = Color.LightGray,
-						fontSize = 14.sp,
+						fontSize = 16.sp,
 						fontWeight = FontWeight.Bold,
 					)
 				}
-			}
+
 		},
 		content = {
 			Column(
 				modifier = Modifier
 					.fillMaxSize()
-					.padding(horizontal = 16.dp)
+					.padding(horizontal = 7.dp)
+					.background(color = Color.White)
 			) {
 				Spacer(modifier = Modifier.height(190.dp))
 
-				SearchBar()
+				SearchBar(
+					onSearchCategoryChanged = {},
+					onKeyboardDismissed = {}
+				)
 
 				Spacer(modifier = Modifier.height(10.dp))
 				LazyRow(
@@ -181,7 +163,7 @@ fun ArticleScreen(
 						TintedTextButton(
 							isSelected = isSelected,
 							category = category,
-							onClick = { selectedTab = index }
+							onClick = { onEvent(EventsHolder.OnCategoryClicked(category)) }
 						)
 					}
 				}
@@ -195,14 +177,14 @@ fun ArticleScreen(
 					verticalArrangement = Arrangement.spacedBy(2.dp)
 				) {
 					items(state.article) { article ->
-						CardArticlee(
+						CardArtiCle(
 							    article = article,
 								onReadFullStoryClicked = {
 								shouldBottomSheetShow = true
 								onEvent(EventsHolder.OnArticleCardClicked(article))
 							 }
 						)
-						Spacer(modifier = Modifier.height(16.dp))
+						Spacer(modifier = Modifier.height(0.5.dp))
 					}
 
 				}
@@ -212,7 +194,7 @@ fun ArticleScreen(
 }
 
 @Composable
-fun CardArticlee(
+fun CardArtiCle(
 	article: Article,
 	onReadFullStoryClicked: () -> Unit) {
 	val date = DateFormat(article.publishedAt)
@@ -250,13 +232,13 @@ fun CardArticlee(
 					modifier = Modifier
 						.padding(5.dp)
 						.height(25.dp)
-						.background(chip.onErrorContainer, shape = RoundedCornerShape(4.dp))
+						.background(chip.primaryContainer, shape = RoundedCornerShape(4.dp))
 				){
 					Spacer(modifier = Modifier.height(2.dp))
 					Text(
 						text = article.source.name?: "Google News",
 						fontSize = 12.sp,
-						color = Color.Gray,
+						color = Color.White,
 						fontWeight = FontWeight.Bold
 					)}
 				Spacer(modifier = Modifier.height(4.dp))
@@ -297,7 +279,7 @@ fun CardArticlee(
 					Icon(
 						painter = painterResource(id = R.drawable.ic_time),
 						contentDescription = null,
-						modifier = Modifier.size(5.dp),
+						modifier = Modifier.size(15.dp),
 						tint = colorResource(id = R.color.body)
 					)
 					Spacer(modifier = Modifier.width(Dimens.ExtraSmallPadding1))
@@ -317,25 +299,22 @@ fun CardArticlee(
 
 @Composable
 fun TintedTextButton(
-	isSelected: Boolean,
+	isSelected: Boolean = false,
 	category: String,
 	onClick: () -> Unit
 ) {
+
 	val selectedBackgroundColor = Color.Transparent
-	val unselectedBackgroundColor = Color.DarkGray
-	val border = MaterialTheme.colorScheme
-
-	val textbgShape = RoundedCornerShape(12.dp)
-	val TextbtnColor = if (isSelected) selectedBackgroundColor else unselectedBackgroundColor
+	val textBgShape = RoundedCornerShape(12.dp)
 	val txtBgColor = if (!isSelected) Color.White else Color.Black
-
 	if (isSelected) {
 		TextButton(
 			onClick = onClick,
-			shape = textbgShape,
+			shape = textBgShape,
 			border = BorderStroke(1.dp, color = Color.DarkGray),
 			colors = ButtonDefaults.buttonColors(
-				contentColor = Color.Gray
+				contentColor = Color.Black,
+				containerColor = selectedBackgroundColor
 			),
 			modifier = Modifier.padding(vertical = 4.dp, horizontal = 10.dp)
 		) {
@@ -348,9 +327,9 @@ fun TintedTextButton(
 	} else {
 		TextButton(
 			onClick = onClick,
-			shape = textbgShape,
+			shape = textBgShape,
 			colors = ButtonDefaults.buttonColors(
-				contentColor = txtBgColor
+				contentColor = txtBgColor,
 			),
 			modifier = Modifier.padding(vertical = 4.dp, horizontal = 10.dp)
 		) {
@@ -365,15 +344,26 @@ fun TintedTextButton(
 }
 
 @Composable
-fun SearchBar() {
+fun SearchBar(
+	onSearchCategoryChanged: (String) -> Unit,
+	onKeyboardDismissed: () -> Unit
+) {
 	val textState = remember { mutableStateOf(TextFieldValue()) }
+
 	TextField(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(vertical = 20.dp)
+			.height(50.dp)
 			.clip(RoundedCornerShape(18.dp)),
 		value = textState.value,
 		onValueChange = { textState.value = it },
+		keyboardActions = KeyboardActions(
+			onDone = {
+				onSearchCategoryChanged(textState.value.text)
+				onKeyboardDismissed()
+			}
+		),
 		leadingIcon = {
 			Icon(
 				imageVector = Icons.Filled.Search,
@@ -382,7 +372,6 @@ fun SearchBar() {
 			)
 		},
 		colors = TextFieldDefaults.colors(
-
 			disabledIndicatorColor = Color.Transparent,
 			unfocusedIndicatorColor = Color.Transparent,
 			focusedIndicatorColor = Color.Transparent
@@ -391,9 +380,9 @@ fun SearchBar() {
 			Text(text = "Tourism", color = Color.LightGray, fontSize = 16.sp)
 		},
 		trailingIcon = {
-			IconButton(onClick = { /*TODO*/ }) {
+			IconButton(onClick = onKeyboardDismissed) {
 				Icon(
-					imageVector = Icons.Filled.List,
+					imageVector = Icons.AutoMirrored.Filled.List,
 					contentDescription = "Filter Icon",
 					tint = Color.Gray
 				)
