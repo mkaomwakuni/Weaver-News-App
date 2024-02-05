@@ -43,6 +43,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,6 +81,7 @@ fun ArticleScreen(
 	val categories = listOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment")
 	var shouldBottomSheetShow by remember { mutableStateOf(false) }
 	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+	val isLoading by remember {mutableStateOf(true)}
 
 	LaunchedEffect(selectedTab) {
 		val category = categories[selectedTab]
@@ -108,7 +110,6 @@ fun ArticleScreen(
 			}
 		)
 	}
-
 
 	Scaffold(
 		topBar = {
@@ -169,6 +170,7 @@ fun ArticleScreen(
 				}
 
 				Spacer(modifier = Modifier.height(20.dp))
+
 
 				LazyColumn(
 					modifier = Modifier
@@ -288,7 +290,6 @@ fun CardArtiCle(
 						style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
 						color = Color.Black
 					)
-
 				}
 			}
 		}
@@ -304,9 +305,12 @@ fun TintedTextButton(
 	onClick: () -> Unit
 ) {
 
-	val selectedBackgroundColor = Color.Transparent
+	val selectedBackgroundColor = if (isSelected) Color.Transparent else Color.Transparent
 	val textBgShape = RoundedCornerShape(12.dp)
 	val txtBgColor = if (!isSelected) Color.White else Color.Black
+
+	// Use rememberUpdatedState to ensure that isSelected is updated
+	val selected by rememberUpdatedState(isSelected)
 	if (isSelected) {
 		TextButton(
 			onClick = onClick,
