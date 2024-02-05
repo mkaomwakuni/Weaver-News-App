@@ -76,7 +76,7 @@ fun NewsArticleUi(
                         Text(
                             text = "Tɦɛ Wɛǟʋɛʀ",
                             color = Color.Black,
-                            fontSize = 18.sp, // Adjust font size as needed
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold)
                     }
                 },
