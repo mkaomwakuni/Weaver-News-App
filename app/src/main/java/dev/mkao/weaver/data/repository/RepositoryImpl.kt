@@ -18,13 +18,17 @@ class RepositoryImpl(
 			Assets.Error(message = "Failed to fetch news ${e.message}")
 		}
 	}
-	
+
 	override suspend fun searchForNews(query: String): Assets<List<Article>> {
 		return try {
+			// Use the newsApi to fetch search results using the provided query
 			val response = newsApi.searchForNews(query = query)
+
+			// Return the search results as Success
 			Assets.Success(data = response.articles)
 		} catch (e: Exception) {
+			// Handle errors and return as Assets.Error
 			Assets.Error(message = "Failed to fetch news ${e.message}")
-		} 
+		}
 	}
 }
