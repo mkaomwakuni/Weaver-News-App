@@ -1,6 +1,6 @@
 package dev.mkao.weaver.util
 
-import ArticleScreen
+import dev.mkao.weaver.ui.ArticleScreen
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -8,7 +8,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import dev.mkao.weaver.ui.article.NewsArticleUi
 import dev.mkao.weaver.viewModel.ArticleScreenViewModel
 
 @Composable
@@ -38,6 +37,7 @@ fun NewsNavGraph(
 				type = NavType.StringType
 			})
 		) { backStackEntry ->
+			val article = // retrieve or create the complete Article object here
 			NewsArticleUi(
 				url = backStackEntry.arguments?.getString(argKey),
 				onBackPressed = { navController.navigateUp() }

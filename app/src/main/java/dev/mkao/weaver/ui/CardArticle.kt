@@ -51,6 +51,7 @@ fun CardArticle(
         modifier = Modifier
             .padding(1.dp)
             .fillMaxWidth()
+            .background(chipColor.background)
             .clickable { onClickingCard(article) }
     ) {
         Row(
