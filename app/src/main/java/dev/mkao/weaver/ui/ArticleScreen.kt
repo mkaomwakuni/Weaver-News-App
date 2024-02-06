@@ -37,13 +37,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,17 +73,12 @@ fun ArticleScreen(
 	onReadFullStoryButtonClick: (String) -> Unit,
 	onEvent: (EventsHolder) -> Unit
 ) {
-	val selectedTab by remember { mutableIntStateOf(0) }
+
 	val coroutineScope = rememberCoroutineScope()
-	val categories = listOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment")
+	val categories = mutableListOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment")
 	var shouldBottomSheetShow by remember { mutableStateOf(false) }
 	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-	val isLoading by remember {mutableStateOf(true)}
 
-	LaunchedEffect(selectedTab) {
-		val category = categories[selectedTab]
-		onEvent(EventsHolder.OnCategoryClicked(category))
-	}
 	SearchBar(onSearchCategoryChanged = {
 		onEvent(EventsHolder.OnSearchCategoryChanged(searchRequest = it))},
 		onKeyboardDismissed = {})
@@ -160,7 +152,7 @@ fun ArticleScreen(
 				) {
 					items(categories.size) { index ->
 						val category = categories[index]
-						val isSelected = selectedTab == index
+						val isSelected = state.category == category
 						TintedTextButton(
 							isSelected = isSelected,
 							category = category,
@@ -300,7 +292,7 @@ fun CardArtiCle(
 
 @Composable
 fun TintedTextButton(
-	isSelected: Boolean = false,
+	isSelected: Boolean = true,
 	category: String,
 	onClick: () -> Unit
 ) {
@@ -309,8 +301,6 @@ fun TintedTextButton(
 	val txtBgColor = if (!isSelected) Color.White else Color.Black
 	val textBgShape = RoundedCornerShape(12.dp)
 
-	// Use rememberUpdatedState to ensure that isSelected is updated
-	val selected by rememberUpdatedState(isSelected)
 	if (isSelected) {
 		TextButton(
 			onClick = onClick,
@@ -324,6 +314,7 @@ fun TintedTextButton(
 		) {
 			Text(
 				text = category,
+				color = Color.Blue,
 				fontSize = 14.sp,
 				fontWeight = FontWeight.Bold,
 			)
