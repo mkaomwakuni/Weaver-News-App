@@ -305,9 +305,9 @@ fun TintedTextButton(
 	onClick: () -> Unit
 ) {
 
-	val selectedBackgroundColor = if (isSelected) Color.Transparent else Color.Transparent
-	val textBgShape = RoundedCornerShape(12.dp)
+	val selectedBackgroundColor = if (isSelected) Color.Transparent else Color.Blue
 	val txtBgColor = if (!isSelected) Color.White else Color.Black
+	val textBgShape = RoundedCornerShape(12.dp)
 
 	// Use rememberUpdatedState to ensure that isSelected is updated
 	val selected by rememberUpdatedState(isSelected)
