@@ -31,15 +31,15 @@
       <table>
         <tr>
           <td align="center">
-            <img src="https://private-user-images.githubusercontent.com/61048381/302991671-3d35ef50-c51d-4d9f-9565-74a51ede4000.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDczMTIwMzMsIm5iZiI6MTcwNzMxMTczMywicGF0aCI6Ii82MTA0ODM4MS8zMDI5OTE2NzEtM2QzNWVmNTAtYzUxZC00ZDlmLTk1NjUtNzRhNTFlZGU0MDAwLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDAyMDclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwMjA3VDEzMTUzM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZlNzNjNWQyNTgwY2ZlYWM1NDQ2NzEzNTNhMzJiZDRlZThjYjBlNTQ1MTI1NWIwNzVjZjEwODBhY2YzZjExMGYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.h5YC6zw50CyIFnfWsjxh_LLNGO0J7yfCTfGzHubBw70" width="350" alt="Screenshot 1">
+            <img src="https://raw.githubusercontent.com/mkaomwakuni/Weaver-News-App/139ff93742487ab051faeb6ce550f47e81c4af32/app/src/androidTest/java/dev/mkao/weaver/WhatsApp%20Image%202024-02-06%20at%207-portrait.png" width="350" alt="Screenshot 1">
           </td>
           <td align="center">
-            <img src="https://private-user-images.githubusercontent.com/61048381/302986795-f9baddb9-209a-4ba6-b5a4-4965ed172e54.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDczMTE0ODUsIm5iZiI6MTcwNzMxMTE4NSwicGF0aCI6Ii82MTA0ODM4MS8zMDI5ODY3OTUtZjliYWRkYjktMjA5YS00YmE2LWI1YTQtNDk2NWVkMTcyZTU0LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDAyMDclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwMjA3VDEzMDYyNVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTMwZDhjMmE4YmFjNDk5ZjE0YTVjOTEzZGY4NzcyNTdmOThmNzU4YTU2YmQ0MTlkYzA0NWE1MTFmNmFjMTg1OGImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.hTZ4DCZ2_kUrqVCS2ylwFWlYwVTnw06ODDLM8Zd2NUc" width="350" alt="Screenshot 2">
+            <img src="https://github.com/mkaomwakuni/Weaver-News-App/blob/master/app/src/androidTest/java/dev/mkao/weaver/Screenshot_20240207-150725_Weaver%5B1%5D-portrait.png?raw=true" width="350" alt="Screenshot 2">
           </td>
         </tr>
         <tr>
           <td align="center">
-            <img src="https://private-user-images.githubusercontent.com/61048381/302986817-44599f74-bf33-4f8b-a5da-9a18662f9970.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDczMTE0ODUsIm5iZiI6MTcwNzMxMTE4NSwicGF0aCI6Ii82MTA0ODM4MS8zMDI5ODY4MTctNDQ1OTlmNzQtYmYzMy00ZjhiLWE1ZGEtOWExODY2MmY5OTcwLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDAyMDclMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwMjA3VDEzMDYyNVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTg2MGRiMGEyOTQwMjkzMmQ5YmZiNGJjOTQ5YzNmYTMzMWNkNzRlNWNjYjQ1ZmQ3ZDZjMWY2Yjg2YTg5MDY3OGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.JWdUQty7gKoC2Ceq4QIwH6RPs4ThSXCJiNrXUMIJOdY" width="350" alt="Screenshot 3">
+            <img src="https://github.com/mkaomwakuni/Weaver-News-App/blob/master/app/src/androidTest/java/dev/mkao/weaver/Screenshot_20240207-144024_Weaver-portrait.png?raw=true" width="350" alt="Screenshot 3">
           </td>
           <td align="center">
             <img src="https://github.com/mkaomwakuni/Weaver-News-App/blob/master/app/src/androidTest/java/dev/mkao/weaver/Screenshot_20240207-144047_Weaver-portrait.png?raw=true" width="350" alt="Screenshot 4">
