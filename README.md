@@ -80,7 +80,7 @@
         - <a href="https://github.com/square/retrofit">Retrofit</a>: HTTP client for making API requests.<br>
         - <a href="https://github.com/bumptech/glide">Glide</a>: Image loading library for smooth image rendering.<br>
         - <a href="https://github.com/android/architecture-components-samples/tree/main/RoomSample">Room</a>: Local database for efficient data storage.<br>
-        - <a href="https://github.com">Your Additional Technology</a>: Description.
+      
       </p>
     </td>
   </tr>
