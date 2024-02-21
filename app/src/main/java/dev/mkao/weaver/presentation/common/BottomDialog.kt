@@ -1,4 +1,4 @@
-package dev.mkao.weaver.ui.componet
+package dev.mkao.weaver.presentation.common
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.model.Source
-import dev.mkao.weaver.util.NewsArticleUi
+import dev.mkao.weaver.presentation.details.components.NewsArticleUi
 
 
 @Composable

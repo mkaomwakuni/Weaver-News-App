@@ -1,4 +1,4 @@
-package dev.mkao.weaver.ui
+package dev.mkao.weaver.presentation.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -37,13 +37,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,8 +60,10 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.ui.componet.BottomDialog
-import dev.mkao.weaver.ui.componet.DateFormat
+import dev.mkao.weaver.presentation.common.ArticleStates
+import dev.mkao.weaver.presentation.common.BottomDialog
+import dev.mkao.weaver.presentation.common.DateFormat
+import dev.mkao.weaver.presentation.common.EventsHolder
 import dev.mkao.weaver.util.Dimens
 import kotlinx.coroutines.launch
 
@@ -76,17 +75,12 @@ fun ArticleScreen(
 	onReadFullStoryButtonClick: (String) -> Unit,
 	onEvent: (EventsHolder) -> Unit
 ) {
-	val selectedTab by remember { mutableIntStateOf(0) }
+
 	val coroutineScope = rememberCoroutineScope()
-	val categories = listOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment")
+	val categories = mutableListOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment")
 	var shouldBottomSheetShow by remember { mutableStateOf(false) }
 	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-	val isLoading by remember {mutableStateOf(true)}
 
-	LaunchedEffect(selectedTab) {
-		val category = categories[selectedTab]
-		onEvent(EventsHolder.OnCategoryClicked(category))
-	}
 	SearchBar(onSearchCategoryChanged = {
 		onEvent(EventsHolder.OnSearchCategoryChanged(searchRequest = it))},
 		onKeyboardDismissed = {})
@@ -113,30 +107,30 @@ fun ArticleScreen(
 
 	Scaffold(
 		topBar = {
-				Spacer(modifier = Modifier.height(50.dp))
+			Spacer(modifier = Modifier.height(50.dp))
 
-				Column(
-					modifier = Modifier
-						.padding(start = 7.dp)
-						.fillMaxWidth()
-						.padding(top = 100.dp),
-					verticalArrangement = Arrangement.SpaceBetween,
-					horizontalAlignment = Alignment.Start
-				) {
-					Text(
-						text = "Discovery",
-						color = Color.Black,
-						fontSize = 30.sp,
-						fontWeight = FontWeight.Bold,
-					)
-					Spacer(modifier = Modifier.height(5.dp))
-					Text(
-						text = "News from all around the world",
-						color = Color.LightGray,
-						fontSize = 16.sp,
-						fontWeight = FontWeight.Bold,
-					)
-				}
+			Column(
+				modifier = Modifier
+					.padding(start = 7.dp)
+					.fillMaxWidth()
+					.padding(top = 100.dp),
+				verticalArrangement = Arrangement.SpaceBetween,
+				horizontalAlignment = Alignment.Start
+			) {
+				Text(
+					text = "Discovery",
+					color = Color.Black,
+					fontSize = 30.sp,
+					fontWeight = FontWeight.Bold,
+				)
+				Spacer(modifier = Modifier.height(5.dp))
+				Text(
+					text = "News from all around the world",
+					color = Color.LightGray,
+					fontSize = 16.sp,
+					fontWeight = FontWeight.Bold,
+				)
+			}
 
 		},
 		content = {
@@ -160,7 +154,7 @@ fun ArticleScreen(
 				) {
 					items(categories.size) { index ->
 						val category = categories[index]
-						val isSelected = selectedTab == index
+						val isSelected = state.category == category
 						TintedTextButton(
 							isSelected = isSelected,
 							category = category,
@@ -180,11 +174,11 @@ fun ArticleScreen(
 				) {
 					items(state.article) { article ->
 						CardArtiCle(
-							    article = article,
-								onReadFullStoryClicked = {
+							article = article,
+							onReadFullStoryClicked = {
 								shouldBottomSheetShow = true
 								onEvent(EventsHolder.OnArticleCardClicked(article))
-							 }
+							}
 						)
 						Spacer(modifier = Modifier.height(0.5.dp))
 					}
@@ -234,7 +228,7 @@ fun CardArtiCle(
 					modifier = Modifier
 						.padding(5.dp)
 						.height(25.dp)
-						.background(chip.primaryContainer, shape = RoundedCornerShape(4.dp))
+						.background(chip.onPrimaryContainer, shape = RoundedCornerShape(4.dp))
 				){
 					Spacer(modifier = Modifier.height(2.dp))
 					Text(
@@ -300,7 +294,7 @@ fun CardArtiCle(
 
 @Composable
 fun TintedTextButton(
-	isSelected: Boolean = false,
+	isSelected: Boolean = true,
 	category: String,
 	onClick: () -> Unit
 ) {
@@ -309,8 +303,6 @@ fun TintedTextButton(
 	val txtBgColor = if (!isSelected) Color.White else Color.Black
 	val textBgShape = RoundedCornerShape(12.dp)
 
-	// Use rememberUpdatedState to ensure that isSelected is updated
-	val selected by rememberUpdatedState(isSelected)
 	if (isSelected) {
 		TextButton(
 			onClick = onClick,
@@ -324,6 +316,7 @@ fun TintedTextButton(
 		) {
 			Text(
 				text = category,
+				color = Color.Blue,
 				fontSize = 14.sp,
 				fontWeight = FontWeight.Bold,
 			)
@@ -358,7 +351,7 @@ fun SearchBar(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(vertical = 20.dp)
-			.height(50.dp)
+			.height(60.dp)
 			.clip(RoundedCornerShape(18.dp)),
 		value = textState.value,
 		onValueChange = { textState.value = it },

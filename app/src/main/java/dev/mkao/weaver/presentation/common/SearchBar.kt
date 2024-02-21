@@ -1,4 +1,4 @@
-package dev.mkao.weaver.ui.componet
+package dev.mkao.weaver.presentation.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions

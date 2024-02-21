@@ -1,4 +1,4 @@
-package dev.mkao.weaver.ui
+package dev.mkao.weaver.presentation.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,7 +35,6 @@ import coil.request.ImageRequest
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.model.Source
-import dev.mkao.weaver.ui.componet.DateFormat
 import dev.mkao.weaver.util.Dimens
 import dev.mkao.weaver.util.Dimens.ExtraSmallPadding
 import dev.mkao.weaver.util.Dimens.ExtraSmallPadding1
@@ -79,15 +78,15 @@ fun CardArticle(
                     modifier = Modifier
                         .padding(5.dp)
                         .height(25.dp)
-                        .background(chipColor.onErrorContainer, shape = RoundedCornerShape(4.dp))
+                        .background(chipColor.onPrimary, shape = RoundedCornerShape(4.dp))
                 ){
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                    text = article.source.name?: "Google News",
-                    fontSize = 12.sp,
-                    color = Color.Gray,
-                    fontWeight = FontWeight.Bold
-                )}
+                        text = article.source.name?: "Google News",
+                        fontSize = 12.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Bold
+                    )}
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = article.title,
@@ -141,24 +140,24 @@ fun CardArticle(
     }
 }
 
-    @Preview
-    @Composable
-    fun Ty1(){
-        val sampleArticle = Article(
-            // Initialize the sample data for testing
-            // Make sure to replace these values with actual data
-            source = Source(name = "Sample Source", id = "bbc"),
-            author = "John Doe",
-            title = "Sample Article Title",
-            content = "Sample article content goes here.",
-            description = "Sample article content goes here.",
-            urlToImage = "https://example.com/sample_image.jpg",
-            publishedAt = "2024-01-29T12:34:56Z",
-            url = "https://example.com/sample_image.jpg"
-        )
-        CardArticle(
-            modifier = Modifier,
-            article = sampleArticle,
-            onClickingCard = { /* Handle click event if needed */ }
-        )
-    }
+@Preview
+@Composable
+fun Ty1(){
+    val sampleArticle = Article(
+        // Initialize the sample data for testing
+        // Make sure to replace these values with actual data
+        source = Source(name = "Sample Source", id = "bbc"),
+        author = "John Doe",
+        title = "Sample Article Title",
+        content = "Sample article content goes here.",
+        description = "Sample article content goes here.",
+        urlToImage = "https://example.com/sample_image.jpg",
+        publishedAt = "2024-01-29T12:34:56Z",
+        url = "https://example.com/sample_image.jpg"
+    )
+    CardArticle(
+        modifier = Modifier,
+        article = sampleArticle,
+        onClickingCard = { /* Handle click event if needed */ }
+    )
+}

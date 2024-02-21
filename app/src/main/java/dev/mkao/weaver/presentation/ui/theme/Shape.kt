@@ -1,4 +1,4 @@
-package dev.mkao.weaver.ui.theme
+package dev.mkao.weaver.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes

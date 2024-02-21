@@ -1,4 +1,4 @@
-package dev.mkao.weaver.util
+package dev.mkao.weaver.presentation.details.components
 import android.graphics.Bitmap
 import android.webkit.WebChromeClient
 import android.webkit.WebView
