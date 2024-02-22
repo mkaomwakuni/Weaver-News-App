@@ -1,4 +1,4 @@
-package dev.mkao.weaver.viewModel
+package dev.mkao.weaver.presentation.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.mkao.weaver.domain.repository.Repository
-import dev.mkao.weaver.ui.ArticleStates
-import dev.mkao.weaver.ui.EventsHolder
+import dev.mkao.weaver.presentation.common.ArticleStates
+import dev.mkao.weaver.presentation.common.EventsHolder
 import dev.mkao.weaver.util.Assets
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

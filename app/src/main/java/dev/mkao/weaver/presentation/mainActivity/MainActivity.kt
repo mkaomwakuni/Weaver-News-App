@@ -1,4 +1,4 @@
-package dev.mkao.weaver
+package dev.mkao.weaver.presentation.mainActivity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.mkao.weaver.ui.theme.WeaverTheme
-import dev.mkao.weaver.util.NewsNavGraph
+import dev.mkao.weaver.presentation.ui.theme.WeaverTheme
+import dev.mkao.weaver.presentation.navgraph.NewsNavGraph
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

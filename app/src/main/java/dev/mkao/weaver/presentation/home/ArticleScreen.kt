@@ -1,4 +1,4 @@
-package dev.mkao.weaver.ui
+package dev.mkao.weaver.presentation.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -60,8 +60,10 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.ui.componet.BottomDialog
-import dev.mkao.weaver.ui.componet.DateFormat
+import dev.mkao.weaver.presentation.common.ArticleStates
+import dev.mkao.weaver.presentation.common.BottomDialog
+import dev.mkao.weaver.presentation.common.DateFormat
+import dev.mkao.weaver.presentation.common.EventsHolder
 import dev.mkao.weaver.util.Dimens
 import kotlinx.coroutines.launch
 
@@ -105,30 +107,30 @@ fun ArticleScreen(
 
 	Scaffold(
 		topBar = {
-				Spacer(modifier = Modifier.height(50.dp))
+			Spacer(modifier = Modifier.height(50.dp))
 
-				Column(
-					modifier = Modifier
-						.padding(start = 7.dp)
-						.fillMaxWidth()
-						.padding(top = 100.dp),
-					verticalArrangement = Arrangement.SpaceBetween,
-					horizontalAlignment = Alignment.Start
-				) {
-					Text(
-						text = "Discovery",
-						color = Color.Black,
-						fontSize = 30.sp,
-						fontWeight = FontWeight.Bold,
-					)
-					Spacer(modifier = Modifier.height(5.dp))
-					Text(
-						text = "News from all around the world",
-						color = Color.LightGray,
-						fontSize = 16.sp,
-						fontWeight = FontWeight.Bold,
-					)
-				}
+			Column(
+				modifier = Modifier
+					.padding(start = 7.dp)
+					.fillMaxWidth()
+					.padding(top = 100.dp),
+				verticalArrangement = Arrangement.SpaceBetween,
+				horizontalAlignment = Alignment.Start
+			) {
+				Text(
+					text = "Discovery",
+					color = Color.Black,
+					fontSize = 30.sp,
+					fontWeight = FontWeight.Bold,
+				)
+				Spacer(modifier = Modifier.height(5.dp))
+				Text(
+					text = "News from all around the world",
+					color = Color.LightGray,
+					fontSize = 16.sp,
+					fontWeight = FontWeight.Bold,
+				)
+			}
 
 		},
 		content = {
@@ -172,11 +174,11 @@ fun ArticleScreen(
 				) {
 					items(state.article) { article ->
 						CardArtiCle(
-							    article = article,
-								onReadFullStoryClicked = {
+							article = article,
+							onReadFullStoryClicked = {
 								shouldBottomSheetShow = true
 								onEvent(EventsHolder.OnArticleCardClicked(article))
-							 }
+							}
 						)
 						Spacer(modifier = Modifier.height(0.5.dp))
 					}
@@ -226,7 +228,7 @@ fun CardArtiCle(
 					modifier = Modifier
 						.padding(5.dp)
 						.height(25.dp)
-						.background(chip.primaryContainer, shape = RoundedCornerShape(4.dp))
+						.background(chip.onPrimaryContainer, shape = RoundedCornerShape(4.dp))
 				){
 					Spacer(modifier = Modifier.height(2.dp))
 					Text(
@@ -349,7 +351,7 @@ fun SearchBar(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(vertical = 20.dp)
-			.height(50.dp)
+			.height(60.dp)
 			.clip(RoundedCornerShape(18.dp)),
 		value = textState.value,
 		onValueChange = { textState.value = it },

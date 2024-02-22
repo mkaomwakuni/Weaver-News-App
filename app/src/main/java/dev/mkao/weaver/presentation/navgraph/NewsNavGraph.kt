@@ -1,6 +1,5 @@
-package dev.mkao.weaver.util
+package dev.mkao.weaver.presentation.navgraph
 
-import dev.mkao.weaver.ui.ArticleScreen
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -8,7 +7,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import dev.mkao.weaver.viewModel.ArticleScreenViewModel
+import dev.mkao.weaver.presentation.details.components.NewsArticleUi
+import dev.mkao.weaver.presentation.home.ArticleScreenViewModel
+import dev.mkao.weaver.presentation.home.ArticleScreen
 
 @Composable
 fun NewsNavGraph(

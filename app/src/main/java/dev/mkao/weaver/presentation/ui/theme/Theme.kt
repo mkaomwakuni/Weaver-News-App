@@ -1,4 +1,4 @@
-package dev.mkao.weaver.ui.theme
+package dev.mkao.weaver.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
