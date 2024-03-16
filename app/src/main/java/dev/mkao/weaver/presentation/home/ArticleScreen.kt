@@ -231,7 +231,7 @@ fun CardArtiCle(
 					modifier = Modifier
 						.padding(5.dp)
 						.height(25.dp)
-						.background(chip.onPrimaryContainer, shape = RoundedCornerShape(4.dp))
+						.background(chip.primaryContainer, shape = RoundedCornerShape(3.dp))
 				){
 					Spacer(modifier = Modifier.height(2.dp))
 					Text(
@@ -259,15 +259,16 @@ fun CardArtiCle(
 
 				Row(
 					modifier = Modifier
-						.fillMaxWidth()
-					, verticalAlignment = Alignment.CenterVertically) {
+						.fillMaxWidth(),
+					horizontalArrangement = Arrangement.End,
+					verticalAlignment = Alignment.CenterVertically) {
+
 					Text(
 						text = article.author?.split(",")?.firstOrNull() ?: "Source",
 						style = MaterialTheme.typography.bodySmall,
 						fontWeight = FontWeight.Bold,
 						overflow = TextOverflow.Ellipsis
 					)
-					Spacer(modifier = Modifier.width(20.dp))
 					Text(
 						text = ".",
 						color = Color.Black,
@@ -283,6 +284,7 @@ fun CardArtiCle(
 					)
 					Spacer(modifier = Modifier.width(Dimens.ExtraSmallPadding1))
 					Text(
+						modifier = Modifier.align(alignment = Alignment.CenterVertically),
 						text = date,
 						style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
 						color = Color.Black
