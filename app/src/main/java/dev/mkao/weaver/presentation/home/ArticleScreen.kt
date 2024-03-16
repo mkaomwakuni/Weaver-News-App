@@ -37,6 +37,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,15 +72,17 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ArticleScreen(
-	state: ArticleStates,
+	state: ArticleStates ,
 	onReadFullStoryButtonClick: (String) -> Unit,
-	onEvent: (EventsHolder) -> Unit
-) {
-
+	onEvent: (EventsHolder) -> Unit) {
 	val coroutineScope = rememberCoroutineScope()
 	val categories = mutableListOf("General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment")
 	var shouldBottomSheetShow by remember { mutableStateOf(false) }
 	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+	LaunchedEffect(true) {
+		onEvent(EventsHolder.OnCategoryClicked("General"))
+	}
 
 	SearchBar(onSearchCategoryChanged = {
 		onEvent(EventsHolder.OnSearchCategoryChanged(searchRequest = it))},
@@ -111,13 +114,14 @@ fun ArticleScreen(
 
 			Column(
 				modifier = Modifier
-					.padding(start = 7.dp)
 					.fillMaxWidth()
 					.padding(top = 100.dp),
 				verticalArrangement = Arrangement.SpaceBetween,
 				horizontalAlignment = Alignment.Start
 			) {
 				Text(
+					modifier = Modifier
+						.padding( horizontal = 10.dp),
 					text = "Discovery",
 					color = Color.Black,
 					fontSize = 30.sp,
@@ -125,6 +129,8 @@ fun ArticleScreen(
 				)
 				Spacer(modifier = Modifier.height(5.dp))
 				Text(
+					modifier = Modifier
+						.padding( horizontal = 10.dp),
 					text = "News from all around the world",
 					color = Color.LightGray,
 					fontSize = 16.sp,
@@ -137,7 +143,6 @@ fun ArticleScreen(
 			Column(
 				modifier = Modifier
 					.fillMaxSize()
-					.padding(horizontal = 7.dp)
 					.background(color = Color.White)
 			) {
 				Spacer(modifier = Modifier.height(190.dp))
@@ -165,7 +170,6 @@ fun ArticleScreen(
 
 				Spacer(modifier = Modifier.height(20.dp))
 
-
 				LazyColumn(
 					modifier = Modifier
 						.fillMaxWidth(),
@@ -182,7 +186,6 @@ fun ArticleScreen(
 						)
 						Spacer(modifier = Modifier.height(0.5.dp))
 					}
-
 				}
 			}
 		}
@@ -289,9 +292,6 @@ fun CardArtiCle(
 		}
 	}
 }
-
-
-
 @Composable
 fun TintedTextButton(
 	isSelected: Boolean = true,
@@ -299,7 +299,7 @@ fun TintedTextButton(
 	onClick: () -> Unit
 ) {
 
-	val selectedBackgroundColor = if (isSelected) Color.Transparent else Color.Blue
+	val selectedBackgroundColor = if (isSelected) Color.Transparent else Color.DarkGray
 	val txtBgColor = if (!isSelected) Color.White else Color.Black
 	val textBgShape = RoundedCornerShape(12.dp)
 
@@ -307,16 +307,15 @@ fun TintedTextButton(
 		TextButton(
 			onClick = onClick,
 			shape = textBgShape,
-			border = BorderStroke(1.dp, color = Color.DarkGray),
+			border = BorderStroke(2.dp, color = Color.DarkGray),
 			colors = ButtonDefaults.buttonColors(
-				contentColor = Color.Black,
 				containerColor = selectedBackgroundColor
 			),
 			modifier = Modifier.padding(vertical = 4.dp, horizontal = 10.dp)
 		) {
 			Text(
 				text = category,
-				color = Color.Blue,
+				color = Color.DarkGray,
 				fontSize = 14.sp,
 				fontWeight = FontWeight.Bold,
 			)
@@ -326,10 +325,9 @@ fun TintedTextButton(
 			onClick = onClick,
 			shape = textBgShape,
 			colors = ButtonDefaults.buttonColors(
-				contentColor = txtBgColor,
-			),
-			modifier = Modifier.padding(vertical = 4.dp, horizontal = 10.dp)
-		) {
+				contentColor = txtBgColor),
+			modifier = Modifier.padding(vertical = 4.dp, horizontal = 10.dp))
+		{
 			Text(
 				text = category,
 				fontSize = 14.sp,
@@ -350,7 +348,7 @@ fun SearchBar(
 	TextField(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(vertical = 20.dp)
+			.padding(vertical = 20.dp, horizontal = 5.dp)
 			.height(60.dp)
 			.clip(RoundedCornerShape(18.dp)),
 		value = textState.value,
