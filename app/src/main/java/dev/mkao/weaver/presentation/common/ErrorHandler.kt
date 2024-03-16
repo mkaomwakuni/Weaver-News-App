@@ -14,8 +14,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ErrorHandler(
 	error: String,
-	onReload: () -> Unit,
-	modifier: Modifier = Modifier
+	onReload: () -> Unit
 ) {
 	Column (
 		modifier = Modifier
