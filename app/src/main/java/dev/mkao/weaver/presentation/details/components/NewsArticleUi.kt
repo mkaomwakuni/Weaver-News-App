@@ -28,7 +28,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -44,24 +43,20 @@ import dev.mkao.weaver.R
 fun NewsArticleUi(
     url: String?,
     onBackPressed: () -> Unit
-){
-    var isLoading by remember {
-        mutableStateOf(true)
-    }
+) {
+    var isLoading by remember { mutableStateOf(true) }
+
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize(),
         topBar = {
             TopAppBar(
                 modifier = Modifier
-                    .background(Color.White),
-
+                    .background(Color.Transparent),
                 title = {
                     Box(
                         modifier = Modifier
-                            .padding(start = 1.dp)
+                            .padding(start = 16.dp)
                             .fillMaxSize(0.8f),
-                        contentAlignment = CenterStart,
+                        contentAlignment = Alignment.CenterStart
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_logo),
@@ -69,72 +64,74 @@ fun NewsArticleUi(
                             modifier = Modifier
                                 .width(100.dp)
                                 .height(30.dp)
-                                .padding(start = 60.dp)
                         )
-
                         Spacer(modifier = Modifier.width(48.dp))
                         Text(
                             text = "Tɦɛ Wɛǟʋɛʀ",
                             color = Color.Black,
                             fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold)
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Handle favorites action */ }) {
-                        Icon(imageVector = Icons.Outlined.FavoriteBorder, contentDescription = "Favorite")
-                    }
                     IconButton(onClick = onBackPressed) {
-                        Icon(imageVector = Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                    IconButton(onClick = { /* Handle favorites action */ }) {
+                        Icon(
+                            imageVector = Icons.Outlined.FavoriteBorder,
+                            contentDescription = "Favorite"
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent,
-                    titleContentColor = Color.Transparent,
+                    titleContentColor = Color.Black,
                     actionIconContentColor = Color.Black
                 )
             )
         }
-    ){paddingValues ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-            contentAlignment = Alignment.Center) {
-            AndroidView(factory = {
-                WebView(it).apply {
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            contentAlignment = Alignment.Center
+        ) {
+            AndroidView(factory = { context ->
+                WebView(context).apply {
+                    settings.apply {
+                        javaScriptEnabled = true
+                        domStorageEnabled = true
+                    }
 
-                    // Enable media playback
-                    settings.mediaPlaybackRequiresUserGesture = false
-
-                    // WebViewClient to handle page events
                     webViewClient = object : WebViewClient() {
-                        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                            // Handle page started event
+                        override fun onPageStarted(
+                            view: WebView?,
+                            url: String?,
+                            favicon: Bitmap?
+                        ) {
                             isLoading = true
                         }
 
                         override fun onPageFinished(view: WebView?, url: String?) {
-                            // Handle page finished event
                             isLoading = false
                         }
                     }
-                    // WebChromeClient to handle JavaScript alerts, confirmations, etc.
-                    webChromeClient = object : WebChromeClient() {
-                        override fun onReceivedTitle(view: WebView?, title: String?) {
-                            // Handle received title event
-                        }
 
-                        override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                            // Handle progress changed event
-                        }
-                    }
+                    webChromeClient = object : WebChromeClient() {}
+
                     loadUrl(url ?: "")
                 }
             })
-            if (isLoading && url !== null){
+
+            if (isLoading) {
                 CircularProgressIndicator()
             }
         }
-
     }
 }
