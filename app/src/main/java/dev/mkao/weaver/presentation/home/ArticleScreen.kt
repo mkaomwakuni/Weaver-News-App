@@ -1,8 +1,10 @@
 package dev.mkao.weaver.presentation.home
 import android.annotation.SuppressLint
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -30,11 +32,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.presentation.common.ArticleStates
 import dev.mkao.weaver.presentation.common.BottomDialog
 import dev.mkao.weaver.presentation.common.CardArtiCle
@@ -61,6 +68,10 @@ fun ArticleScreen(
 		"Technology",
 		"Entertainment"
 	)
+
+	val focusManager = LocalFocusManager.current
+	val focusRequester = remember { FocusRequester() }
+	val keyboardController = LocalSoftwareKeyboardController.current
 	var shouldBottomSheetShow by remember { mutableStateOf(false) }
 	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 	var isLoading by remember {	mutableStateOf(true)}
@@ -68,11 +79,6 @@ fun ArticleScreen(
 	LaunchedEffect(true) {
 		onEvent(EventsHolder.OnCategoryClicked("General"))
 	}
-
-	SearchAppBar(onSearchCategoryChanged = {
-		onEvent(EventsHolder.OnSearchCategoryChanged(searchRequest = it))
-	},
-		onKeyboardDismissed = {})
 
 	if (shouldBottomSheetShow) {
 		ModalBottomSheet(
@@ -93,104 +99,177 @@ fun ArticleScreen(
 			}
 		)
 	}
-
-	Scaffold(
-		topBar = {
-			Spacer(modifier = Modifier.height(50.dp))
-
-			Column(
-				modifier = Modifier
-					.fillMaxWidth()
-					.padding(top = 100.dp),
-				verticalArrangement = Arrangement.SpaceBetween,
-				horizontalAlignment = Alignment.Start
-			) {
-				Text(
-					modifier = Modifier
-						.padding(horizontal = 10.dp),
-					text = "Discovery",
-					color = Color.Black,
-					fontSize = 30.sp,
-					fontWeight = FontWeight.Bold,
-				)
-				Spacer(modifier = Modifier.height(5.dp))
-				Text(
-					modifier = Modifier
-						.padding(horizontal = 10.dp),
-					text = "News from all around the world",
-					color = Color.LightGray,
-					fontSize = 16.sp,
-					fontWeight = FontWeight.Bold,
-				)
-			}
-
-		},
-		content = {
-			Column(
-				modifier = Modifier
-					.fillMaxSize()
-					.background(color = Color.White)
-			) {
-				Spacer(modifier = Modifier.height(190.dp))
-
+	Column(modifier = Modifier.fillMaxSize()){
+		Crossfade(targetState = state.isSearchBarVisible) {isVisible ->
+			if(isVisible){
 				SearchAppBar(
-					onSearchCategoryChanged = {},
-					onKeyboardDismissed = {}
+					value = state.searchRequest,
+					onValueChange = {newQuery->
+									onEvent(EventsHolder.OnSearchCategoryChanged(newQuery))
+					},
+					onCloseIconClicked = {
+						onEvent(EventsHolder.OnCloseIconClicked)},
+					onSearchClicked = {
+						keyboardController?.hide()
+						focusManager.clearFocus()
+					}
+				)
+				NewsArticleList(
+					state = state,
+					onCardClicked = { article ->
+						shouldBottomSheetShow = true
+						onEvent(EventsHolder.OnArticleCardClicked(article = article))
+					},
+					onRetry = {
+						onEvent(EventsHolder.OnSearchCategoryChanged(state.searchRequest))
+					}
 				)
 
-				Spacer(modifier = Modifier.height(10.dp))
-				LazyRow(
-					contentPadding = PaddingValues(horizontal = 2.dp),
-					horizontalArrangement = Arrangement.spacedBy(2.dp)
-				) {
-					items(categories.size) { index ->
-						val category = categories[index]
-						val isSelected = state.category == category
-						TintedTextButton(
-							isSelected = isSelected,
-							category = category,
-							onClick = { onEvent(EventsHolder.OnCategoryClicked(category)) }
-						)
-					}
-				}
-				if (state.isLoading) {
-					repeat(5) { index ->
-						ArticleCardShimmerEffect(
+			}else{
+				Scaffold(
+					topBar = {
+						Spacer(modifier = Modifier.height(50.dp))
+
+						Column(
 							modifier = Modifier
 								.fillMaxWidth()
-								.padding(horizontal = 16.dp, vertical = 8.dp))
-					}
+								.padding(top = 100.dp),
+							verticalArrangement = Arrangement.SpaceBetween,
+							horizontalAlignment = Alignment.Start
+						) {
+							Text(
+								modifier = Modifier
+									.padding(horizontal = 10.dp),
+								text = "Discovery",
+								color = Color.Black,
+								fontSize = 34.sp,
+								fontWeight = FontWeight.Bold,
+							)
+							Spacer(modifier = Modifier.height(5.dp))
+							Text(
+								modifier = Modifier
+									.padding(horizontal = 10.dp),
+								text = "News from all around the world",
+								color = Color.DarkGray,
+								fontSize = 20.sp,
+								fontWeight = FontWeight.Bold,
+							)
+						}
 
-				}else
+					},
+					content = {
+						Column(
+							modifier = Modifier
+								.fillMaxSize()
+								.background(color = Color.White)
+						) {
+							Spacer(modifier = Modifier.height(170.dp))
 
-				Spacer(modifier = Modifier.height(20.dp))
+							SearchAppBar(
+								modifier = Modifier.focusRequester(focusRequester),
+								value = state.searchRequest,
+								onValueChange = {newQuery->
+									onEvent(EventsHolder.OnSearchCategoryChanged(newQuery))
+								},
+								onCloseIconClicked = {onEvent(EventsHolder.OnCloseIconClicked)},
+								onSearchClicked = {
+									keyboardController?.hide()
+									focusManager.clearFocus()
+								}
+							)
 
-				LazyColumn(
-					modifier = Modifier
-						.fillMaxWidth(),
-					contentPadding = PaddingValues(2.dp),
-					verticalArrangement = Arrangement.spacedBy(2.dp)
-				) {
-					items(state.article) { article ->
-						CardArtiCle(
-							article = article,
-							onReadFullStoryClicked = {
-								shouldBottomSheetShow = true
-								onEvent(EventsHolder.OnArticleCardClicked(article))
+							Spacer(modifier = Modifier.height(10.dp))
+							LazyRow(
+								contentPadding = PaddingValues(horizontal = 2.dp),
+								horizontalArrangement = Arrangement.spacedBy(2.dp)
+							) {
+								items(categories.size) { index ->
+									val category = categories[index]
+									val isSelected = state.category == category
+									TintedTextButton(
+										isSelected = isSelected,
+										category = category,
+										onClick = { onEvent(EventsHolder.OnCategoryClicked(category)) }
+									)
+								}
 							}
-						)
-						Spacer(modifier = Modifier.height(0.5.dp))
+							if (state.isLoading) {
+								repeat(5) { index ->
+									ArticleCardShimmerEffect(
+										modifier = Modifier
+											.fillMaxWidth()
+											.padding(horizontal = 16.dp, vertical = 8.dp))
+								}
+
+							}else
+
+								Spacer(modifier = Modifier.height(20.dp))
+
+							LazyColumn(
+								modifier = Modifier
+									.fillMaxWidth(),
+								contentPadding = PaddingValues(2.dp),
+								verticalArrangement = Arrangement.spacedBy(2.dp)
+							) {
+								items(state.article) { article ->
+									CardArtiCle(
+										article = article,
+										onReadFullStoryClicked = {
+											shouldBottomSheetShow = true
+											onEvent(EventsHolder.OnArticleCardClicked(article))
+										}
+									)
+									Spacer(modifier = Modifier.height(0.5.dp))
+								}
+							}
+							// Simulate loading delay
+							LaunchedEffect(true) {
+								delay(3000) // Change this to simulate actual loading time
+								isLoading = false
+							}
+						}
 					}
-				}
-				// Simulate loading delay
-				LaunchedEffect(true) {
-					delay(3000) // Change this to simulate actual loading time
-					isLoading = false
-				}
+				)
+
 			}
+
 		}
-	)
+	}
+
 }
+@Composable
+fun NewsArticleList(
+	state: ArticleStates,
+	onCardClicked: (Article) -> Unit,
+	onRetry: () -> Unit,
+) {
+	LazyColumn(
+		contentPadding = PaddingValues(16.dp),
+		verticalArrangement = Arrangement.spacedBy(16.dp)
+	) {
+		items(state.article) { article ->
+			searchCard(
+				article = article,
+				onCardClicked = onCardClicked
+			)
+		}
+	}
+	Box(
+		modifier = Modifier.fillMaxSize(),
+		contentAlignment = Alignment.Center
+	) {
+		if (state.isLoading) {
+			ArticleCardShimmerEffect()
+		}
+		if (state.error != null) {
+			Retry(
+				error = state.error,
+				onRetry = onRetry
+			)
+		}
+	}
+}
+
 
 	@Composable
 	fun TintedTextButton(

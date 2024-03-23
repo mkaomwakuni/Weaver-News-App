@@ -13,15 +13,11 @@ class RepositoryImpl(
 	override suspend fun getTopHeadlines(category: String): Assets<List<Article>> {
 		return try {
 			val response = newsApi.getTopHeadlines(category = category)
-			val articles = response.articles?: emptyList()
+			val articles = response.articles
 
-			val filteredSnippet = articles.filterNot { article ->
-				article.title.contains("removed",ignoreCase = true) ||
-						article.content?.contains("removed", ignoreCase = true) == true
-			}
-			Assets.Success(filteredSnippet)
+			Assets.Success(filterRemovedArticles(articles))
 		} catch (e: Exception) {
-			Assets.Error(message = "Failed to fetch news ${e.message}")
+			Assets.Error(message = "404! Api Error")
 		}
 	}
 
@@ -29,12 +25,21 @@ class RepositoryImpl(
 		return try {
 			// Use the newsApi to fetch search results using the provided query
 			val response = newsApi.searchRequest(query = query)
+			val articles = response.articles
 
-			// Return the search results as Success
-			Assets.Success(data = response.articles)
+			// Return the search results as Success after filtering
+			Assets.Success(filterRemovedArticles(articles))
 		} catch (e: Exception) {
 			// Handle errors and return as Assets.Error
-			Assets.Error(message = "404! Api Error ")
+			Assets.Error(message = "404! Api Error")
 		}
 	}
+
+	private fun filterRemovedArticles(articles: List<Article>): List<Article> {
+		return articles.filterNot { article ->
+			article.title.contains("removed", ignoreCase = true) ||
+					article.content?.contains("removed", ignoreCase = true) == true
+		}
+	}
+
 }

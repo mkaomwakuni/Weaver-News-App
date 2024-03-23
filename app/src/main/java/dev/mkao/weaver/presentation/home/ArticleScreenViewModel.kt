@@ -33,17 +33,20 @@ class ArticleScreenViewModel @Inject constructor(
 				getNewsArticles(category = state.category)
 			}
 			is EventsHolder.OnSearchCategoryChanged -> {
-				state = state.copy(SearchRequest = event.searchRequest)
-				searchForNews(query = state.SearchRequest)
+				state = state.copy(searchRequest = event.searchRequest)
+				searchForNews(query = state.searchRequest)
 				searchJob?.cancel()
 				searchJob = viewModelScope.launch {
 					delay(1000)
-					searchForNews(query = state.SearchRequest)
+					searchForNews(query = state.searchRequest)
 				}
 
 			}
 			is EventsHolder.OnSearchIconClicked -> {
-				state = state.copy(isResultsVisible = true)
+				state = state.copy(
+			     isResultsVisible = true,
+				 article = emptyList()
+				)
 			}
 			is EventsHolder.OnArticleCardClicked -> {
 				state = state.copy(isSelected = event.article)
@@ -72,14 +75,14 @@ class ArticleScreenViewModel @Inject constructor(
 			}
 		}
 	}
-	fun searchForNews(query: String) {
+	private fun searchForNews(query: String) {
 		if (query.isEmpty()){
 			return
 		}
 		else {
 			viewModelScope.launch {
 				state = state.copy(isLoading = true)
-				val result = repository.searchForNews(query = query)
+				val result = repository.searchRequest(query = query)
 				when (result) {
 					is Assets.Success -> {
 						state = state.copy(
