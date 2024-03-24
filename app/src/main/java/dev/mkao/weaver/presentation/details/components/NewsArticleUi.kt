@@ -50,7 +50,7 @@ fun NewsArticleUi(
         topBar = {
             TopAppBar(
                 modifier = Modifier
-                    .background(Color.Transparent),
+                    .background(Color.White ),
                 title = {
                     Box(
                         modifier = Modifier
@@ -81,7 +81,7 @@ fun NewsArticleUi(
                             contentDescription = "Back"
                         )
                     }
-                    IconButton(onClick = { /* Handle favorites action */ }) {
+                    IconButton(onClick = { }) {
                         Icon(
                             imageVector = Icons.Outlined.FavoriteBorder,
                             contentDescription = "Favorite"
