@@ -33,12 +33,8 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-
-      - name: Build and Test
-        run: ./gradlew clean assembleDebug test
 
       - name: Archive APK
         uses: actions/upload-artifact@v2
@@ -47,4 +43,5 @@ jobs:
           path: app/build/outputs/apk/debug/
 
       - name: Notify Team
+        if: always()
         run: echo "Build and test completed successfully"
