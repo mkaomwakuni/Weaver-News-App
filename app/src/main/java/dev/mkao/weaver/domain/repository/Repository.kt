@@ -7,4 +7,12 @@ interface Repository {
 
 	suspend fun getTopHeadlines(category: String): Assets<List<Article>>
 	suspend fun searchRequest(query: String): Assets<List<Article>>
+
+	suspend fun upsertArticle(article: Article)
+
+	suspend fun deleteArticle(article: Article)
+
+	fun getArticles():  Assets<List<Article>>
+
+	suspend fun getArticle(url: String): Article?
 }

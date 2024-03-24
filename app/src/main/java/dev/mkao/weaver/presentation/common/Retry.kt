@@ -11,23 +11,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
 @Composable
-fun ErrorHandler(
-	error: String,
-	onReload: () -> Unit
+fun Retry(
+    error: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-	Column (
-		modifier = Modifier
-	) {
-		Text(
-				text = error,
-				color = Color.Red,
-				fontSize = 18.sp
-		)
-			Spacer(modifier = Modifier.height(8.dp))
-			Button(onClick = onReload,modifier = Modifier.align(CenterHorizontally)) {
-			Text(text = "Reload")
-		}
-		
-	}
+    Column(
+        modifier = modifier
+    ) {
+        Text(text = error, color = Color.Red, fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = onRetry,
+            modifier = Modifier.align(CenterHorizontally)
+        ) {
+            Text(text = "Ops!Network Error")
+        }
+    }
 }

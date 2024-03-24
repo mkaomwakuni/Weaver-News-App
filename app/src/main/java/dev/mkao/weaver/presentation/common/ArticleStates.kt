@@ -9,6 +9,6 @@ data class ArticleStates(
 	val isLoading: Boolean = false,
 	val category: String = "General",
 	val isSelected: Article? = null,
-	val SearchRequest: String = "",
+	val searchRequest: String = "",
 	val article: List<Article> = emptyList()
 )

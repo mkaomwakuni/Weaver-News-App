@@ -46,7 +46,9 @@ import dev.mkao.weaver.presentation.common.ArticleStates
 import dev.mkao.weaver.presentation.common.BottomDialog
 import dev.mkao.weaver.presentation.common.CardArtiCle
 import dev.mkao.weaver.presentation.common.EventsHolder
+import dev.mkao.weaver.presentation.common.Retry
 import dev.mkao.weaver.presentation.search.SearchAppBar
+import dev.mkao.weaver.presentation.search.SearchCard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -248,7 +250,7 @@ fun NewsArticleList(
 		verticalArrangement = Arrangement.spacedBy(16.dp)
 	) {
 		items(state.article) { article ->
-			searchCard(
+			SearchCard(
 				article = article,
 				onCardClicked = onCardClicked
 			)
