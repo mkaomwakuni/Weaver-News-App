@@ -35,6 +35,22 @@ class RepositoryImpl(
 		}
 	}
 
+	override suspend fun upsertArticle(article: Article) {
+		TODO("Not yet implemented")
+	}
+
+	override suspend fun deleteArticle(article: Article) {
+		TODO("Not yet implemented")
+	}
+
+	override fun getArticles(): Assets<List<Article>> {
+		TODO("Not yet implemented")
+	}
+
+	override suspend fun getArticle(url: String): Article? {
+		TODO("Not yet implemented")
+	}
+
 	private fun filterRemovedArticles(articles: List<Article>): List<Article> {
 		return articles.filterNot { article ->
 			article.title.contains("removed", ignoreCase = true) ||
