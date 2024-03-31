@@ -9,6 +9,22 @@ on:
       - main
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
   test:
     runs-on: ubuntu-latest
 
@@ -24,3 +40,16 @@ jobs:
 
       - name: Run tests with Gradle
         run: ./gradlew test
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: always()
+
+    steps:
+      - name: Notify Team
+        uses: 8398a7/action-slack@v3
+        with:
+          slack_bot_token: ${{ secrets.SLACK_BOT_TOKEN }}
+          slack_channel: "your_channel_id"
+          slack_message: "Build and test completed successfully!"
