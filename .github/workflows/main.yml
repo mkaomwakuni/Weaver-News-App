@@ -45,10 +45,3 @@ jobs:
         uses: gradle/gradle-command-action@v2
         with:
           gradle-command: check
-
-      - name: Notify members
-        uses: appleboy/telegram-action@v2
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: 'Build successful!'
