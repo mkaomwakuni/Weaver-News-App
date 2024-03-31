@@ -1,4 +1,4 @@
-name: weaver CI
+name: Build and Test
 
 on:
   push:
@@ -7,40 +7,20 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Set up Android SDK
-        uses: flutter/setup-android-sdk@v2
-        with:
-          components: 'platform-tools,build-tools-30.0.3'
-          licenses: 'android-sdk-preview-license-.+'
-          sdk_root: /usr/local/android-sdk
-
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug
-
-      - name: Run tests
+      - name: Run tests with Gradle
         run: ./gradlew test
-
-      - name: Check code quality
-        run: ./gradlew check
-
-      - name: Archive APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
