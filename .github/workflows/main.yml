@@ -1,0 +1,53 @@
+name: Weaver CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Set up Android SDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'android'
+          java-version: '11'
+
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Archive APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Check code quality
+        uses: gradle/gradle-command-action@v2
+        with:
+          gradle-command: check
+
+      - name: Notify members
+        uses: appleboy/telegram-action@v2
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: 'Build successful!'
