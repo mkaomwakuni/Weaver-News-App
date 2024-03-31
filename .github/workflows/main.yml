@@ -1,4 +1,4 @@
-name: Weaver CI
+name: weaver CI
 
 on:
   push:
@@ -24,10 +24,11 @@ jobs:
           java-version: '11'
 
       - name: Set up Android SDK
-        uses: actions/setup-java@v2
+        uses: flutter/setup-android-sdk@v2
         with:
-          distribution: 'android'
-          java-version: '11'
+          components: 'platform-tools,build-tools-30.0.3'
+          licenses: 'android-sdk-preview-license-.+'
+          sdk_root: /usr/local/android-sdk
 
       - name: Build with Gradle
         run: ./gradlew assembleDebug
@@ -35,13 +36,11 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
+      - name: Check code quality
+        run: ./gradlew check
+
       - name: Archive APK
         uses: actions/upload-artifact@v2
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/app-debug.apk
-
-      - name: Check code quality
-        uses: gradle/gradle-command-action@v2
-        with:
-          gradle-command: check
