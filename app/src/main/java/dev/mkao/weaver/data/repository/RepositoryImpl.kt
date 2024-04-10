@@ -1,13 +1,15 @@
 package dev.mkao.weaver.data.repository
 
 import dev.mkao.weaver.data.remote.NewsApi
+import dev.mkao.weaver.data.remote.NewsDao
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.repository.Repository
 import dev.mkao.weaver.util.Assets
 
 
 class RepositoryImpl(
-	private val newsApi: NewsApi
+	private val newsApi: NewsApi,
+	private val newsDao: NewsDao
 ): Repository {
 	
 	override suspend fun getTopHeadlines(category: String): Assets<List<Article>> {
@@ -36,15 +38,15 @@ class RepositoryImpl(
 	}
 
 	override suspend fun upsertArticle(article: Article) {
-		TODO("Not yet implemented")
+		newsDao.upsert(article)
 	}
 
 	override suspend fun deleteArticle(article: Article) {
-		TODO("Not yet implemented")
+		newsDao.delete(article)
 	}
 
 	override fun getArticles(): Assets<List<Article>> {
-		TODO("Not yet implemented")
+		return newsDao.getArticles()
 	}
 
 	override suspend fun getArticle(url: String): Article? {
