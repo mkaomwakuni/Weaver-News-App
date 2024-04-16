@@ -1,10 +1,11 @@
-name: Build and Test
+name: Weaver CI/CD
 
 on:
   pull_request:
     branches: [ master ]
   push:
     branches: [ master ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,6 +19,9 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
+      - name: Grant execute permission to Gradle wrapper
+        run: chmod +x ./gradlew
+
       - name: Build with Gradle
         run: ./gradlew build
 
@@ -26,4 +30,3 @@ jobs:
         with:
             name: Weaver.apk
             path: app/build/outputs/apk/debug/app-debug.apk
-            
