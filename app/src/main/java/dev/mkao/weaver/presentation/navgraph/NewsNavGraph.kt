@@ -7,6 +7,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import dev.mkao.weaver.presentation.Bookmarks.Screen
+import dev.mkao.weaver.presentation.Bookmarks.SettingsScreen
+import dev.mkao.weaver.presentation.bookmarks.BookmarksScreen
 import dev.mkao.weaver.presentation.details.components.NewsArticleUi
 import dev.mkao.weaver.presentation.home.ArticleScreen
 import dev.mkao.weaver.presentation.home.ArticleScreenViewModel
@@ -19,30 +22,37 @@ fun NewsNavGraph(
 
 	NavHost(
 		navController = navController,
-		startDestination = "article_screen"
+		startDestination = Screen.Home.route
 	) {
-		composable(route = "article_screen") {
+		composable(route = Screen.Home.route) {
 			val viewModel: ArticleScreenViewModel = hiltViewModel()
 			ArticleScreen(
 				state = viewModel.state,
 				onEvent =  viewModel::onUserEvent,
 				onReadFullStoryButtonClick = { url ->
-					navController.navigate("news_article?$argKey=$url")
+					navController.navigate("${Screen.NewsArticle.route}?$argKey=$url")
 				}
 			)
-
 		}
 		composable(
-			route = "news_article?$argKey={$argKey}",
+			route = "${Screen.NewsArticle.route}?$argKey={$argKey}",
 			arguments = listOf(navArgument(name = argKey) {
 				type = NavType.StringType
 			})
 		) { backStackEntry ->
-			// retrieve or create the complete Article object here
 			NewsArticleUi(
 				url = backStackEntry.arguments?.getString(argKey),
 				onBackPressed = { navController.navigateUp() }
 			)
+		}
+		composable(route = Screen.Categories.route) {
+			//CategoriesScreen()
+		}
+		composable(route = Screen.Bookmarks.route) {
+			//BookmarksScreen(onRemoveBookmark = {}, onArticleClick = {}, bookmarkedArticles = {})
+		}
+		composable(route = Screen.Settings.route) {
+			SettingsScreen()
 		}
 	}
 }
