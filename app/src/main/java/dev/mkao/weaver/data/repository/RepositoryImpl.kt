@@ -45,12 +45,17 @@ class RepositoryImpl(
 		newsDao.delete(article)
 	}
 
-	override fun getArticles(): Assets<List<Article>> {
-		return newsDao.getArticles()
-	}
 
 	override suspend fun getArticle(url: String): Article? {
 		TODO("Not yet implemented")
+	}
+	override fun getArticles(): Assets<List<Article>> {
+		return try {
+			val articles = newsDao.getArticles()
+			Assets.Success(articles)
+		} catch (e: Exception) {
+			Assets.Error(message = "Error")
+		}
 	}
 
 	private fun filterRemovedArticles(articles: List<Article>): List<Article> {

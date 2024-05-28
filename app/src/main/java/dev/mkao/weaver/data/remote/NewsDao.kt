@@ -13,8 +13,8 @@ interface NewsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(article: Article)
 
-    @Query("SELECT * FROM Article")
-    fun getArticles(): Assets<List<Article>>
+    @Query("SELECT * FROM Articles")
+    fun getArticles(): List<Article>
 
     @Delete
     suspend fun delete(article: Article)
