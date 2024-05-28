@@ -56,7 +56,7 @@ object AppModule {
 	@Singleton
 	fun providesDao(
 		newsDatabase: NewsDatabase
-	):NewsDao = newsDatabase.newsDao
+	):NewsDao = newsDatabase.articleDao()
 
 }
 
