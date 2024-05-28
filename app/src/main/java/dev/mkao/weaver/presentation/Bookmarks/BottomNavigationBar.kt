@@ -40,9 +40,9 @@ fun BottomNavigationBar(navController: NavController) {
         NavigationBarItem(
             icon = { Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "Home") },
             label = { Text(stringResource(R.string.bulletin)) },
-            selected = currentRoute == "article_screen",
+            selected = currentRoute == "recommendation_screen",
             onClick = {
-                navController.navigate("article_screen") {
+                navController.navigate("recommendation_screen") {
                     popUpTo(navController.graph.startDestinationId) { saveState = true }
                     launchSingleTop = true
                     restoreState = true
