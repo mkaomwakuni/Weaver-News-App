@@ -43,62 +43,63 @@ fun SettingsScreen() {
     var notificationEnabled by remember { mutableStateOf(true) }
     var darkModeEnabled by remember { mutableStateOf(false) }
     var username by remember { mutableStateOf(TextFieldValue("User123")) }
+    var isDarkMode by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Settings", fontWeight = FontWeight.Bold)}
-            )
-        },
-        containerColor = Color(0xFFF0F0F0)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = { Text("Settings", fontWeight = FontWeight.Bold)}
+                )
+            },
+            containerColor = Color(0xFFF0F0F0)
         ) {
-            SectionTitle(title = "Account and Security")
-            SettingsCard(title = "Username") {
-                BasicTextField(
-                    value = username,
-                    onValueChange = { username = it },
-                    textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                SectionTitle(title = "Account and Security")
+                SettingsCard(title = "User") {
+                    BasicTextField(
+                        value = username,
+                        onValueChange = { username = it },
+                        textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    )
+                }
+                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+                SettingsCard(title = "Enable Notifications", trailing = {
+                    Switch(
+                        checked = notificationEnabled,
+                        onCheckedChange = { notificationEnabled = it },
+                        colors = SwitchDefaults.colors(checkedThumbColor = Color.LightGray)
+                    )
+                })
+                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+                SettingsCard(title = "Enable Dark Mode", trailing = {
+                    Switch(
+                        checked = darkModeEnabled,
+                        onCheckedChange = { darkModeEnabled = it },
+                        colors = SwitchDefaults.colors(checkedThumbColor = Color.Red)
+                    )
+                })
+
+                SectionTitle(title = "General")
+                SettingsCard(title = "Invite Friends")
+                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+                SettingsCard(title = "Share on Instagram")
+                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+                SettingsCard(title = "Share on TikTok")
+
+                SectionTitle(title = "Other")
+                SettingsCard(title = "Manage Consent")
+                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+                SettingsCard(title = "About App")
             }
-            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-            SettingsCard(title = "Enable Notifications", trailing = {
-                Switch(
-                    checked = notificationEnabled,
-                    onCheckedChange = { notificationEnabled = it },
-                    colors = SwitchDefaults.colors(checkedThumbColor = Color.LightGray)
-                )
-            })
-            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-            SettingsCard(title = "Enable Dark Mode", trailing = {
-                Switch(
-                    checked = darkModeEnabled,
-                    onCheckedChange = { darkModeEnabled = it },
-                    colors = SwitchDefaults.colors(checkedThumbColor = Color.Red)
-                )
-            })
-
-            SectionTitle(title = "General")
-            SettingsCard(title = "Invite Friends")
-            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-            SettingsCard(title = "Share on Instagram")
-            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-            SettingsCard(title = "Share on TikTok")
-
-            SectionTitle(title = "Other")
-            SettingsCard(title = "Manage Consent")
-            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-            SettingsCard(title = "About App")
         }
     }
-}
 
 @Composable
 fun SectionTitle(title: String) {
