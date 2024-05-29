@@ -1,6 +1,9 @@
 package dev.mkao.weaver.presentation.Bookmarks
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +48,7 @@ fun SettingsScreen() {
     var darkModeEnabled by remember { mutableStateOf(false) }
     var username by remember { mutableStateOf(TextFieldValue("User123")) }
     var isDarkMode by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
         Scaffold(
             topBar = {
@@ -87,16 +92,53 @@ fun SettingsScreen() {
                 })
 
                 SectionTitle(title = "General")
-                SettingsCard(title = "Invite Friends")
+                SettingsCard(
+                    title = "Invite Friends" ,
+                    trailing = {
+                        Icon(modifier = Modifier.clickable {
+                        launchInviteFriendsIntent(context)},
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = "Arrow forward")
+                    }
+                )
                 HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-                SettingsCard(title = "Share on Instagram")
+                SettingsCard(
+                    title = "Share on Instagram",
+                    trailing = {
+                    Icon(modifier = Modifier.clickable {
+                        launchAppIntent(context, packageName =  "com.zhiliaoapp.musically")},
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = "Arrow forward")
+                            }
+                        )
+
+
                 HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-                SettingsCard(title = "Share on TikTok")
+                SettingsCard(
+                    title = "Share on TikTok",
+                    trailing = {
+                        Icon(modifier = Modifier.clickable {
+                        launchAppIntent(context, packageName = "com.zhiliaoapp.musically")
+                            },
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = "Arrow forward"
+                        )
+                    }
+                )
 
                 SectionTitle(title = "Other")
                 SettingsCard(title = "Manage Consent")
                 HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-                SettingsCard(title = "About App")
+                SettingsCard(
+                title = "About App",
+                trailing = {
+                        Icon(modifier = Modifier.clickable {
+                            },
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = "Arrow forward"
+                        )
+                    }
+                )
             }
         }
     }
@@ -118,6 +160,7 @@ fun SettingsCard(
     title: String,
     trailing: @Composable (() -> Unit)? = {
         Icon(
+            modifier = Modifier.clickable {},
             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
             contentDescription = "Arrow forward"
         )
@@ -130,7 +173,6 @@ fun SettingsCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { }
     ) {
         Row(
             modifier = Modifier
@@ -144,6 +186,22 @@ fun SettingsCard(
         if (content != null) {
             content()
         }
+    }
+}
+fun launchInviteFriendsIntent(context: Context) {
+    val intent = Intent(Intent.ACTION_SEND)
+    intent.type = "text/plain"
+    intent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this awesome app!")
+    context.startActivity(Intent.createChooser(intent, "Invite friends via"))
+}
+
+fun launchAppIntent(context: Context, packageName: String) {
+    val intent = context.packageManager.getLaunchIntentForPackage(packageName)
+    if (intent != null) {
+        context.startActivity(intent)
+    } else {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName"))
+        context.startActivity(intent)
     }
 }
 
