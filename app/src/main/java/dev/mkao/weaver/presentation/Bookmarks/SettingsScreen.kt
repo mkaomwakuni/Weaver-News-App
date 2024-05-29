@@ -39,16 +39,19 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
+@SuppressLint("SuspiciousIndentation", "UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(navController: NavHostController) {
     var notificationEnabled by remember { mutableStateOf(true) }
     var darkModeEnabled by remember { mutableStateOf(false) }
     var username by remember { mutableStateOf(TextFieldValue("User123")) }
     var isDarkMode by remember { mutableStateOf(false) }
     val context = LocalContext.current
+
 
         Scaffold(
             topBar = {
@@ -106,7 +109,7 @@ fun SettingsScreen() {
                     title = "Share on Instagram",
                     trailing = {
                     Icon(modifier = Modifier.clickable {
-                        launchAppIntent(context, packageName =  "com.zhiliaoapp.musically")},
+                        launchAppIntent(context, packageName =  "com.instagram.android")},
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = "Arrow forward")
                             }
@@ -133,6 +136,7 @@ fun SettingsScreen() {
                 title = "About App",
                 trailing = {
                         Icon(modifier = Modifier.clickable {
+                            navController.navigate(Screen.About.route)
                             },
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                             contentDescription = "Arrow forward"
@@ -205,8 +209,4 @@ fun launchAppIntent(context: Context, packageName: String) {
     }
 }
 
-@Preview
-@Composable
-fun SettingPreview() {
-    SettingsScreen()
-}
+

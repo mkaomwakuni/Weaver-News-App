@@ -7,9 +7,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import dev.mkao.weaver.presentation.About.About
 import dev.mkao.weaver.presentation.Bookmarks.Screen
 import dev.mkao.weaver.presentation.Bookmarks.SettingsScreen
-import dev.mkao.weaver.presentation.bookmarks.BookmarksScreen
 import dev.mkao.weaver.presentation.details.components.NewsArticleUi
 import dev.mkao.weaver.presentation.home.ArticleScreen
 import dev.mkao.weaver.presentation.home.ArticleScreenViewModel
@@ -27,6 +27,7 @@ fun NewsNavGraph(
 		composable(route = Screen.Home.route) {
 			val viewModel: ArticleScreenViewModel = hiltViewModel()
 			ArticleScreen(
+				navController = navController,
 				state = viewModel.state,
 				onEvent =  viewModel::onUserEvent,
 				onReadFullStoryButtonClick = { url ->
@@ -52,7 +53,10 @@ fun NewsNavGraph(
 			//BookmarksScreen(onRemoveBookmark = {}, onArticleClick = {}, bookmarkedArticles = {})
 		}
 		composable(route = Screen.Settings.route) {
-			SettingsScreen()
+			SettingsScreen(navController)
+		}
+		composable(Screen.About.route) {
+			About()
 		}
 	}
 }
