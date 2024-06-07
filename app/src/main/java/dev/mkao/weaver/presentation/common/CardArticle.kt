@@ -153,7 +153,7 @@ fun Ty1(){
     val sampleArticle = Article(
         // Initialize the sample data for testing
         // Make sure to replace these values with actual data
-        source = Source(name = "Sample Source", id = "bbc"),
+        source = Source(name = "Sample Source", id = "bbc", category = "", url = ""),
         author = "John Doe",
         title = "Sample Article Title",
         content = "Sample article content goes here.",
