@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -103,6 +104,13 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.1'
     //webview
     implementation("androidx.webkit:webkit:1.10.0")
+
+    //Jsoup and okhttp for Html building
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'org.jsoup:jsoup:1.14.2'
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.30.1"
+
+
     //RoomDatabase
     dependencies {
         def room_version = "2.5.0"
