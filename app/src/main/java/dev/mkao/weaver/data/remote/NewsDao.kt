@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.util.Assets
 
 @Dao
 interface NewsDao {
