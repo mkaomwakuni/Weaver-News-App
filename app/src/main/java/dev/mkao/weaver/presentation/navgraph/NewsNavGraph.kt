@@ -1,24 +1,23 @@
 package dev.mkao.weaver.presentation.navgraph
 
+import NewsArticleUi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import dev.mkao.weaver.domain.model.SharedViewModel
 import dev.mkao.weaver.presentation.About.About
 import dev.mkao.weaver.presentation.Bookmarks.Screen
 import dev.mkao.weaver.presentation.Bookmarks.SettingsScreen
-import dev.mkao.weaver.presentation.details.components.NewsArticleUi
 import dev.mkao.weaver.presentation.home.ArticleScreen
 import dev.mkao.weaver.presentation.home.ArticleScreenViewModel
+import dev.mkao.weaver.presentation.home.TopSection
 
 @Composable
-fun NewsNavGraph(
-	navController: NavHostController
-){
-	val argKey = "web_url"
+fun NewsNavGraph(navController: NavHostController) {
+	val sharedViewModel: SharedViewModel = hiltViewModel()
 
 	NavHost(
 		navController = navController,
@@ -29,25 +28,32 @@ fun NewsNavGraph(
 			ArticleScreen(
 				navController = navController,
 				state = viewModel.state,
-				onEvent =  viewModel::onUserEvent,
-				onReadFullStoryButtonClick = { url ->
-					navController.navigate("${Screen.NewsArticle.route}?$argKey=$url")
+				onEvent = viewModel::onUserEvent,
+				onReadFullStoryButtonClick = { article ->
+					sharedViewModel.selectArticle(article)
+					navController.navigate(Screen.NewsArticle.route)
 				}
 			)
 		}
-		composable(
-			route = "${Screen.NewsArticle.route}?$argKey={$argKey}",
-			arguments = listOf(navArgument(name = argKey) {
-				type = NavType.StringType
-			})
-		) { backStackEntry ->
-			NewsArticleUi(
-				url = backStackEntry.arguments?.getString(argKey),
-				onBackPressed = { navController.navigateUp() }
-			)
+		composable(route = Screen.NewsArticle.route) {
+			val article = sharedViewModel.selectedArticle.collectAsState().value
+			val category = sharedViewModel.selectedCategory.collectAsState().value ?: "None"
+			article?.let {
+				NewsArticleUi(
+					article = article,
+					category = category,
+					onBackPressed = { navController.navigateUp() }
+				)
+			}
 		}
 		composable(route = Screen.Categories.route) {
-			//CategoriesScreen()
+			val viewModel: ArticleScreenViewModel = hiltViewModel()
+			TopSection(
+				state = viewModel.state,
+				navController = navController,
+				onReadFullStoryButtonClick = { /* provide the correct implementation */ },
+				onEvent = { /* provide the correct implementation */ }
+			)
 		}
 		composable(route = Screen.Bookmarks.route) {
 			//BookmarksScreen(onRemoveBookmark = {}, onArticleClick = {}, bookmarkedArticles = {})

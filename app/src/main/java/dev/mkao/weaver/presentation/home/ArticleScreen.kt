@@ -1,11 +1,9 @@
 package dev.mkao.weaver.presentation.home
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -43,18 +41,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
+import dev.mkao.weaver.domain.model.SharedViewModel
 import dev.mkao.weaver.presentation.common.ArticleStates
 import dev.mkao.weaver.presentation.common.BottomDialog
 import dev.mkao.weaver.presentation.common.CardArtiCle
 import dev.mkao.weaver.presentation.common.EventsHolder
-import dev.mkao.weaver.presentation.common.Retry
 import dev.mkao.weaver.presentation.navgraph.BottomNavigationBar
 import dev.mkao.weaver.presentation.search.SearchAppBar
-import dev.mkao.weaver.presentation.search.SearchCard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -64,7 +62,7 @@ import kotlinx.coroutines.launch
 fun ArticleScreen(
 	state: ArticleStates,
 	navController: NavController,
-	onReadFullStoryButtonClick: (String) -> Unit,
+	onReadFullStoryButtonClick: (Article) -> Unit,
 	onEvent: (EventsHolder) -> Unit
 ) {
 	val coroutineScope = rememberCoroutineScope()
@@ -77,6 +75,7 @@ fun ArticleScreen(
 	var shouldBottomSheetShow by remember { mutableStateOf(false) }
 	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 	var isLoading by remember { mutableStateOf(true) }
+	val sharedViewModel: SharedViewModel = hiltViewModel()
 
 	LaunchedEffect(true) {
 		onEvent(EventsHolder.OnCategoryClicked("General"))
@@ -91,7 +90,7 @@ fun ArticleScreen(
 					BottomDialog(
 						article = it,
 						onReadFullStoryButtonClicked = {
-							onReadFullStoryButtonClick(it.url)
+							onReadFullStoryButtonClick(it)
 							coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
 								if (!sheetState.isVisible) shouldBottomSheetShow = false
 							}
@@ -162,7 +161,9 @@ fun ArticleScreen(
 						TintedTextButton(
 							isSelected = isSelected,
 							category = category,
-							onClick = { onEvent(EventsHolder.OnCategoryClicked(category)) }
+							onClick = {
+								sharedViewModel.selectCategory(category)
+								onEvent(EventsHolder.OnCategoryClicked(category)) }
 						)
 					}
 				}
@@ -194,7 +195,7 @@ fun ArticleScreen(
 					}
 				}
 				LaunchedEffect(true) {
-					delay(3000)
+					delay(4000)
 					isLoading = false
 				}
 			}
@@ -219,7 +220,8 @@ fun TintedTextButton(
 		colors = ButtonDefaults.buttonColors(
 			containerColor = selectedBackgroundColor
 		),
-		modifier = Modifier.padding(vertical = 4.dp, horizontal = 10.dp)
+		modifier = Modifier
+			.padding(vertical = 4.dp,horizontal = 10.dp)
 	) {
 		Text(
 			text = category,
