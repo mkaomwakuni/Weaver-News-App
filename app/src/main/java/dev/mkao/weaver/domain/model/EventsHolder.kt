@@ -1,6 +1,4 @@
-package dev.mkao.weaver.presentation.common
-
-import dev.mkao.weaver.domain.model.Article
+package dev.mkao.weaver.domain.model
 
 sealed class EventsHolder{
 	data class OnArticleCardClicked(val article: Article): EventsHolder()

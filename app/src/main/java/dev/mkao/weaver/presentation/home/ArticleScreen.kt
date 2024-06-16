@@ -46,13 +46,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.domain.model.SharedViewModel
-import dev.mkao.weaver.presentation.common.ArticleStates
+import dev.mkao.weaver.presentation.common.ArticleCardShimmerEffect
+import dev.mkao.weaver.viewModels.ArticleStates
 import dev.mkao.weaver.presentation.common.BottomDialog
 import dev.mkao.weaver.presentation.common.CardArtiCle
-import dev.mkao.weaver.presentation.common.EventsHolder
-import dev.mkao.weaver.presentation.navgraph.BottomNavigationBar
+import dev.mkao.weaver.domain.model.EventsHolder
+import dev.mkao.weaver.presentation.common.BottomNavigationBar
 import dev.mkao.weaver.presentation.search.SearchAppBar
+import dev.mkao.weaver.viewModels.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

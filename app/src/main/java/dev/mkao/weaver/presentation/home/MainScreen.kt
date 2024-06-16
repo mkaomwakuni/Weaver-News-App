@@ -5,9 +5,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import dev.mkao.weaver.presentation.navgraph.BottomNavigationBar
-import dev.mkao.weaver.presentation.navgraph.NewsNavGraph
-import dev.mkao.weaver.presentation.ui.theme.WeaverTheme
+import dev.mkao.weaver.presentation.common.BottomNavigationBar
+import dev.mkao.weaver.presentation.navigation.NewsNavGraph
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

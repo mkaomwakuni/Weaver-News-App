@@ -1,4 +1,4 @@
-package dev.mkao.weaver.data
+package dev.mkao.weaver.domain.model
 
 import okhttp3.OkHttpClient
 import okhttp3.Request

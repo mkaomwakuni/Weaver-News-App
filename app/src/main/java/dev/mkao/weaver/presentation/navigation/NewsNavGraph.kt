@@ -1,19 +1,18 @@
-package dev.mkao.weaver.presentation.navgraph
+package dev.mkao.weaver.presentation.navigation
 
-import NewsArticleUi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import dev.mkao.weaver.domain.model.SharedViewModel
 import dev.mkao.weaver.presentation.About.About
-import dev.mkao.weaver.presentation.Bookmarks.Screen
-import dev.mkao.weaver.presentation.Bookmarks.SettingsScreen
+import dev.mkao.weaver.presentation.common.SettingsScreen
+import dev.mkao.weaver.presentation.details.NewsArticleUi
 import dev.mkao.weaver.presentation.home.ArticleScreen
-import dev.mkao.weaver.presentation.home.ArticleScreenViewModel
 import dev.mkao.weaver.presentation.home.TopSection
+import dev.mkao.weaver.viewModels.ArticleScreenViewModel
+import dev.mkao.weaver.viewModels.SharedViewModel
 
 @Composable
 fun NewsNavGraph(navController: NavHostController) {
@@ -39,7 +38,7 @@ fun NewsNavGraph(navController: NavHostController) {
 			val article = sharedViewModel.selectedArticle.collectAsState().value
 			val category = sharedViewModel.selectedCategory.collectAsState().value ?: "None"
 			article?.let {
-				NewsArticleUi(
+				NewsArticleUi (
 					article = article,
 					category = category,
 					onBackPressed = { navController.navigateUp() }

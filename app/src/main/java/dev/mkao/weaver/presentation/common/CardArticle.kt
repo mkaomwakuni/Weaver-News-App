@@ -40,6 +40,7 @@ import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.model.Source
 import dev.mkao.weaver.util.Dimens
+import dev.mkao.weaver.util.dateFormat
 
 @Composable
 fun CardArtiCle(

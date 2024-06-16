@@ -1,5 +1,4 @@
 package dev.mkao.weaver.presentation.common
-import NewsArticleUi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,8 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.domain.model.SharedViewModel
 import dev.mkao.weaver.domain.model.Source
+import dev.mkao.weaver.presentation.details.NewsArticleUi
+import dev.mkao.weaver.viewModels.SharedViewModel
 
 
 @Composable
@@ -42,7 +42,7 @@ fun BottomDialog(
 	val selectedCategory by sharedViewModel.selectedCategory.collectAsState()
 
 	if (showNewsArticleUi) {
-		NewsArticleUi(
+		NewsArticleUi (
 			article = article,
 			category = selectedCategory?:"",
 			onBackPressed = { showNewsArticleUi = false }

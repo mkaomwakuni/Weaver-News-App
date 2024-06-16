@@ -1,4 +1,4 @@
-package dev.mkao.weaver.presentation.common
+package dev.mkao.weaver.viewModels
 
 import dev.mkao.weaver.domain.model.Article
 

@@ -43,11 +43,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.model.Source
-import dev.mkao.weaver.presentation.common.ArticleStates
 import dev.mkao.weaver.presentation.common.BottomDialog
 import dev.mkao.weaver.presentation.common.CardArtiCle
 import dev.mkao.weaver.presentation.common.CardArtiCleTop
-import dev.mkao.weaver.presentation.common.EventsHolder
+import dev.mkao.weaver.domain.model.EventsHolder
+import dev.mkao.weaver.viewModels.ArticleStates
 import kotlinx.coroutines.launch
 
 
