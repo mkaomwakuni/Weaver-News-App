@@ -1,4 +1,4 @@
-package dev.mkao.weaver.presentation.common
+package dev.mkao.weaver.util
 
 import java.time.Duration
 import java.time.OffsetDateTime

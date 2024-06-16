@@ -1,6 +1,7 @@
-package dev.mkao.weaver.domain.model
+package dev.mkao.weaver.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.mkao.weaver.domain.model.Article
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

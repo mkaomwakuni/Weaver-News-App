@@ -1,4 +1,4 @@
-package dev.mkao.weaver.presentation.Bookmarks
+package dev.mkao.weaver.presentation.common
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -36,10 +36,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import dev.mkao.weaver.presentation.navigation.Screen
 
 
 @SuppressLint("SuspiciousIndentation", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -99,7 +99,8 @@ fun SettingsScreen(navController: NavHostController) {
                     title = "Invite Friends" ,
                     trailing = {
                         Icon(modifier = Modifier.clickable {
-                        launchInviteFriendsIntent(context)},
+                        launchInviteFriendsIntent(context)
+                        },
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                             contentDescription = "Arrow forward")
                     }
@@ -109,7 +110,8 @@ fun SettingsScreen(navController: NavHostController) {
                     title = "Share on Instagram",
                     trailing = {
                     Icon(modifier = Modifier.clickable {
-                        launchAppIntent(context, packageName =  "com.instagram.android")},
+                        launchAppIntent(context, packageName =  "com.instagram.android")
+                    },
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = "Arrow forward")
                             }

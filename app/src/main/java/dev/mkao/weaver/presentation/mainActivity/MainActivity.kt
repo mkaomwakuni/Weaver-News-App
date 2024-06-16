@@ -10,7 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.mkao.weaver.presentation.navgraph.NewsNavGraph
+import dev.mkao.weaver.presentation.navigation.NewsNavGraph
 import dev.mkao.weaver.presentation.ui.theme.WeaverTheme
 
 @Suppress("DEPRECATION")

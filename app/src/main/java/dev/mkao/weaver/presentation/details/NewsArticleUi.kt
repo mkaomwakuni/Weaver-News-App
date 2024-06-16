@@ -1,4 +1,5 @@
 
+package dev.mkao.weaver.presentation.details
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -45,11 +46,11 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.mkao.weaver.R
-import dev.mkao.weaver.data.fetchFullArticleContent
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.domain.model.SharedViewModel
 import dev.mkao.weaver.domain.model.Source
-import dev.mkao.weaver.presentation.common.calculateElapsedTime
+import dev.mkao.weaver.domain.model.fetchFullArticleContent
+import dev.mkao.weaver.util.calculateElapsedTime
+import dev.mkao.weaver.viewModels.SharedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -140,7 +141,7 @@ fun ArticleImage(
                 .align(Alignment.BottomCenter)
                 .background(
                     Brush.verticalGradient(
-                        colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
+                        colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.8f)),
                         startY = 0f,
                         endY = 250f
                     )
