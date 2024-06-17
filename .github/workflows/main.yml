@@ -22,11 +22,13 @@ jobs:
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Install dependencies and build APK
+        run: |
+          ./gradlew clean
+          ./gradlew assembleDebug
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.3
         with:
-            name: Weaver.apk
-            path: app/build/outputs/apk/debug/app-debug.apk
+          name: Weaver.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
