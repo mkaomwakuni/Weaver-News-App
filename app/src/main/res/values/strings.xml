@@ -13,4 +13,25 @@
         With WEAVER, you can easily switch to topics of choice and read news.
         Hundreds of sources in one app are waiting for you.\n\nCONTACT\n\nWe always appreciate your feedback so we can improve with your help. Please send your feedback and suggestions by e-mail to: cnoceania@gmail.com</string>
     <string name="AboutTitle">About Weaver</string>
+    <string name="Briefing">Breaking News</string>
+    <string name="notifications">Notifications</string>
+    <string name="search">Search</string>
+    <string name="menu">Menu</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="view_all">View All</string>
+    <string name="account_and_security">Account and Security</string>
+    <string name="user">User</string>
+    <string name="general">General</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="share_on_instagram">Share on Instagram</string>
+    <string name="instagram">com.instagram.android</string>
+    <string name="Tikto">com.zhiliaoapp.musically</string>
+    <string name="share_on_tiktok">Share on TikTok</string>
+    <string name="language">Language</string>
+    <string name="other">Other</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="about_app">About App</string>
+    <string name="arrow_forward">Arrow forward</string>
+    <string name="hey_check_out_this_awesome_app">Hey, check out this awesome app!</string>
+    <string name="invite_friends_via">Invite friends via</string>
 </resources>
