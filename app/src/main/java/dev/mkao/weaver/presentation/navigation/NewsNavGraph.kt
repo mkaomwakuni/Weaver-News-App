@@ -20,7 +20,7 @@ fun NewsNavGraph(navController: NavHostController) {
 
 	NavHost(
 		navController = navController,
-		startDestination = Screen.Home.route
+		startDestination = Screen.Categories.route
 	) {
 		composable(route = Screen.Home.route) {
 			val viewModel: ArticleScreenViewModel = hiltViewModel()
@@ -36,11 +36,9 @@ fun NewsNavGraph(navController: NavHostController) {
 		}
 		composable(route = Screen.NewsArticle.route) {
 			val article = sharedViewModel.selectedArticle.collectAsState().value
-			val category = sharedViewModel.selectedCategory.collectAsState().value ?: "None"
 			article?.let {
 				NewsArticleUi (
 					article = article,
-					category = category,
 					onBackPressed = { navController.navigateUp() }
 				)
 			}
@@ -48,14 +46,17 @@ fun NewsNavGraph(navController: NavHostController) {
 		composable(route = Screen.Categories.route) {
 			val viewModel: ArticleScreenViewModel = hiltViewModel()
 			TopSection(
-				state = viewModel.state,
 				navController = navController,
-				onReadFullStoryButtonClick = { /* provide the correct implementation */ },
-				onEvent = { /* provide the correct implementation */ }
+				state = viewModel.state,
+				onEvent = viewModel::onUserEvent,
+				onReadFullStoryButtonClick = { article ->
+					sharedViewModel.selectArticle(article)
+					navController.navigate(Screen.NewsArticle.route)
+				}
 			)
 		}
 		composable(route = Screen.Bookmarks.route) {
-			//BookmarksScreen(onRemoveBookmark = {}, onArticleClick = {}, bookmarkedArticles = {})
+//			BookmarksScreen()
 		}
 		composable(route = Screen.Settings.route) {
 			SettingsScreen(navController)
