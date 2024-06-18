@@ -1,8 +1,6 @@
 package dev.mkao.weaver.presentation.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,13 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -46,13 +40,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.presentation.common.ArticleCardShimmerEffect
-import dev.mkao.weaver.viewModels.ArticleStates
-import dev.mkao.weaver.presentation.common.BottomDialog
-import dev.mkao.weaver.presentation.common.CardArtiCle
 import dev.mkao.weaver.domain.model.EventsHolder
+import dev.mkao.weaver.presentation.common.ArticleCardShimmerEffect
+import dev.mkao.weaver.presentation.common.BottomDialog
 import dev.mkao.weaver.presentation.common.BottomNavigationBar
+import dev.mkao.weaver.presentation.common.CardArtiCle
+import dev.mkao.weaver.presentation.common.TintedTextButton
 import dev.mkao.weaver.presentation.search.SearchAppBar
+import dev.mkao.weaver.viewModels.ArticleStates
 import dev.mkao.weaver.viewModels.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,14 +62,12 @@ fun ArticleScreen(
 	onEvent: (EventsHolder) -> Unit
 ) {
 	val coroutineScope = rememberCoroutineScope()
-	val categories = listOf(
-		"General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment"
-	)
+	val categories = listOf("General", "Business", "Health", "Science", "Technology")
 	val focusManager = LocalFocusManager.current
 	val focusRequester = remember { FocusRequester() }
 	val keyboardController = LocalSoftwareKeyboardController.current
 	var shouldBottomSheetShow by remember { mutableStateOf(false) }
-	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+	val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
 	var isLoading by remember { mutableStateOf(true) }
 	val sharedViewModel: SharedViewModel = hiltViewModel()
 
@@ -114,7 +107,6 @@ fun ArticleScreen(
 				Text(
 					modifier = Modifier.padding(horizontal = 10.dp),
 					text = stringResource(R.string.discover),
-					color = Color.Black,
 					fontSize = 34.sp,
 					fontWeight = FontWeight.Bold,
 				)
@@ -122,7 +114,6 @@ fun ArticleScreen(
 				Text(
 					modifier = Modifier.padding(horizontal = 10.dp),
 					text = stringResource(R.string.fresh_stories_and_bold_ideas_to_help_you_live_curiously),
-					color = Color.DarkGray,
 					fontSize = 15.sp,
 					fontWeight = FontWeight.Bold,
 				)
@@ -135,7 +126,6 @@ fun ArticleScreen(
 			Column(
 				modifier = Modifier
 					.fillMaxSize()
-					.background(color = Color.White)
 					.padding(paddingValues)
 			) {
 				SearchAppBar(
@@ -204,34 +194,7 @@ fun ArticleScreen(
 	)
 }
 
-@Composable
-fun TintedTextButton(
-	isSelected: Boolean = true,
-	category: String,
-	onClick: () -> Unit
-) {
-	val selectedBackgroundColor = if (isSelected) Color.Transparent else Color.DarkGray
-	val txtBgColor = if (!isSelected) Color.White else Color.Black
-	val textBgShape = RoundedCornerShape(12.dp)
 
-	TextButton(
-		onClick = onClick,
-		shape = textBgShape,
-		border = if (isSelected) BorderStroke(2.dp, color = Color.DarkGray) else null,
-		colors = ButtonDefaults.buttonColors(
-			containerColor = selectedBackgroundColor
-		),
-		modifier = Modifier
-			.padding(vertical = 4.dp,horizontal = 10.dp)
-	) {
-		Text(
-			text = category,
-			color = txtBgColor,
-			fontSize = 14.sp,
-			fontWeight = FontWeight.Bold,
-		)
-	}
-}
 
 @Preview(showBackground = true)
 @Composable

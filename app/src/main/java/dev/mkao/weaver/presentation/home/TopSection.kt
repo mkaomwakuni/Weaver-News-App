@@ -1,14 +1,15 @@
 package dev.mkao.weaver.presentation.home
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -35,21 +36,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.domain.model.Source
+import dev.mkao.weaver.domain.model.EventsHolder
+import dev.mkao.weaver.presentation.common.ArticleCardShimmerEffect
 import dev.mkao.weaver.presentation.common.BottomDialog
+import dev.mkao.weaver.presentation.common.BottomNavigationBar
 import dev.mkao.weaver.presentation.common.CardArtiCle
 import dev.mkao.weaver.presentation.common.CardArtiCleTop
-import dev.mkao.weaver.domain.model.EventsHolder
+import dev.mkao.weaver.presentation.common.StatusbarEffect
 import dev.mkao.weaver.viewModels.ArticleStates
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,11 +64,13 @@ fun TopSection(
 ) {
     val coroutineScope = rememberCoroutineScope()
     var shouldBottomSheetShow by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    var isLoading by remember { mutableStateOf(true) }
 
-    LaunchedEffect(true) {
-        onEvent(EventsHolder.OnCategoryClicked("Sports"))
-    }
+
+    StatusbarEffect()
+
+
     if (shouldBottomSheetShow) {
         ModalBottomSheet(
             onDismissRequest = { shouldBottomSheetShow = false },
@@ -86,140 +91,157 @@ fun TopSection(
         )
     }
 
-    // Filter articles by category
-    val sportsArticles = state.article.filter { it.source.category == "Sports" }
-    val entertainmentArticles = state.article.filter { it.source.category == "Entertainment" }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                modifier = Modifier
+                    .padding(start = 10.dp, end = 10.dp, top = 50.dp)
+                    .height(60.dp)
+                    .clip(shape = RoundedCornerShape(12.dp)),
+                title = { /* Optional title content */ },
+                navigationIcon = {
+                    IconButton(
+                        onClick = { /* Handle menu icon click */ }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Menu,
+                            contentDescription = stringResource(R.string.menu)
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = { /* Handle search icon click */ }
+                    ) {
+                        Icon(imageVector = Icons.Filled.Search, contentDescription = stringResource(
+                            R.string.search
+                        )
+                        )
+                    }
+                    IconButton(
+                        onClick = { /* Handle notification icon click */ }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Notifications,
+                            contentDescription = stringResource(R.string.notifications)
+                        )
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            BottomNavigationBar(navController = navController)
+        },
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                Spacer(modifier = Modifier.height(15.dp))
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopAppBar(
-            modifier = Modifier
-                .padding(10.dp)
-                .height(60.dp)
-                .border(
-                    width = 0.dp,
-                    color = Color.Transparent,
-                    shape = RoundedCornerShape(12.dp)
-                )
-                .clip(shape = RoundedCornerShape(12.dp)),
-            title = { /* Optional title content */ },
-            navigationIcon = {
-                IconButton(
-                    onClick = { /* Handle menu icon click */ }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Menu,
-                        contentDescription = "Menu"
+                Row (modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)){
+                    Text(
+                        text = stringResource(R.string.Briefing),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = stringResource(R.string.view_all),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Blue.copy(alpha = 0.5f)
                     )
                 }
-            },
-            actions = {
-                IconButton(
-                    onClick = { /* Handle search icon click */ }
-                ) {
-                    Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
+
+                if (state.isLoading) {
+                    LazyRow(
+                        modifier = Modifier.height(300.dp),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(5) {
+                            ArticleCardShimmerEffect(
+                                modifier = Modifier
+                                    .height(300.dp)
+                                    .width(550.dp)
+                                    .padding(horizontal = 8.dp)
+                            )
+                        }
+                    }
+                } else {
+                    LazyRow(
+                        modifier = Modifier.height(300.dp),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.sportsArticles) { article ->
+                            CardArtiCleTop(
+                                article = article,
+                                onReadFullStoryClicked = {
+                                    shouldBottomSheetShow = true
+                                    onEvent(EventsHolder.OnArticleCardClicked(article))
+                                }
+                            )
+                        }
+                    }
                 }
-                IconButton(
-                    onClick = { /* Handle notification icon click */ }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Notifications,
-                        contentDescription = "Notifications"
+                LaunchedEffect(true) {
+                    delay(4000)
+                    isLoading = false
+                }
+                Spacer(modifier = Modifier.height(15.dp))
+                Row (modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)){
+                Text(
+                    text = stringResource(R.string.recommendations),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = stringResource(R.string.view_all),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = Color.Blue.copy(alpha = 0.5f)
                     )
                 }
-            }
-        )
-        Spacer(modifier = Modifier.height(15.dp))
-        Text(
-            text = "Breaking News",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        LazyRow(
-            modifier = Modifier.padding(5.dp),
-            contentPadding = PaddingValues(horizontal = 5.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(sportsArticles) { article ->
-                CardArtiCleTop(
-                    article = article,
-                    onReadFullStoryClicked = {
-                        shouldBottomSheetShow = true
-                        onEvent(EventsHolder.OnArticleCardClicked(article))
+
+                if (state.isLoading) {
+                    repeat(5) {
+                        ArticleCardShimmerEffect(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
                     }
-                )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        items(state.entertainmentArticles) { article ->
+                            CardArtiCle(
+                                article = article,
+                                onReadFullStoryClicked = {
+                                    shouldBottomSheetShow = true
+                                    onEvent(EventsHolder.OnArticleCardClicked(article))
+                                }
+                            )
+                            Spacer(modifier = Modifier.height(0.5.dp))
+                        }
+                    }
+                }
+                LaunchedEffect(true) {
+                    delay(4000)
+                    isLoading = false
+                }
             }
         }
-        Text(
-            text = "Recommendation",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(entertainmentArticles) { article ->
-                CardArtiCle(
-                    article = article,
-                    onReadFullStoryClicked = {
-                        shouldBottomSheetShow = true
-                        onEvent(EventsHolder.OnArticleCardClicked(article))
-                        onReadFullStoryButtonClick(article)
-                    }
-                )
-            }
-        }
-    }
-}
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
-@Composable
-fun TopSectionPreview() {
-    val sampleArticles = listOf(
-        Article(
-            url = "",
-            source = Source(id = "", name = "", url = "", category = "Sports"),
-            content = "",
-            description = "",
-            author = "",
-            title = "Sample Sports Article Title",
-            urlToImage = "https://via.placeholder.com/400",
-            publishedAt = "2024-06-16T12:00:00Z"
-        ),
-        Article(
-            url = "",
-            source = Source(id = "", name = "", url = "", category = "Entertainment"),
-            content = "",
-            description = "",
-            author = "",
-            title = "Sample Entertainment Article Title",
-            urlToImage = "https://via.placeholder.com/400",
-            publishedAt = "2024-06-16T12:00:00Z"
-        )
     )
-
-    val state = ArticleStates(
-        isLoading = false,
-        category = "General",
-        article = sampleArticles
-    )
-
-    val navController = rememberNavController()
-
-    Scaffold {
-        TopSection(
-            state = state,
-            navController = navController,
-            onReadFullStoryButtonClick = { },
-            onEvent = { }
-        )
-    }
 }
