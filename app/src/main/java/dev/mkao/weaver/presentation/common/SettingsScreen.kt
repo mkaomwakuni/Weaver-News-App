@@ -1,6 +1,5 @@
 package dev.mkao.weaver.presentation.common
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -21,9 +20,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,121 +31,93 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import dev.mkao.weaver.R
 import dev.mkao.weaver.presentation.navigation.Screen
 
-
-@SuppressLint("SuspiciousIndentation", "UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavHostController) {
-    var notificationEnabled by remember { mutableStateOf(true) }
-    var darkModeEnabled by remember { mutableStateOf(false) }
-    var username by remember { mutableStateOf(TextFieldValue("User123")) }
-    var isDarkMode by remember { mutableStateOf(false) }
+    var username by remember { mutableStateOf(TextFieldValue("John Doe")) }
     val context = LocalContext.current
 
-
-        Scaffold(
-            topBar = {
-                CenterAlignedTopAppBar(
-                    title = { Text("Settings", fontWeight = FontWeight.Bold)}
-                )
-            },
-            containerColor = Color(0xFFF0F0F0)
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Settings", fontWeight = FontWeight.Bold) }
+            )
+        },
+        bottomBar = {
+            BottomNavigationBar(navController = navController)
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(horizontal = 16.dp, vertical = 50.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            ) {
-                SectionTitle(title = "Account and Security")
-                SettingsCard(title = "User") {
-                    BasicTextField(
-                        value = username,
-                        onValueChange = { username = it },
-                        textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-                }
-                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-                SettingsCard(title = "Enable Notifications", trailing = {
-                    Switch(
-                        checked = notificationEnabled,
-                        onCheckedChange = { notificationEnabled = it },
-                        colors = SwitchDefaults.colors(checkedThumbColor = Color.LightGray)
-                    )
-                })
-                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-                SettingsCard(title = "Enable Dark Mode", trailing = {
-                    Switch(
-                        checked = darkModeEnabled,
-                        onCheckedChange = { darkModeEnabled = it },
-                        colors = SwitchDefaults.colors(checkedThumbColor = Color.Red)
-                    )
-                })
-
-                SectionTitle(title = "General")
-                SettingsCard(
-                    title = "Invite Friends" ,
-                    trailing = {
-                        Icon(modifier = Modifier.clickable {
-                        launchInviteFriendsIntent(context)
-                        },
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = "Arrow forward")
-                    }
-                )
-                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-                SettingsCard(
-                    title = "Share on Instagram",
-                    trailing = {
-                    Icon(modifier = Modifier.clickable {
-                        launchAppIntent(context, packageName =  "com.instagram.android")
-                    },
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = "Arrow forward")
-                            }
-                        )
-
-
-                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-                SettingsCard(
-                    title = "Share on TikTok",
-                    trailing = {
-                        Icon(modifier = Modifier.clickable {
-                        launchAppIntent(context, packageName = "com.zhiliaoapp.musically")
-                            },
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = "Arrow forward"
-                        )
-                    }
-                )
-
-                SectionTitle(title = "Other")
-                SettingsCard(title = "Manage Consent")
-                HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
-                SettingsCard(
-                title = "About App",
-                trailing = {
-                        Icon(modifier = Modifier.clickable {
-                            navController.navigate(Screen.About.route)
-                            },
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = "Arrow forward"
-                        )
-                    }
+            SectionTitle(title = stringResource(R.string.account_and_security))
+            SettingsCard(title = stringResource(R.string.user)) {
+                BasicTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
                 )
             }
+            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+
+            SectionTitle(title = stringResource(R.string.general))
+            SettingsCard(
+                title = stringResource(R.string.invite_friends),
+                trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
+                onTrailingIconClick = { launchInviteFriendsIntent(context) }
+            )
+            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+            SettingsCard(
+                title = stringResource(R.string.share_on_instagram),
+                trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
+                onTrailingIconClick = { launchAppIntent(context, packageName = context.getString(R.string.instagram)) }
+            )
+            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+            SettingsCard(
+                title = stringResource(R.string.share_on_tiktok),
+                trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
+                onTrailingIconClick = { launchAppIntent(context, packageName = context.getString(R.string.Tikto)) }
+            )
+
+            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+            SettingsCard(
+                title = stringResource(R.string.language),
+                trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
+                onTrailingIconClick = { /* Add your language selection logic here */ }
+            )
+
+            SectionTitle(title = stringResource(R.string.other))
+            SettingsCard(
+                title = stringResource(R.string.privacy_policy),
+                trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
+                onTrailingIconClick = { launchPrivacyPolicyIntent(context) }
+            )
+            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+            SettingsCard(
+                title = stringResource(R.string.about_app),
+                trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
+                onTrailingIconClick = { navController.navigate(Screen.About.route) }
+            )
         }
     }
+}
 
 @Composable
 fun SectionTitle(title: String) {
@@ -164,18 +134,13 @@ fun SectionTitle(title: String) {
 @Composable
 fun SettingsCard(
     title: String,
-    trailing: @Composable (() -> Unit)? = {
-        Icon(
-            modifier = Modifier.clickable {},
-            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-            contentDescription = "Arrow forward"
-        )
-    },
+    trailingIcon: ImageVector? = null,
+    onTrailingIconClick: (() -> Unit)? = null,
     content: @Composable (() -> Unit)? = null
 ) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(Color.White),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -187,18 +152,25 @@ fun SettingsCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = title, fontSize = 18.sp, modifier = Modifier.weight(1f))
-            trailing?.invoke()
+            trailingIcon?.let {
+                Icon(
+                    modifier = Modifier.clickable { onTrailingIconClick?.invoke() },
+                    imageVector = it,
+                    contentDescription = stringResource(R.string.arrow_forward)
+                )
+            }
         }
-        if (content != null) {
-            content()
-        }
+        content?.invoke()
     }
 }
+
 fun launchInviteFriendsIntent(context: Context) {
-    val intent = Intent(Intent.ACTION_SEND)
-    intent.type = "text/plain"
-    intent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this awesome app!")
-    context.startActivity(Intent.createChooser(intent, "Invite friends via"))
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, context.getString(R.string.hey_check_out_this_awesome_app))
+    }
+    context.startActivity(Intent.createChooser(intent,
+        context.getString(R.string.invite_friends_via)))
 }
 
 fun launchAppIntent(context: Context, packageName: String) {
@@ -206,9 +178,12 @@ fun launchAppIntent(context: Context, packageName: String) {
     if (intent != null) {
         context.startActivity(intent)
     } else {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName"))
-        context.startActivity(intent)
+        val playStoreIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName"))
+        context.startActivity(playStoreIntent)
     }
 }
 
-
+fun launchPrivacyPolicyIntent(context: Context) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://yourprivacyurl.com"))
+    context.startActivity(intent)
+}

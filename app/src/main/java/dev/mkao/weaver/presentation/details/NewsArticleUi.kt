@@ -20,12 +20,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,20 +33,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.domain.model.Source
 import dev.mkao.weaver.domain.model.fetchFullArticleContent
+import dev.mkao.weaver.presentation.common.StatusbarEffect
 import dev.mkao.weaver.util.calculateElapsedTime
 import dev.mkao.weaver.viewModels.SharedViewModel
 import kotlinx.coroutines.Dispatchers
@@ -57,22 +52,14 @@ import kotlinx.coroutines.withContext
 @Composable
 fun NewsArticleUi(
     article: Article?,
-    category: String,
     onBackPressed: () -> Unit
 ) {
     val sharedViewModel = SharedViewModel()
     val selectedOne = sharedViewModel.selectedCategory
     article?.let { news ->
         var articleContent by remember { mutableStateOf("Loading...") }
-        val systemUiController = rememberSystemUiController()
-        val useDarkIcons = MaterialTheme.colorScheme.primary.luminance() > 0.5f
 
-        SideEffect {
-            systemUiController.setSystemBarsColor(
-                color = Color.Transparent,
-                darkIcons = useDarkIcons
-            )
-        }
+        StatusbarEffect()
 
         LaunchedEffect(news.url) {
             articleContent = withContext(Dispatchers.IO) {
@@ -324,23 +311,22 @@ fun CategoryChip(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewNewsArticleUi() {
-    val mockArticle = Article(
-        source = Source(name = "Mock Source", url = "https://example.com/source_image.jpg", category = "", id = ""),
-        author = "Author Name",
-        title = "Sample News Title",
-        description = "Sample news description.",
-        url = "https://example.com",
-        urlToImage = "https://example.com/news_image.jpg",
-        publishedAt = "2023-05-05T12:34:56Z",
-        content = "Sample content for the news article."
-    )
-
-    NewsArticleUi(
-        article = mockArticle,
-        category = "Tech",
-        onBackPressed = {}
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewNewsArticleUi() {
+//    val mockArticle = Article(
+//        source = Source(name = "Mock Source", url = "https://example.com/source_image.jpg", category = "", id = ""),
+//        author = "Author Name",
+//        title = "Sample News Title",
+//        description = "Sample news description.",
+//        url = "https://example.com",
+//        urlToImage = "https://example.com/news_image.jpg",
+//        publishedAt = "2023-05-05T12:34:56Z",
+//        content = "Sample content for the news article."
+//    )
+//
+//    NewsArticleUi(
+//        article = mockArticle,
+//        onBackPressed = {}
+//    )
+//}
