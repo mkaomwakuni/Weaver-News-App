@@ -19,14 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.domain.model.Source
 import dev.mkao.weaver.presentation.details.NewsArticleUi
 import dev.mkao.weaver.viewModels.SharedViewModel
 
@@ -44,19 +41,18 @@ fun BottomDialog(
 	if (showNewsArticleUi) {
 		NewsArticleUi (
 			article = article,
-			category = selectedCategory?:"",
 			onBackPressed = { showNewsArticleUi = false }
 		)
 	} else {
 		Surface(
 			modifier = Modifier
 				.fillMaxWidth(),
-			color = Color.White
+			color = MaterialTheme.colorScheme.primary
 		) {
 			Column(
 				modifier = Modifier
 					.padding(16.dp)
-					.background(Color.White)
+					.background(MaterialTheme.colorScheme.primary)
 					.fillMaxWidth()
 					.padding(bottom = 16.dp),
 				horizontalAlignment = Alignment.CenterHorizontally
@@ -107,27 +103,27 @@ fun BottomDialog(
 }
 
 
-@Preview
-@Composable
-fun BottomDialogPreview() {
-	val sampleArticle = Article(
-		// Initialize the sample data for testing
-		// Make sure to replace these values with actual data
-		source = Source(name = "Sample Source", id = "bbc", category = "general", url = ""),
-		author = "John Doe",
-		title = "Sample Article Title",
-		description = "Sample article content goes here.",
-		urlToImage = "https://example.com/sample_image.jpg",
-		publishedAt = "2024-01-29T12:34:56Z",
-		content = "Sample article content goes here.",
-		url = "https://example.com/sample_image.jpg"
-	)
-
-	Surface {
-		BottomDialog(
-			article = sampleArticle,
-			onReadFullStoryButtonClicked = { /* Handle click event if needed */ }
-		)
-	}
-}
+//@Preview
+//@Composable
+//fun BottomDialogPreview() {
+//	val sampleArticle = Article(
+//		// Initialize the sample data for testing
+//		// Make sure to replace these values with actual data
+//		source = Source(name = "Sample Source", id = "bbc", category = "general", url = ""),
+//		author = "John Doe",
+//		title = "Sample Article Title",
+//		description = "Sample article content goes here.",
+//		urlToImage = "https://example.com/sample_image.jpg",
+//		publishedAt = "2024-01-29T12:34:56Z",
+//		content = "Sample article content goes here.",
+//		url = "https://example.com/sample_image.jpg"
+//	)
+//
+//	Surface {
+//		BottomDialog(
+//			article = sampleArticle,
+//			onReadFullStoryButtonClicked = { /* Handle click event if needed */ }
+//		)
+//	}
+//}
 
