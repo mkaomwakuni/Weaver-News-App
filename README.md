@@ -29,7 +29,10 @@
       <img src="https://raw.githubusercontent.com/mkaomwakuni/Weaver-News-App/139ff93742487ab051faeb6ce550f47e81c4af32/app/src/androidTest/java/dev/mkao/weaver/WhatsApp%20Image%202024-02-06%20at%207-portrait.png" width="350" alt="Screenshot 1">
     </td>
     <td align="center">
-      <img src="https://github.com/mkaomwakuni/Weaver-News-App/assets/61048381/d513189a-8b36-4029-b276-4cd1e5623d75" width="350" alt="Screenshot 2">
+      <img src="https://github.com/mkaomwakuni/Weaver-News-App/assets/61048381/9983f6e5-afd8-48a8-bc0d-8b917dffd8c0" width="350" alt="Screenshot 2">
+    </td>
+        <td align="center">
+      <img src=https://github.com/mkaomwakuni/Weaver-News-App/assets/61048381/fc22b206-dc10-48b8-8fb4-81b902b40083 width="350" alt="Screenshot 4">
     </td>
   </tr>
   <tr>
@@ -37,8 +40,12 @@
       <img src="https://github.com/mkaomwakuni/Weaver-News-App/assets/61048381/0d31bde3-ab18-4607-9ea4-332a9218ac8d" width="350" alt="Screenshot 3">
     </td>
     <td align="center">
-      <img src="https://github.com/mkaomwakuni/Weaver-News-App/assets/61048381/c021f84b-c52f-4ad6-b659-986b96694e97" width="350" alt="Screenshot 4">
+      <img src="https://github.com/mkaomwakuni/Weaver-News-App/assets/61048381/9983f6e5-afd8-48a8-bc0d-8b917dffd8c0 "width="350" alt="Screenshot 4">
     </td>
+        <td align="center">
+      <img src="https://github.com/mkaomwakuni/Weaver-News-App/assets/61048381/96c09ca6-91d3-42fe-b213-3756534ed23a"  width="350" alt="Screenshot 5">
+    </td>
+    
   </tr>
 </table>
 
