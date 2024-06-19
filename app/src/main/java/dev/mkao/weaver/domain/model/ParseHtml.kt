@@ -15,8 +15,12 @@ fun fetchFullArticleContent(url: String): String {
         val doc = Jsoup.parse(html)
 
         // This selector might change depending on the website structure
-        val articleContent = doc.select("article").firstOrNull()?.text() ?: "Content not found"
-        articleContent
+        val articleContentElements = doc.select("article p")
+        if (articleContentElements.isEmpty()) {
+            "Content not found"
+        } else {
+            articleContentElements.joinToString(separator = "\n\n") { it.text() }
+        }
     } catch (e: IOException) {
         e.printStackTrace()
         "Error fetching content"

@@ -47,14 +47,14 @@ fun BottomDialog(
 		Surface(
 			modifier = Modifier
 				.fillMaxWidth(),
-			color = MaterialTheme.colorScheme.primary
+			color = MaterialTheme.colorScheme.surface
 		) {
 			Column(
 				modifier = Modifier
-					.padding(16.dp)
-					.background(MaterialTheme.colorScheme.primary)
+					.padding(10.dp)
+					.background(color = MaterialTheme.colorScheme.surface)
 					.fillMaxWidth()
-					.padding(bottom = 16.dp),
+					.padding(bottom = 20.dp),
 				horizontalAlignment = Alignment.CenterHorizontally
 			) {
 				Text(
