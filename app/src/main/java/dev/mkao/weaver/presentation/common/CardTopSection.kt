@@ -16,10 +16,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -27,28 +23,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.domain.model.Source
-import dev.mkao.weaver.util.dateFormat
+import dev.mkao.weaver.util.calculateElapsedTime
 
 @Composable
 fun CardArtiCleTop(
     article: Article,
     onReadFullStoryClicked: () -> Unit
 ) {
-    var isLoading by remember { mutableStateOf(true) }
-    val date = dateFormat(article.publishedAt)
+    val date = calculateElapsedTime(article.publishedAt)
 
     Card(
         modifier = Modifier
             .padding(1.dp)
-            .height(300.dp)
-            .width(550.dp)
+            .height(250.dp)
+            .width(400.dp)
             .clickable { onReadFullStoryClicked() }
     ) {
         Box(
@@ -71,7 +64,7 @@ fun CardArtiCleTop(
                     .align(Alignment.BottomCenter)
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
+                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.8f)),
                             startY = 0f,
                             endY = 250f
                         )
@@ -80,12 +73,12 @@ fun CardArtiCleTop(
                 Row(modifier = Modifier
                     .wrapContentSize()
                     .padding(top = 40.dp,start = 15.dp, end = 15.dp)) {
-                    CategoryChip1(category = "Technology")
+                    CategoryChip1(category = "Sports")
                 }
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 100.dp, start = 15.dp, end = 15.dp),
+                        .padding(top = 70.dp, start = 15.dp, end = 15.dp),
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     Row {
@@ -116,20 +109,20 @@ fun CardArtiCleTop(
     }
 }
 
-@Preview
-@Composable
-fun CardArtiCleTopPreview() {
-    CardArtiCleTop(
-        article = Article(
-            url = "",
-            source = Source(id = "", name = "", url = "", category = ""),
-            content = "",
-            description = "",
-            author = "",
-            title = "Sample Article Title",
-            urlToImage = "https://via.placeholder.com/400",
-            publishedAt = "2024-06-16T12:00:00Z"
-        ),
-        onReadFullStoryClicked = { /* Do something */ }
-    )
-}
+//@Preview
+//@Composable
+//fun CardArtiCleTopPreview() {
+//    CardArtiCleTop(
+//        article = Article(
+//            url = "",
+//            source = Source(id = "", name = "", url = "", category = ""),
+//            content = "",
+//            description = "",
+//            author = "",
+//            title = "Sample Article Title",
+//            urlToImage = "https://via.placeholder.com/400",
+//            publishedAt = "2024-06-16T12:00:00Z"
+//        ),
+//        onReadFullStoryClicked = { /* Do something */ }
+//    )
+//}
