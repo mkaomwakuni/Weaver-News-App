@@ -2,6 +2,7 @@
 package dev.mkao.weaver.presentation.details
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,10 +69,11 @@ fun NewsArticleUi(
             }
         }
 
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.DarkGray)
+                .background(color = Color.Black)
         ) {
             news.urlToImage?.let {
                 ArticleImage(
@@ -83,7 +86,7 @@ fun NewsArticleUi(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.White, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+                    .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
             ) {
                 ArticleContent(
                     description = articleContent,
@@ -112,7 +115,8 @@ fun ArticleImage(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(400.dp)
+            .height(500.dp)
+            .background(Color.Black)
     ) {
         Image(
             painter = imagePainter,
@@ -229,6 +233,17 @@ fun ArticleContent(
     description: String?,
     modifier: Modifier = Modifier
 ) {
+    val contentColor = if(isSystemInDarkTheme()){
+        Color.White
+    }else
+    {
+        Color.Black
+    }
+    val finalContent = if (content == "Content not found") {
+        description ?: ""
+    } else {
+        content
+    }
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -244,7 +259,7 @@ fun ArticleContent(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape)
-                    .background(Color.LightGray)
+                    .background(Color.Transparent)
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_logo),
@@ -260,6 +275,7 @@ fun ArticleContent(
                 Text(
                     text = sourceName ?: "None",
                     fontSize = 20.sp,
+                    color = contentColor,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
                 )
@@ -274,14 +290,9 @@ fun ArticleContent(
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-
-        val finalContent = if (content == "Content not found") {
-            description ?: ""
-        } else {
-            content
-        }
         Text(
             text = finalContent,
+            color = contentColor,
             fontSize = 14.sp,
             textAlign = TextAlign.Justify,
             modifier = Modifier
