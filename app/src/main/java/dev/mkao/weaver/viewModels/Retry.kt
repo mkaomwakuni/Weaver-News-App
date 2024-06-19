@@ -1,4 +1,4 @@
-package dev.mkao.weaver.presentation.common
+package dev.mkao.weaver.viewModels
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

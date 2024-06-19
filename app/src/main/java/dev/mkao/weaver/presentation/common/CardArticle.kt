@@ -18,10 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,13 +36,13 @@ import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.model.Source
 import dev.mkao.weaver.util.Dimens
+import dev.mkao.weaver.util.dateFormat
 
 @Composable
 fun CardArtiCle(
     article: Article,
     onReadFullStoryClicked: () -> Unit) {
 
-    var isLoading by remember { mutableStateOf(true) }
     val date = dateFormat(article.publishedAt)
     val chip = MaterialTheme.colorScheme
 
@@ -64,7 +60,7 @@ fun CardArtiCle(
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .height(120.dp) // Adjust the height as needed
+                    .height(120.dp)
                     .width(120.dp),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(article.urlToImage)
@@ -153,7 +149,7 @@ fun Ty1(){
     val sampleArticle = Article(
         // Initialize the sample data for testing
         // Make sure to replace these values with actual data
-        source = Source(name = "Sample Source", id = "bbc"),
+        source = Source(name = "Sample Source", id = "bbc", category = "", url = ""),
         author = "John Doe",
         title = "Sample Article Title",
         content = "Sample article content goes here.",

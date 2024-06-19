@@ -1,4 +1,4 @@
-package dev.mkao.weaver.presentation.home
+package dev.mkao.weaver.presentation.common
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.RepeatMode

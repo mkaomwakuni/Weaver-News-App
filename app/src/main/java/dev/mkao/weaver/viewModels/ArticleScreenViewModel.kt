@@ -1,4 +1,4 @@
-package dev.mkao.weaver.presentation.home
+package dev.mkao.weaver.viewModels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,9 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.mkao.weaver.domain.model.EventsHolder
 import dev.mkao.weaver.domain.repository.Repository
-import dev.mkao.weaver.presentation.common.ArticleStates
-import dev.mkao.weaver.presentation.common.EventsHolder
 import dev.mkao.weaver.util.Assets
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -21,6 +20,17 @@ class ArticleScreenViewModel @Inject constructor(
 
 	var state by mutableStateOf(ArticleStates())
 	private var searchJob: Job? = null
+		private set
+
+	init {
+		// Fetch initial articles for Sports and Entertainment categories
+		fetchInitialArticles()
+	}
+
+	private fun fetchInitialArticles() {
+		getNewsArticlesCustom("Sports")
+		getNewsArticlesCustom("Entertainment")
+	}
 
 	fun onUserEvent(event: EventsHolder){
 		when(event){
@@ -71,6 +81,36 @@ class ArticleScreenViewModel @Inject constructor(
 					isLoading = false,
 					article = emptyList()
 				)
+				}
+			}
+		}
+	}
+	private fun getNewsArticlesCustom(category: String) {
+		viewModelScope.launch {
+			state = state.copy(isLoading = true)
+			val result = repository.getTopHeadlines(category = category)
+			when (result) {
+				is Assets.Success -> {
+					val articles = result.data ?: emptyList()
+					if (category == "Sports") {
+						state = state.copy(
+							sportsArticles = articles,
+							isLoading = false,
+							error = null
+						)
+					} else if (category == "Entertainment") {
+						state = state.copy(
+							entertainmentArticles = articles,
+							isLoading = false,
+							error = null
+						)
+					}
+				}
+				is Assets.Error -> {
+					state = state.copy(
+						error = result.message,
+						isLoading = false
+					)
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package dev.mkao.weaver.presentation.common
+package dev.mkao.weaver.viewModels
 
 import dev.mkao.weaver.domain.model.Article
 
@@ -10,5 +10,7 @@ data class ArticleStates(
 	val category: String = "General",
 	val isSelected: Article? = null,
 	val searchRequest: String = "",
-	val article: List<Article> = emptyList()
+	val article: List<Article> = emptyList(),
+	val sportsArticles: List<Article> = emptyList(),
+	val entertainmentArticles: List<Article> = emptyList(),
 )

@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.presentation.common.LoadingImage
-import dev.mkao.weaver.presentation.common.dateFormat
+import dev.mkao.weaver.util.dateFormat
 
 
 @Composable
