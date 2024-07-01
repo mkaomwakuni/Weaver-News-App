@@ -14,13 +14,11 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,7 +49,7 @@ fun SettingsScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Settings", fontWeight = FontWeight.Bold) }
+                title = { Text(stringResource(R.string.settings), fontWeight = FontWeight.Bold) }
             )
         },
         bottomBar = {
@@ -104,12 +102,7 @@ fun SettingsScreen(navController: NavHostController) {
             )
 
             SectionTitle(title = stringResource(R.string.other))
-            SettingsCard(
-                title = stringResource(R.string.privacy_policy),
-                trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
-                onTrailingIconClick = { launchPrivacyPolicyIntent(context) }
-            )
-            HorizontalDivider(thickness = 1.dp, color = Color(0xFFFFE4B5))
+
             SettingsCard(
                 title = stringResource(R.string.about_app),
                 trailingIcon = Icons.AutoMirrored.Filled.ArrowForward,
@@ -140,7 +133,6 @@ fun SettingsCard(
 ) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -184,6 +176,6 @@ fun launchAppIntent(context: Context, packageName: String) {
 }
 
 fun launchPrivacyPolicyIntent(context: Context) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://yourprivacyurl.com"))
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(""))
     context.startActivity(intent)
 }
