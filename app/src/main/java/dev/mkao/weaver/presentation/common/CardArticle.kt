@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,17 +51,17 @@ fun CardArtiCle(
         modifier = Modifier
             .padding(1.dp)
             .fillMaxWidth()
-            .clickable {  onReadFullStoryClicked() }
+            .clickable { onReadFullStoryClicked() }
     ) {
         Row(
             modifier = Modifier
-                .padding(5.dp)
+                .padding(2.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .height(120.dp)
+                    .height(140.dp)
                     .width(120.dp),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(article.urlToImage)
@@ -95,13 +96,14 @@ fun CardArtiCle(
                     style = MaterialTheme.typography.bodyMedium.copy(),
                     color = Color.Black,
                     maxLines = 1,
-                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = article.content?:"none",
-                    fontSize = 14.sp,
+                    text = article.content?: stringResource(R.string.Error404),
+                    fontSize = 12.sp,
                     maxLines = 2,
                     color = Color.Gray
                 )
@@ -113,28 +115,30 @@ fun CardArtiCle(
                     verticalAlignment = Alignment.CenterVertically) {
 
                     Text(
-                        text = article.author?.split(",")?.firstOrNull() ?: "Source",
+                        text = article.author?.split(",")?.firstOrNull() ?: stringResource(R.string.Contemporary_Sources),
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         overflow = TextOverflow.Ellipsis
                     )
+                    Spacer(modifier = Modifier.width(Dimens.ExtraExtraPadding))
                     Text(
                         text = ".",
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                     )
 
-                    Spacer(modifier = Modifier.width(15.dp))
+                    Spacer(modifier = Modifier.width(Dimens.ExtraExtraPadding))
                     Icon(
                         painter = painterResource(id = R.drawable.ic_time),
                         contentDescription = null,
                         modifier = Modifier.size(15.dp),
                         tint = colorResource(id = R.color.body)
                     )
-                    Spacer(modifier = Modifier.width(Dimens.ExtraSmallPadding1))
+                    Spacer(modifier = Modifier.width(Dimens.ExtraSmallPadding))
                     Text(
                         modifier = Modifier.align(alignment = Alignment.CenterVertically),
                         text = date,
+                        fontSize = 12.sp,
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                         color = Color.Black
                     )

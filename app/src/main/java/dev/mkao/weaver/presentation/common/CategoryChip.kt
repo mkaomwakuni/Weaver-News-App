@@ -22,7 +22,7 @@ fun CategoryChip1(
         Text(
             text = category,
             color = Color.White,
-            fontSize = 16.sp,
+            fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .padding(horizontal = 8.dp, vertical = 4.dp)

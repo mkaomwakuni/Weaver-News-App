@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -40,13 +41,12 @@ fun CardArtiCleTop(
     Card(
         modifier = Modifier
             .padding(1.dp)
-            .height(250.dp)
-            .width(400.dp)
+            .height(220.dp)
+            .width(335.dp)
             .clickable { onReadFullStoryClicked() }
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),
@@ -60,7 +60,7 @@ fun CardArtiCleTop(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(160.dp)
                     .align(Alignment.BottomCenter)
                     .background(
                         Brush.verticalGradient(
@@ -70,39 +70,40 @@ fun CardArtiCleTop(
                         )
                     )
             ) {
-                Row(modifier = Modifier
-                    .wrapContentSize()
-                    .padding(top = 40.dp,start = 15.dp, end = 15.dp)) {
-                    CategoryChip1(category = "Sports")
-                }
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 70.dp, start = 15.dp, end = 15.dp),
+                        .padding(top = 5.dp, start = 15.dp, end = 15.dp),
                     verticalArrangement = Arrangement.Bottom
                 ) {
-                    Row {
+                    Row(modifier = Modifier
+                        .wrapContentSize()) {
+                        CategoryChip1(category = "Sports")
+                    }
+                    Row (modifier = Modifier.padding(bottom = 2.dp)){
                         Text(
-                            text = "Trending .",
-                            fontSize = 14.sp,
+                            text = "Trending  .",
+                            fontSize = 12.sp,
                             color = Color.White,
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         Text(
                             text = date,
-                            fontSize = 14.sp,
+                            fontSize = 12.sp,
                             color = Color.White
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = article.title,
-                        fontSize = 22.sp,
+                        fontSize = 16.sp,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
                 }
             }
         }
