@@ -9,11 +9,11 @@ interface Repository {
 
 	suspend fun searchRequest(query: String): Assets<List<Article>>
 
-	suspend fun upsertArticle(article: Article)
-
 	suspend fun deleteArticle(article: Article)
 
-	fun getArticles():  Assets<List<Article>>
+	suspend fun getArticles():  Assets<List<Article>>
 
-	suspend fun getArticle(url: String): Article?
+	suspend fun insertedArticle(article: Article)
+
+	suspend fun getBookedArticles(): Assets<List<Article>>
 }
