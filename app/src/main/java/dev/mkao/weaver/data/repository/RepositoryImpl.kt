@@ -1,25 +1,32 @@
 package dev.mkao.weaver.data.repository
 
+import android.util.Log
 import dev.mkao.weaver.data.remote.NewsApi
 import dev.mkao.weaver.data.remote.NewsDao
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.repository.Repository
 import dev.mkao.weaver.util.Assets
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class RepositoryImpl(
 	private val newsApi: NewsApi,
 	private val newsDao: NewsDao
 ): Repository {
-	
+
 	override suspend fun getTopHeadlines(category: String): Assets<List<Article>> {
 		return try {
 			val response = newsApi.getTopHeadlines(category = category)
 			val articles = response.articles
+			//cache the articles
+			articles.forEach { newsDao.upsert(it) }
 
 			Assets.Success(filterRemovedArticles(articles))
 		} catch (e: Exception) {
-			Assets.Error(message = "404! Api Error")
+			//Retrieve articles from DB if API Error
+			val articles = newsDao.getArticles()
+			Assets.Success(filterRemovedArticles(articles))
 		}
 	}
 
@@ -28,6 +35,8 @@ class RepositoryImpl(
 			// Use the newsApi to fetch search results using the provided query
 			val response = newsApi.searchRequest(query = query)
 			val articles = response.articles
+			//Cache the searched articles
+			articles.forEach { newsDao.upsert(it) }
 
 			// Return the search results as Success after filtering
 			Assets.Success(filterRemovedArticles(articles))
@@ -37,23 +46,39 @@ class RepositoryImpl(
 		}
 	}
 
-	override suspend fun upsertArticle(article: Article) {
-		newsDao.upsert(article)
-	}
 
 	override suspend fun deleteArticle(article: Article) {
-		newsDao.delete(article)
+		val unBookedMarked = article.copy(isBookedMarked = false)
+		newsDao.upsert(unBookedMarked)  // Update instead of delete
+		Log.d("RepositoryImpl", "Article deleted: ${article.title}")
 	}
 
 
-	override suspend fun getArticle(url: String): Article? {
-		TODO("Not yet implemented")
-	}
-	override fun getArticles(): Assets<List<Article>> {
+	override suspend fun getArticles(): Assets<List<Article>> {
 		return try {
-			val articles = newsDao.getArticles()
-			Assets.Success(articles)
+			withContext(Dispatchers.IO) {
+				val articles = newsDao.getArticles()
+				Assets.Success(articles)
+			}
 		} catch (e: Exception) {
+			Assets.Error(message = "Error")
+		}
+	}
+
+	override suspend fun insertedArticle(article: Article) {
+		val bookedMarked = article.copy(isBookedMarked = true)
+		newsDao.upsert(bookedMarked)
+		Log.d("RepositoryImpl", "Article inserted/updated: ${article.title}")
+	}
+
+
+	override suspend fun getBookedArticles(): Assets<List<Article>> {
+		return try {
+			val articles = newsDao.getBookedArticles()
+			Log.d("RepositoryImpl", "Retrieved ${articles.size} bookmarked articles")
+			Assets.Success(articles)
+		} catch (e:Exception){
+			Log.e("RepositoryImpl", "Error retrieving bookmarked articles", e)
 			Assets.Error(message = "Error")
 		}
 	}

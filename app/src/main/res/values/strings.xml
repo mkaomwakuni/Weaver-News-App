@@ -34,4 +34,10 @@
     <string name="arrow_forward">Arrow forward</string>
     <string name="hey_check_out_this_awesome_app">Hey, check out this awesome app!</string>
     <string name="invite_friends_via">Invite friends via</string>
+    <string name="Favourites">Your Saved Articles</string>
+    <string name="Delete">Remove from bookmarks</string>
+    <string name="Error404">Content Not Available</string>
+    <string name="Contemporary_Sources">Other Sources</string>
+    <string name="source_image">Source Image</string>
+    <string name="other_Sources">Other Sources</string>
 </resources>

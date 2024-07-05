@@ -107,14 +107,14 @@ fun ArticleScreen(
 				Text(
 					modifier = Modifier.padding(horizontal = 10.dp),
 					text = stringResource(R.string.discover),
-					fontSize = 34.sp,
+					fontSize = 32.sp,
 					fontWeight = FontWeight.Bold,
 				)
 				Spacer(modifier = Modifier.height(15.dp))
 				Text(
 					modifier = Modifier.padding(horizontal = 10.dp),
 					text = stringResource(R.string.fresh_stories_and_bold_ideas_to_help_you_live_curiously),
-					fontSize = 15.sp,
+					fontSize = 16.sp,
 					fontWeight = FontWeight.Bold,
 				)
 			}

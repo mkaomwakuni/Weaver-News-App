@@ -13,9 +13,11 @@ interface NewsDao {
     suspend fun upsert(article: Article)
 
     @Query("SELECT * FROM Articles")
-    fun getArticles(): List<Article>
+    suspend fun getArticles(): List<Article>
 
     @Delete
     suspend fun delete(article: Article)
 
+    @Query("SELECT * FROM Articles WHERE isBookedMarked = 1")
+    suspend fun getBookedArticles(): List<Article>
 }

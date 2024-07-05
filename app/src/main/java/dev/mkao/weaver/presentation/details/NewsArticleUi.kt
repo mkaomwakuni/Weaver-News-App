@@ -26,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,10 +38,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
@@ -56,12 +59,12 @@ fun NewsArticleUi(
     article: Article?,
     onBackPressed: () -> Unit
 ) {
-    val sharedViewModel = SharedViewModel()
-    val selectedOne = sharedViewModel.selectedCategory
-    article?.let { news ->
-        var articleContent by remember { mutableStateOf("Loading...") }
+    val viewModel: SharedViewModel = hiltViewModel()
+    var articleContent by remember { mutableStateOf("Loading...") }
+    StatusbarEffect()
 
-        StatusbarEffect()
+    article?.let { news ->
+        val isBookmarked by viewModel.isArticleBookmarked(news.url).collectAsState(initial = false)
 
         LaunchedEffect(news.url) {
             articleContent = withContext(Dispatchers.IO) {
@@ -80,13 +83,19 @@ fun NewsArticleUi(
                     imageUrl = it,
                     onBackPressed = onBackPressed,
                     title = news.title,
-                    publishedAt = news.publishedAt
+                    publishedAt = news.publishedAt,
+                    onBookClicked = {
+                        viewModel.toggleBookmark(news)
+                    }
                 )
             }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+                    .background(
+                        MaterialTheme.colorScheme.surface,
+                        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                    )
             ) {
                 ArticleContent(
                     description = articleContent,
@@ -107,10 +116,12 @@ fun ArticleImage(
     imageUrl: String,
     onBackPressed: () -> Unit,
     title: String,
-    publishedAt: String?
+    publishedAt: String?,
+    onBookClicked: () -> Unit
 ) {
     val imagePainter = rememberAsyncImagePainter(imageUrl)
     val elapsedTime = calculateElapsedTime(publishedAt)
+    var isSelected by  remember { mutableStateOf(false)}
 
     Box(
         modifier = Modifier
@@ -193,22 +204,8 @@ fun ArticleImage(
                 horizontalArrangement = Arrangement.End
             ) {
                 IconButton(
-                    onClick = { /* Handle favorite */ },
-                    modifier = Modifier
-                        .background(
-                            Color.White.copy(alpha = 0.2f),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.bookmark),
-                        contentDescription = "Favorite",
-                        tint = Color.White
-                    )
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                IconButton(
-                    onClick = { /* Handle favorite */ },
+                    onClick = {
+                        onBookClicked() },
                     modifier = Modifier
                         .background(
                             Color.White.copy(alpha = 0.2f),
@@ -217,8 +214,25 @@ fun ArticleImage(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.morehoriz),
-                        contentDescription = "More",
+                        contentDescription = "Favorite",
                         tint = Color.White
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                IconButton(
+                    onClick = {
+                        isSelected = !isSelected
+                        onBookClicked() },
+                    modifier = Modifier
+                        .background(
+                            Color.White.copy(alpha = 0.2f),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.bookmark),
+                        contentDescription = "Favourites",
+                        tint = if (isSelected) Color.Yellow else Color.White
                     )
                 }
             }
@@ -263,7 +277,7 @@ fun ArticleContent(
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_logo),
-                    contentDescription = "Source Image",
+                    contentDescription = stringResource(R.string.source_image),
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
@@ -273,7 +287,7 @@ fun ArticleContent(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = sourceName ?: "None",
+                    text = sourceName ?: stringResource(R.string.other_Sources),
                     fontSize = 20.sp,
                     color = contentColor,
                     fontWeight = FontWeight.Bold,
@@ -321,23 +335,3 @@ fun CategoryChip(
         )
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewNewsArticleUi() {
-//    val mockArticle = Article(
-//        source = Source(name = "Mock Source", url = "https://example.com/source_image.jpg", category = "", id = ""),
-//        author = "Author Name",
-//        title = "Sample News Title",
-//        description = "Sample news description.",
-//        url = "https://example.com",
-//        urlToImage = "https://example.com/news_image.jpg",
-//        publishedAt = "2023-05-05T12:34:56Z",
-//        content = "Sample content for the news article."
-//    )
-//
-//    NewsArticleUi(
-//        article = mockArticle,
-//        onBackPressed = {}
-//    )
-//}
