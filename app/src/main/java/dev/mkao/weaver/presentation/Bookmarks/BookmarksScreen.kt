@@ -45,13 +45,13 @@ import dev.mkao.weaver.viewModels.SharedViewModel
 fun ArticleList(articles: List<Article>, sharedViewModel: SharedViewModel, navController: NavController) {
     LazyColumn {
         items(articles) { article ->
-            ArticleItem(article, sharedViewModel, navController)
+            ArticleItem(article, sharedViewModel)
         }
     }
 }
 
 @Composable
-fun ArticleItem(article: Article, sharedViewModel: SharedViewModel, navController: NavController) {
+fun ArticleItem(article: Article, sharedViewModel: SharedViewModel) {
     val date = article.publishedAt
     val elapsedtime = calculateElapsedTime(date)
     Row(

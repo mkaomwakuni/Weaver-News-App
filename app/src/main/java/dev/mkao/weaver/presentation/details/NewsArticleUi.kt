@@ -84,7 +84,6 @@ fun NewsArticleUi(
                     onBackPressed = onBackPressed,
                     title = news.title,
                     publishedAt = news.publishedAt,
-                    isBookmarked = isBookmarked,
                     onBookClicked = {
                         viewModel.toggleBookmark(news)
                     }
@@ -118,8 +117,7 @@ fun ArticleImage(
     onBackPressed: () -> Unit,
     title: String,
     publishedAt: String?,
-    isBookmarked: Boolean,
-    onBookClicked :() -> Unit
+    onBookClicked: () -> Unit
 ) {
     val imagePainter = rememberAsyncImagePainter(imageUrl)
     val elapsedTime = calculateElapsedTime(publishedAt)
@@ -223,7 +221,7 @@ fun ArticleImage(
                 Spacer(modifier = Modifier.width(8.dp))
                 IconButton(
                     onClick = {
-                        isSelected =! isSelected
+                        isSelected = !isSelected
                         onBookClicked() },
                     modifier = Modifier
                         .background(
