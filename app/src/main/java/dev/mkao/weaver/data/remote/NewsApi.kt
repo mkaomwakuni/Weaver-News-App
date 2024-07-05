@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface NewsApi {
 	//base url for the news api
-	//https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=2d8537ffd9a94e55b63b570ff2674a3a
+	//https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey={}
 	@GET("top-headlines")
 	suspend fun getTopHeadlines(
 		@Query("category") category:  String,
