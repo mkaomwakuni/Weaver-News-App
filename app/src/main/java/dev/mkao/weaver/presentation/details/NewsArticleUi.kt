@@ -223,7 +223,7 @@ fun ArticleImage(
                 Spacer(modifier = Modifier.width(8.dp))
                 IconButton(
                     onClick = {
-                        isSelected =!isSelected
+                        isSelected =! isSelected
                         onBookClicked() },
                     modifier = Modifier
                         .background(
