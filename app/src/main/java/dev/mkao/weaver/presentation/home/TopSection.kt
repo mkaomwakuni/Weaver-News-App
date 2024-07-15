@@ -2,6 +2,7 @@ package dev.mkao.weaver.presentation.home
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +14,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
@@ -44,11 +47,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key.Companion.I
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.model.EventsHolder
@@ -58,6 +66,7 @@ import dev.mkao.weaver.presentation.common.BottomNavigationBar
 import dev.mkao.weaver.presentation.common.CardArtiCle
 import dev.mkao.weaver.presentation.common.CardArtiCleTop
 import dev.mkao.weaver.presentation.common.StatusbarEffect
+import dev.mkao.weaver.viewModels.ArticleScreenViewModel
 import dev.mkao.weaver.viewModels.ArticleStates
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -68,7 +77,8 @@ fun TopSection(
     state: ArticleStates,
     navController: NavController,
     onReadFullStoryButtonClick: (Article) -> Unit,
-    onEvent: (EventsHolder) -> Unit
+    onEvent: (EventsHolder) -> Unit,
+    selectedCountry :String
 ) {
     val coroutineScope = rememberCoroutineScope()
     var shouldBottomSheetShow by remember { mutableStateOf(false) }
@@ -114,13 +124,18 @@ fun TopSection(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Handle search icon click */ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = stringResource(R.string.search)
-                        )
-                    }
+                    I// Display flag image and notification icon inside IconButton
                     IconButton(onClick = { /* Handle notification icon click */ }) {
+                        selectedCountry?.let { country ->
+                            Image(
+                                painter = painterResource(id = getFlagResourceForCountry(country)),
+                                contentDescription = "Country Flag",
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .padding(end = 8.dp)
+                                    .clip(shape = CircleShape)
+                            )
+                        }
                         Icon(
                             imageVector = Icons.Filled.Notifications,
                             contentDescription = stringResource(R.string.notifications)
@@ -168,10 +183,12 @@ fun TopSection(
                                 modifier = Modifier
                                     .width(350.dp)
                                     .padding(horizontal = 2.dp)
-                                    .align(when (it) {
-                                        1 -> Alignment.CenterStart
-                                        else -> Alignment.CenterEnd
-                                    })
+                                    .align(
+                                        when (it) {
+                                            1 -> Alignment.CenterStart
+                                            else -> Alignment.CenterEnd
+                                        }
+                                    )
                             )
                         }
                     }
