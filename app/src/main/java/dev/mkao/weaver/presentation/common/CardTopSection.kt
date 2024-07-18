@@ -79,7 +79,7 @@ fun CardArtiCleTop(
                 ) {
                     Row(modifier = Modifier
                         .wrapContentSize()) {
-                        CategoryChip1(category = "Sports")
+                        CategoryChipBriefs(category = "Sports")
                     }
                     Row (modifier = Modifier.padding(bottom = 2.dp)){
                         Text(

@@ -247,28 +247,29 @@ fun ArticleContent(
     description: String?,
     modifier: Modifier = Modifier
 ) {
-    val contentColor = if(isSystemInDarkTheme()){
+    val contentColor = if (isSystemInDarkTheme()) {
         Color.White
-    }else
-    {
+    } else {
         Color.Black
     }
+
     val finalContent = if (content == "Content not found") {
         description ?: ""
     } else {
         content
     }
+
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth()
         ) {
-
             Box(
                 modifier = Modifier
                     .size(50.dp)
@@ -282,7 +283,9 @@ fun ArticleContent(
                     contentScale = ContentScale.Crop
                 )
             }
+
             Spacer(modifier = Modifier.width(8.dp))
+
             Column(
                 verticalArrangement = Arrangement.Center,
             ) {
@@ -294,8 +297,8 @@ fun ArticleContent(
                     textAlign = TextAlign.Start
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
 
+            Spacer(modifier = Modifier.width(8.dp))
 
             Image(
                 painter = painterResource(id = R.drawable.bluebadge),
@@ -303,7 +306,9 @@ fun ArticleContent(
                 modifier = Modifier.size(30.dp)
             )
         }
+
         Spacer(modifier = Modifier.height(8.dp))
+
         Text(
             text = finalContent,
             color = contentColor,
@@ -316,12 +321,13 @@ fun ArticleContent(
     }
 }
 
+
 @Composable
 fun CategoryChip(
     category: String
 ) {
     Surface(
-        color = Color.Blue.copy(alpha = 0.6f),
+        color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f),
         shape = RoundedCornerShape(16.dp)
     ) {
         Text(

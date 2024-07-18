@@ -38,7 +38,7 @@ fun SearchAppBar(
         value = value,
         onValueChange = { onValueChange(it) },
         placeholder = {
-            Text(text = "Tourism", color = Color.LightGray, fontSize = 16.sp)
+            Text(text = "Elon Musk..", color = Color.LightGray, fontSize = 16.sp)
         },
         trailingIcon = {
             IconButton(onClick = {

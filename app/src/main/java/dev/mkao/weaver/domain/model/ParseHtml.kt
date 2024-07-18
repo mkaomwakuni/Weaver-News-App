@@ -20,7 +20,7 @@ suspend fun fetchFullArticleContent(url: String): String = withContext(Dispatche
     val request = Request.Builder().url(httpsUrl).build()
 
     try {
-        withTimeout(5000L) { // 5 second timeout
+        withTimeout(9000L) { // 5 second timeout
             val response = client.newCall(request).execute()
             val html = response.body?.string() ?: ""
             val doc = Jsoup.parse(html)
@@ -51,7 +51,6 @@ suspend fun fetchFullArticleContent(url: String): String = withContext(Dispatche
 
             val formattedContent = content?.text()?.replace("\\n", "\n")?.trim() ?: ""
 
-            // Remove leading boilerplate text (adjust as needed)
             val cleanedContent = formattedContent.replaceFirst(Regex("^(.*?\\n){0,5}"), "")
 
             // Check content length and return appropriate message

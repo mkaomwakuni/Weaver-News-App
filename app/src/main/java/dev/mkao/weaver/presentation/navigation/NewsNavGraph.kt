@@ -1,5 +1,6 @@
 package dev.mkao.weaver.presentation.navigation
 
+import SettingsScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -8,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.mkao.weaver.presentation.About.About
 import dev.mkao.weaver.presentation.Bookmarks.BookmarkScreen
-import dev.mkao.weaver.presentation.common.SettingsScreen
+import dev.mkao.weaver.presentation.country.CountrySelectorScreen
 import dev.mkao.weaver.presentation.details.NewsArticleUi
 import dev.mkao.weaver.presentation.home.ArticleScreen
 import dev.mkao.weaver.presentation.home.TopSection
@@ -38,7 +39,7 @@ fun NewsNavGraph(navController: NavHostController) {
 		composable(route = Screen.NewsArticle.route) {
 			val article = sharedViewModel.selectedArticle.collectAsState().value
 			article?.let {
-				NewsArticleUi (
+				NewsArticleUi(
 					article = article,
 					onBackPressed = { navController.navigateUp() }
 				)
@@ -46,10 +47,12 @@ fun NewsNavGraph(navController: NavHostController) {
 		}
 		composable(route = Screen.Categories.route) {
 			val viewModel: ArticleScreenViewModel = hiltViewModel()
+			val viewModel2: SharedViewModel = hiltViewModel()
 			TopSection(
 				navController = navController,
 				state = viewModel.state,
 				onEvent = viewModel::onUserEvent,
+				sharedViewModel = viewModel2,
 				onReadFullStoryButtonClick = { article ->
 					sharedViewModel.selectArticle(article)
 					navController.navigate(Screen.NewsArticle.route)
@@ -58,13 +61,19 @@ fun NewsNavGraph(navController: NavHostController) {
 		}
 		composable(route = Screen.Bookmarks.route) {
 			val bookmarkViewModel: SharedViewModel = hiltViewModel()
-			BookmarkScreen(sharedViewModel = bookmarkViewModel,navController)
+			BookmarkScreen(sharedViewModel = bookmarkViewModel, navController)
 		}
 		composable(route = Screen.Settings.route) {
 			SettingsScreen(navController)
 		}
 		composable(Screen.About.route) {
 			About()
+		}
+		composable(route = Screen.CountrySelector.route) {
+			CountrySelectorScreen(
+				navController = navController,
+				sharedViewModel = hiltViewModel()
+			)
 		}
 	}
 }

@@ -2,6 +2,7 @@ package dev.mkao.weaver.presentation.common
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,11 +13,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CategoryChip1(
+fun CategoryChipBriefs(
     category: String
 ) {
     Surface(
-        color = Color.Blue.copy(alpha = 0.6f),
+        color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f),
         shape = RoundedCornerShape(16.dp)
     ) {
         Text(
