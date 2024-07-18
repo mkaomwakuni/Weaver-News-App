@@ -9,6 +9,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import java.io.IOException
 import java.security.KeyStore
+import java.security.NoSuchAlgorithmException
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
@@ -67,7 +68,12 @@ private fun getSecureOkHttpClient(): OkHttpClient {
     trustManagerFactory.init(null as KeyStore?)
     val trustManagers = trustManagerFactory.trustManagers
 
-    val sslContext = SSLContext.getInstance("TLS")
+    // Use TLSv1.3 if available, otherwise fall back to TLSv1.2
+    val sslContext = try {
+        SSLContext.getInstance("TLSv1.3")
+    } catch (e: NoSuchAlgorithmException) {
+        SSLContext.getInstance("TLSv1.2")
+    }
     sslContext.init(null, trustManagers, null)
 
     return OkHttpClient.Builder()
