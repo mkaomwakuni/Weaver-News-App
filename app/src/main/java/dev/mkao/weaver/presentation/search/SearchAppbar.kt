@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,15 +37,8 @@ fun SearchAppBar(
             .clip(RoundedCornerShape(18.dp)),
         value = value,
         onValueChange = { onValueChange(it) },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Filled.Search,
-                contentDescription = "Search Icon",
-                tint = Color.Gray
-            )
-        },
         placeholder = {
-            Text(text = "Tourism", color = Color.LightGray, fontSize = 16.sp)
+            Text(text = "Elon Musk..", color = Color.LightGray, fontSize = 16.sp)
         },
         trailingIcon = {
             IconButton(onClick = {
@@ -57,7 +49,7 @@ fun SearchAppBar(
                 }
             }) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    imageVector = Icons.Filled.Search,
                     contentDescription = "Close Icon",
                     tint = Color.LightGray
                 )

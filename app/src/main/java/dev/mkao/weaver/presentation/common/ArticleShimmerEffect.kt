@@ -21,9 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import dev.mkao.weaver.R
 import dev.mkao.weaver.util.Dimens
 import dev.mkao.weaver.util.Dimens.MediumPadding1
 
@@ -32,12 +30,12 @@ import dev.mkao.weaver.util.Dimens.MediumPadding1
 fun Modifier.shimmerEffect() = composed {
     val transition = rememberInfiniteTransition()
     val alpha = transition.animateFloat(
-        initialValue = 0.2f, targetValue = 0.9f, animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000),
-            repeatMode = RepeatMode.Reverse
-        )
+        initialValue = 0.1f, targetValue = 0.4f, animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 500),
+            repeatMode = RepeatMode.Restart
+        ), label = ""
     ).value
-    background(color = colorResource(id = R.color.shine_effect).copy(alpha = alpha))
+    background(color = MaterialTheme.colorScheme.primary.copy(alpha = alpha))
 }
 
 @Composable
@@ -79,3 +77,19 @@ fun ArticleCardShimmerEffect(modifier: Modifier = Modifier) {
         }
     }
 }
+
+@Composable
+fun ArticleCardShimmerEffectBox(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .shimmerEffect()
+        )
+    }
+}
+

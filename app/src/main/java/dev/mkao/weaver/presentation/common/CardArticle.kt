@@ -28,29 +28,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.domain.model.Source
 import dev.mkao.weaver.util.Dimens
-import dev.mkao.weaver.util.dateFormat
+import dev.mkao.weaver.util.articleDateFormat
 
 @Composable
 fun CardArtiCle(
     article: Article,
     onReadFullStoryClicked: () -> Unit) {
 
-    val date = dateFormat(article.publishedAt)
+    val date = articleDateFormat(article.publishedAt)
     val chip = MaterialTheme.colorScheme
 
     Card(
         modifier = Modifier
             .padding(1.dp)
             .fillMaxWidth()
+            .height(140.dp)
             .clickable { onReadFullStoryClicked() }
     ) {
         Row(
@@ -80,7 +79,7 @@ fun CardArtiCle(
                     modifier = Modifier
                         .padding(5.dp)
                         .height(25.dp)
-                        .background(chip.primaryContainer, shape = RoundedCornerShape(3.dp))
+                        .background(chip.secondary, shape = RoundedCornerShape(3.dp))
                 ){
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
@@ -102,7 +101,7 @@ fun CardArtiCle(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = article.content?: stringResource(R.string.Error404),
+                    text = article.description?: stringResource(R.string.Error404),
                     fontSize = 12.sp,
                     maxLines = 2,
                     color = Color.Gray
@@ -147,23 +146,23 @@ fun CardArtiCle(
         }
     }
 }
-@Preview
-@Composable
-fun Ty1(){
-    val sampleArticle = Article(
-        // Initialize the sample data for testing
-        // Make sure to replace these values with actual data
-        source = Source(name = "Sample Source", id = "bbc", category = "", url = ""),
-        author = "John Doe",
-        title = "Sample Article Title",
-        content = "Sample article content goes here.",
-        description = "Sample article content goes here.",
-        urlToImage = "https://example.com/sample_image.jpg",
-        publishedAt = "2024-01-29T12:34:56Z",
-        url = "https://example.com/sample_image.jpg"
-    )
-    CardArtiCle(
-        article = sampleArticle,
-        onReadFullStoryClicked = { /* Handle click event if needed */ }
-    )
-}
+//@Preview
+//@Composable
+//fun Ty1(){
+//    val sampleArticle = Article(
+//        // Initialize the sample data for testing
+//
+//        source = Source(name = "Sample Source", id = "bbc", category = "", url = ""),
+//        author = "John Doe",
+//        title = "Sample Article Title",
+//        content = "Sample article content goes here.",
+//        description = "Sample article content goes here.",
+//        urlToImage = "https://example.com/sample_image.jpg",
+//        publishedAt = "2024-01-29T12:34:56Z",
+//        url = "https://example.com/sample_image.jpg"
+//    )
+//    CardArtiCle(
+//        article = sampleArticle,
+//        onReadFullStoryClicked = { /* Handle click event if needed */ }
+//    )
+//}

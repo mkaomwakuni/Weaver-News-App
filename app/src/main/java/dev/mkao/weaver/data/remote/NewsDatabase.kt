@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.mkao.weaver.domain.model.Article
 
-@Database(entities = [Article::class], version = 1)
+@Database(entities = [Article::class], version = 1, exportSchema = false)
 @TypeConverters(NewsTypeConvertor::class)
 abstract class NewsDatabase : RoomDatabase() {
     abstract fun articleDao(): NewsDao

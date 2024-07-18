@@ -1,9 +1,11 @@
 package dev.mkao.weaver.data.repository
 
 import android.util.Log
+import dev.mkao.weaver.data.remote.CountryDao
 import dev.mkao.weaver.data.remote.NewsApi
 import dev.mkao.weaver.data.remote.NewsDao
 import dev.mkao.weaver.domain.model.Article
+import dev.mkao.weaver.domain.model.Country
 import dev.mkao.weaver.domain.repository.Repository
 import dev.mkao.weaver.util.Assets
 import kotlinx.coroutines.Dispatchers
@@ -12,12 +14,13 @@ import kotlinx.coroutines.withContext
 
 class RepositoryImpl(
 	private val newsApi: NewsApi,
-	private val newsDao: NewsDao
+	private val newsDao: NewsDao,
+	private  val countryDao: CountryDao
 ): Repository {
 
-	override suspend fun getTopHeadlines(category: String): Assets<List<Article>> {
+	override suspend fun getTopHeadlines(category: String,selectedCountry: String): Assets<List<Article>> {
 		return try {
-			val response = newsApi.getTopHeadlines(category = category)
+			val response = newsApi.getTopHeadlines(category = category,selectedCountry)
 			val articles = response.articles
 			//cache the articles
 			articles.forEach { newsDao.upsert(it) }
@@ -88,6 +91,23 @@ class RepositoryImpl(
 			article.title.contains("removed", ignoreCase = true) ||
 					article.content?.contains("removed", ignoreCase = true) == true
 		}
+	}
+	override suspend fun getSelectedCountry(): Country? {
+		return countryDao.getAnyCountry() ?: getDefaultCountry()
+	}
+
+	override suspend fun setSelectedCountry(country: Country) {
+		countryDao.clearDefaultCountry()
+		val updatedCountry = country.copy(isSelected = true)
+		countryDao.insertCountry(updatedCountry)
+		Log.d("RepositoryImpl", "Selected country set: ${updatedCountry.name}")
+	}
+
+	private suspend fun getDefaultCountry(): Country {
+		val defaultCountry = Country("BR", "Brazil", isSelected = true)
+		countryDao.insertCountry(defaultCountry)
+		Log.d("RepositoryImpl", "Default country set: ${defaultCountry.name}")
+		return defaultCountry
 	}
 
 }

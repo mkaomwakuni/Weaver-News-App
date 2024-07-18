@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
 
-fun dateFormat(inputDateTime: String?):String {
+fun articleDateFormat(inputDateTime: String?):String {
 	val inputFormat = DateTimeFormatter.ISO_OFFSET_DATE_TIME
     val outputFormatter = DateTimeFormatter
         .ofLocalizedDate(FormatStyle.LONG)
