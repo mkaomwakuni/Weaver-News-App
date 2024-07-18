@@ -1,8 +1,8 @@
 package dev.mkao.weaver.presentation.home
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,19 +15,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,6 +33,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -47,27 +46,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.I
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.model.EventsHolder
 import dev.mkao.weaver.presentation.common.ArticleCardShimmerEffect
+import dev.mkao.weaver.presentation.common.ArticleCardShimmerEffectBox
 import dev.mkao.weaver.presentation.common.BottomDialog
 import dev.mkao.weaver.presentation.common.BottomNavigationBar
 import dev.mkao.weaver.presentation.common.CardArtiCle
 import dev.mkao.weaver.presentation.common.CardArtiCleTop
+import dev.mkao.weaver.presentation.country.CountrySelector
 import dev.mkao.weaver.presentation.common.StatusbarEffect
-import dev.mkao.weaver.viewModels.ArticleScreenViewModel
+import dev.mkao.weaver.presentation.navigation.Screen
 import dev.mkao.weaver.viewModels.ArticleStates
+import dev.mkao.weaver.viewModels.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -76,14 +75,17 @@ import kotlinx.coroutines.launch
 fun TopSection(
     state: ArticleStates,
     navController: NavController,
+    sharedViewModel: SharedViewModel,
     onReadFullStoryButtonClick: (Article) -> Unit,
     onEvent: (EventsHolder) -> Unit,
-    selectedCountry :String
 ) {
     val coroutineScope = rememberCoroutineScope()
     var shouldBottomSheetShow by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     var isLoading by remember { mutableStateOf(true) }
+    var isCountrySelectorOpen by remember { mutableStateOf(false) }
+    val selectedCountry by sharedViewModel.selectedCountry.collectAsState()
+    Log.d("TopSection", "Displaying flag for: ${selectedCountry?.name}")
 
     StatusbarEffect()
 
@@ -116,31 +118,30 @@ fun TopSection(
                     .clip(shape = RoundedCornerShape(12.dp)),
                 title = { /* Optional title content */ },
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle menu icon click */ }) {
+                    IconButton(onClick ={ navController.navigate(Screen.Settings.route)  }) {
                         Icon(
+                            modifier = Modifier.size(30.dp),
                             imageVector = Icons.Outlined.Menu,
+                            tint = Color.Gray,
                             contentDescription = stringResource(R.string.menu)
                         )
                     }
                 },
                 actions = {
-                    I// Display flag image and notification icon inside IconButton
-                    IconButton(onClick = { /* Handle notification icon click */ }) {
-                        selectedCountry?.let { country ->
-                            Image(
-                                painter = painterResource(id = getFlagResourceForCountry(country)),
-                                contentDescription = "Country Flag",
+                    IconButton(onClick = {  navController.navigate(Screen.CountrySelector.route) }) {
+                        Log.d("TopSection", "Selected country set to: ${selectedCountry?.name},${selectedCountry?.code}")
+                            AsyncImage(
+                                model = "https://flagsapi.com/${selectedCountry?.code}/flat/64.png",
+                                contentDescription = "Selected Country Flag",
+                                contentScale = ContentScale.FillBounds,
                                 modifier = Modifier
-                                    .size(32.dp)
+                                    .size(100.dp)
+                                    .fillMaxSize()
                                     .padding(end = 8.dp)
                                     .clip(shape = CircleShape)
                             )
                         }
-                        Icon(
-                            imageVector = Icons.Filled.Notifications,
-                            contentDescription = stringResource(R.string.notifications)
-                        )
-                    }
+
                 }
             )
         },
@@ -148,106 +149,111 @@ fun TopSection(
             BottomNavigationBar(navController = navController)
         },
         content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
-                Row(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
+                        .fillMaxSize()
+                        .padding(paddingValues)
                 ) {
-                    Text(
-                        text = stringResource(R.string.Briefing),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = stringResource(R.string.view_all),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Blue.copy(alpha = 0.5f)
-                    )
-                }
 
-                if (isLoading) {
-                    Box(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .wrapContentHeight()
+                            .padding(16.dp)
                     ) {
-                        repeat(3) {
-                            ArticleCardShimmerEffect(
-                                modifier = Modifier
-                                    .width(350.dp)
-                                    .padding(horizontal = 2.dp)
-                                    .align(
-                                        when (it) {
-                                            1 -> Alignment.CenterStart
-                                            else -> Alignment.CenterEnd
-                                        }
-                                    )
-                            )
-                        }
-                    }
-                } else {
-                    AnimatedSportsArticlesCarousel(
-                        articles = state.sportsArticles,
-                        onReadFullStoryClicked = { article ->
-                            shouldBottomSheetShow = true
-                            onEvent(EventsHolder.OnArticleCardClicked(article))
-                        }
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.recommendations),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = stringResource(R.string.view_all),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
-                        color = Color.Blue.copy(alpha = 0.5f)
-                    )
-                }
-
-                if (isLoading) {
-                    repeat(6) {
-                        ArticleCardShimmerEffect(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        Text(
+                            text = stringResource(R.string.Briefing),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(
+                            text = stringResource(R.string.view_all),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
-                } else {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(10.dp),
-                        verticalArrangement = Arrangement.spacedBy(5.dp)
+
+                    if (isLoading) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                        ) {
+                            repeat(3) {
+                                ArticleCardShimmerEffectBox(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp)
+                                )
+                            }
+                        }
+                    } else {
+                        AnimatedSportsArticlesCarousel(
+                            articles = state.sportsArticles,
+                            onReadFullStoryClicked = { article ->
+                                shouldBottomSheetShow = true
+                                onEvent(EventsHolder.OnArticleCardClicked(article))
+                            }
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
                     ) {
-                        items(state.entertainmentArticles) { article ->
-                            CardArtiCle(
-                                article = article,
-                                onReadFullStoryClicked = {
-                                    shouldBottomSheetShow = true
-                                    onEvent(EventsHolder.OnArticleCardClicked(article))
-                                }
+                        Text(
+                            text = stringResource(R.string.recommendations),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(
+                            text = stringResource(R.string.view_all),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    if (isLoading) {
+                        repeat(6) {
+                            ArticleCardShimmerEffect(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
                             )
-                            Spacer(modifier = Modifier.height(0.5.dp))
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentPadding = PaddingValues(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            items(state.entertainmentArticles) { article ->
+                                CardArtiCle(
+                                    article = article,
+                                    onReadFullStoryClicked = {
+                                        shouldBottomSheetShow = true
+                                        onEvent(EventsHolder.OnArticleCardClicked(article))
+                                    }
+                                )
+                                Spacer(modifier = Modifier.height(0.5.dp))
+                            }
                         }
                     }
                 }
+                if (isCountrySelectorOpen){
+                    CountrySelector(
+                        onCountrySelected = { country ->
+                            sharedViewModel.setSelectedCountry(country)
+                            isCountrySelectorOpen = false
+                        },
+                        sharedViewModel = sharedViewModel,
+                        onDismiss = {isCountrySelectorOpen = false},
+                    )
+                }
             }
-        }
     )
 
     LaunchedEffect(true) {

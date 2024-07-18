@@ -6,6 +6,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.mkao.weaver.data.remote.CountryDatabase
+import dev.mkao.weaver.data.remote.CountryDao
 import dev.mkao.weaver.data.remote.NewsApi
 import dev.mkao.weaver.data.remote.NewsApi.Companion.BASE_URL
 import dev.mkao.weaver.data.remote.NewsDao
@@ -35,8 +37,9 @@ object AppModule {
 	@Singleton
 	fun providesNewsRepository(
 		newsDao: NewsDao,
+		countryDao: CountryDao,
 		newsApi: NewsApi): Repository {
-		return RepositoryImpl(newsApi, newsDao)
+		return RepositoryImpl(newsApi, newsDao,countryDao)
 	}
 
 	@Provides
@@ -57,6 +60,23 @@ object AppModule {
 	fun providesDao(
 		newsDatabase: NewsDatabase
 	):NewsDao = newsDatabase.articleDao()
+
+	@Provides
+	fun provideNewsDao(database: CountryDatabase): CountryDao {
+		return database.newsDao()
+	}
+	@Provides
+	@Singleton
+	fun providesNewsCountryDatabase(
+		application: Application
+	): CountryDatabase {
+		return Room.databaseBuilder(
+			context = application,
+			klass = CountryDatabase::class.java,
+			name = "Country"
+		).fallbackToDestructiveMigration()
+			.build()
+	}
 
 }
 

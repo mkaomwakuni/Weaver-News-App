@@ -6,11 +6,11 @@ import retrofit2.http.Query
 
 interface NewsApi {
 	//base url for the news api
-	//https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey={}
+	//https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=2d8537ffd9a94e55b63b570ff2674a3a
 	@GET("top-headlines")
 	suspend fun getTopHeadlines(
 		@Query("category") category:  String,
-		@Query ("country") country : String = "us",
+		@Query ("country") country : String,
 		@Query("apikey") apiKey: String = API_KEY,
 	
 	): NewsApiResponse
@@ -22,7 +22,7 @@ interface NewsApi {
 	): NewsApiResponse
 
 	companion object{
-		const val API_KEY = "ADD YOUR API KEY HERE"
+		const val API_KEY = "2d8537ffd9a94e55b63b570ff2674a3a"
 		const val BASE_URL = "https://newsapi.org/v2/"
 	}
 }

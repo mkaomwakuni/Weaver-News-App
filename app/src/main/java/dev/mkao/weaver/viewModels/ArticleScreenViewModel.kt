@@ -63,10 +63,11 @@ class ArticleScreenViewModel @Inject constructor(
 			}
 		}
 	}
-	fun getNewsArticles(category: String) {
+	private fun getNewsArticles(category: String) {
 		viewModelScope.launch {
 			state = state.copy(isLoading = true)
-			val result = repository.getTopHeadlines(category = category)
+			val selectedCountry = repository.getSelectedCountry()?.code ?: "us"
+			val result = repository.getTopHeadlines(category = category,selectedCountry)
 			when (result) {
 				is Assets.Success -> {
 					state = state.copy(
@@ -88,8 +89,8 @@ class ArticleScreenViewModel @Inject constructor(
 	private fun getNewsArticlesCustom(category: String) {
 		viewModelScope.launch {
 			state = state.copy(isLoading = true)
-			val result = repository.getTopHeadlines(category = category)
-			when (result) {
+			val selectedCountry = repository.getSelectedCountry()?.code ?: "us"
+			when (val result = repository.getTopHeadlines(category = category, selectedCountry)) {
 				is Assets.Success -> {
 					val articles = result.data ?: emptyList()
 					if (category == "Sports") {
