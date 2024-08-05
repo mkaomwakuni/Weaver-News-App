@@ -57,13 +57,12 @@ import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.model.EventsHolder
 import dev.mkao.weaver.presentation.common.ArticleCardShimmerEffect
-import dev.mkao.weaver.presentation.common.ArticleCardShimmerEffectBox
 import dev.mkao.weaver.presentation.common.BottomDialog
 import dev.mkao.weaver.presentation.common.BottomNavigationBar
 import dev.mkao.weaver.presentation.common.CardArtiCle
 import dev.mkao.weaver.presentation.common.CardArtiCleTop
-import dev.mkao.weaver.presentation.country.CountrySelector
 import dev.mkao.weaver.presentation.common.StatusbarEffect
+import dev.mkao.weaver.presentation.country.CountrySelector
 import dev.mkao.weaver.presentation.navigation.Screen
 import dev.mkao.weaver.viewModels.ArticleStates
 import dev.mkao.weaver.viewModels.SharedViewModel
@@ -118,7 +117,7 @@ fun TopSection(
                     .clip(shape = RoundedCornerShape(12.dp)),
                 title = { /* Optional title content */ },
                 navigationIcon = {
-                    IconButton(onClick ={ navController.navigate(Screen.Settings.route)  }) {
+                    IconButton(onClick ={ navController.navigate(Screen.LanguageEdition.route)  }) {
                         Icon(
                             modifier = Modifier.size(30.dp),
                             imageVector = Icons.Outlined.Menu,
@@ -128,20 +127,20 @@ fun TopSection(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {  navController.navigate(Screen.CountrySelector.route) }) {
+                    IconButton(
+                        modifier = Modifier.size(50.dp),
+                        onClick = {  navController.navigate(Screen.CountrySelector.route) }) {
                         Log.d("TopSection", "Selected country set to: ${selectedCountry?.name},${selectedCountry?.code}")
                             AsyncImage(
                                 model = "https://flagsapi.com/${selectedCountry?.code}/flat/64.png",
                                 contentDescription = "Selected Country Flag",
                                 contentScale = ContentScale.FillBounds,
                                 modifier = Modifier
-                                    .size(100.dp)
+                                    .size(50.dp)
                                     .fillMaxSize()
-                                    .padding(end = 8.dp)
                                     .clip(shape = CircleShape)
                             )
                         }
-
                 }
             )
         },
@@ -178,10 +177,10 @@ fun TopSection(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .wrapContentHeight()
+                                .height(150.dp)
                         ) {
                             repeat(3) {
-                                ArticleCardShimmerEffectBox(
+                                ArticleCardShimmerEffect(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(horizontal = 16.dp)
@@ -271,10 +270,10 @@ fun AnimatedSportsArticlesCarousel(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
+                .height(180.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("Please wait...")
+
         }
         return
     }
@@ -300,7 +299,7 @@ fun AnimatedSportsArticlesCarousel(
             val index = (currentIndex + i) % articles.size
             val article = articles[index]
 
-            key(article.urlToImage) {
+            key(article.image) {
                 AnimatedArticleCard(
                     article = article,
                     position = i,
