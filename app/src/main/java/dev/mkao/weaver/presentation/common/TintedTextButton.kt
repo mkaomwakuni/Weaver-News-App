@@ -1,5 +1,6 @@
 package dev.mkao.weaver.presentation.common
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -7,9 +8,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -19,24 +24,35 @@ fun TintedTextButton(
     category: String,
     onClick: () -> Unit
 ) {
-    val selectedBackgroundColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.DarkGray
-    val txtBgColor = if (!isSelected) Color.White else Color.LightGray
-    val textBgShape = RoundedCornerShape(12.dp)
+    // Background and text colors are based on the selection state
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.DarkGray,
+        label = ""
+    )
+    val textColor by animateColorAsState(
+        targetValue = if (isSelected) Color.LightGray else Color.White, label = ""
+    )
 
+    // Shape for the background
+    val buttonShape = RoundedCornerShape(12.dp)
+
+    // Button composable with optimized padding and click handling
     TextButton(
         onClick = onClick,
-        shape = textBgShape,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = selectedBackgroundColor
-        ),
+        shape = buttonShape,
+        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
         modifier = Modifier
-            .padding(vertical = 4.dp,horizontal = 10.dp)
+            .padding(vertical = 4.dp, horizontal = 10.dp)
+            .semantics { contentDescription = category } // Improved accessibility
     ) {
+        // Text composable with animated color and style properties
         Text(
             text = category,
-            color = txtBgColor,
+            color = textColor,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
