@@ -34,7 +34,7 @@
     <string name="arrow_forward">Arrow forward</string>
     <string name="hey_check_out_this_awesome_app">Hey, check out this awesome News app! { https://github.com/mkaomwakuni/Weaver-News-App/releases/tag/Release "}</string>
     <string name="invite_friends_via">Invite friends via</string>
-    <string name="Favourites">Your Saved Articles</string>
+    <string name="Favourites">Bookmarks</string>
     <string name="Delete">Remove from bookmarks</string>
     <string name="Error404">Content Not Available, Api Response Error</string>
     <string name="Contemporary_Sources">Other Sources</string>
