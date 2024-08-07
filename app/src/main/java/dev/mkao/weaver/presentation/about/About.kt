@@ -1,4 +1,4 @@
-package dev.mkao.weaver.presentation.About
+package dev.mkao.weaver.presentation.about
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import dev.mkao.weaver.R
 
 @Composable
-fun About() {
+fun AboutMe() {
     Column(
         modifier = Modifier
             .fillMaxSize()
