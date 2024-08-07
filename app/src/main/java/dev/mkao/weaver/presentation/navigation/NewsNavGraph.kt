@@ -7,12 +7,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import dev.mkao.weaver.presentation.About.About
-import dev.mkao.weaver.presentation.Bookmarks.BookmarkScreen
+import dev.mkao.weaver.presentation.about.AboutMe
+import dev.mkao.weaver.presentation.bookmarks.BookmarkScreen
 import dev.mkao.weaver.presentation.country.CountrySelectorScreen
 import dev.mkao.weaver.presentation.details.NewsArticleUi
 import dev.mkao.weaver.presentation.home.ArticleScreen
 import dev.mkao.weaver.presentation.home.TopSection
+import dev.mkao.weaver.presentation.languageedition.LanguageEditionsSidebar
 import dev.mkao.weaver.viewModels.ArticleScreenViewModel
 import dev.mkao.weaver.viewModels.SharedViewModel
 
@@ -67,12 +68,19 @@ fun NewsNavGraph(navController: NavHostController) {
 			SettingsScreen(navController)
 		}
 		composable(Screen.About.route) {
-			About()
+			AboutMe()
 		}
 		composable(route = Screen.CountrySelector.route) {
 			CountrySelectorScreen(
 				navController = navController,
 				sharedViewModel = hiltViewModel()
+			)
+		}
+		composable(route = Screen.LanguageEdition.route) {
+			LanguageEditionsSidebar (
+				navController = navController,
+				onLanguageSelected = { language ->},
+				onDismiss = { navController.navigateUp() }
 			)
 		}
 	}
