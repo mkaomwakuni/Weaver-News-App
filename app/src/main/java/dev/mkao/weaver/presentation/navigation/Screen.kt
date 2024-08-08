@@ -11,9 +11,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
     object Home : Screen("article_screen", "Home", Icons.Default.Home)
     object Categories : Screen("recommendation_screen", "Bulletin", Icons.Filled.CheckCircle)
-    object Bookmarks : Screen("bookmarks_screen", "Bookmarks", Icons.Default.FavoriteBorder)
+    object Bookmarks : Screen("bookmarks_screen", "bookmarks", Icons.Default.FavoriteBorder)
     object Settings : Screen("settings_screen", "Settings", Icons.Default.Settings)
     object NewsArticle : Screen("news_article", "News Article", Icons.Default.Home)
-    object About : Screen("about","About",  Icons.Filled.Info)
+    object About : Screen("about","about",  Icons.Filled.Info)
     object CountrySelector : Screen("country","country",  Icons.Filled.Info)
+    object LanguageEdition : Screen("language","language",  Icons.Filled.Info)
 }
