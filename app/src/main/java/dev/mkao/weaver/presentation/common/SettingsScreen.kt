@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -69,7 +69,7 @@ fun SettingsScreen(navController: NavController) {
             item { SettingsItem("Security Settings") }
             item { SettingsItem("Delete Account") }
             item { SectionHeader("Other") }
-            item { SettingsItem("About Weaver App") {navController.navigate(Screen.About.route)} }
+            item { SettingsItem("about Weaver App") {navController.navigate(Screen.About.route)} }
             item { SettingsItem("Privacy Policy") }
             item { SettingsItem("Terms and Conditions") }
             item { SectionHeader("Share") }
@@ -112,7 +112,7 @@ fun SettingsItem(title: String, onClick: () -> Unit = {}) {
     ) {
         Text(text = title)
         Icon(
-            Icons.Filled.KeyboardArrowRight,
+            Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "Navigate",
             tint = Color.Gray
         )
