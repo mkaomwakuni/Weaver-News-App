@@ -18,8 +18,6 @@ interface NewsApi {
 	@GET("search")
 	suspend fun searchRequest(
 		@Query("q") query: String,
-		@Query("lang") lang: String,
-		@Query("country") country: String? = null,
 		@Query("max") max: Int = 6,
 		@Query("apikey") apiKey: String = API_KEY
 	): NewsApiResponse
