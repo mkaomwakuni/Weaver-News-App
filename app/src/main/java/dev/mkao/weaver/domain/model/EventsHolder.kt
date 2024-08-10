@@ -6,5 +6,4 @@ sealed class EventsHolder{
 	data class OnSearchCategoryChanged(val searchRequest: String) : EventsHolder()
 	object OnSearchIconClicked: EventsHolder()
 	object OnCloseIconClicked: EventsHolder()
-	
 }
