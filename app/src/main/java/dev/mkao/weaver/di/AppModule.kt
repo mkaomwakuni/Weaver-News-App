@@ -77,7 +77,6 @@ object AppModule {
 		).fallbackToDestructiveMigration()
 			.build()
 	}
-
 }
 
 

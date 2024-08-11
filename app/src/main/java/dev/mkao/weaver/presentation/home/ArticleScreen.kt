@@ -264,7 +264,7 @@ class ArticleScreenState(
 ) {
 	var shouldBottomSheetShow by mutableStateOf(false)
 	@OptIn(ExperimentalMaterial3Api::class)
-	val sheetState = SheetState(skipPartiallyExpanded = false, density = LocalDensity.current)
+	val sheetState = SheetState(skipPartiallyExpanded = false)
 
 	fun hideKeyboardAndClearFocus() {
 		keyboardController?.hide()
