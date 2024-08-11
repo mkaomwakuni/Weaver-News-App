@@ -1,5 +1,6 @@
 package dev.mkao.weaver.viewModels
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,92 +17,88 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArticleScreenViewModel @Inject constructor(
-	private val repository: Repository) : ViewModel() {
+	private val repository: Repository
+) : ViewModel() {
 
 	var state by mutableStateOf(ArticleStates())
-	private var searchJob: Job? = null
 		private set
+	private var searchJob: Job? = null
 
 	init {
-		// Fetch initial articles for Sports and Entertainment categories
+		// Fetch initial articles for default categories
 		fetchInitialArticles()
 	}
 
 	private fun fetchInitialArticles() {
+		// Fetch articles for default categories
 		getNewsArticlesCustom("Sports")
 		getNewsArticlesCustom("Entertainment")
 	}
 
-	fun onUserEvent(event: EventsHolder){
-		when(event){
-			is EventsHolder.OnCategoryClicked-> {
-				state = state.copy(category = event.category)
-				getNewsArticles(state.category)
+	fun onUserEvent(event: EventsHolder) {
+		when (event) {
+			is EventsHolder.OnCategoryClicked -> {
+				if (event.category in listOf("Sports", "Entertainment")) {
+					getNewsArticlesCustom(event.category)
+				} else {
+					getNewsArticles(event.category)
+				}
 			}
-			is EventsHolder.OnCloseIconClicked-> {
+			is EventsHolder.OnCloseIconClicked -> {
 				state = state.copy(isSearchBarVisible = false)
-				getNewsArticles(category = state.category)
+				if (state.category in listOf("Sports", "Entertainment")) {
+					getNewsArticlesCustom(state.category)
+				} else {
+					getNewsArticles(state.category)
+				}
 			}
 			is EventsHolder.OnSearchCategoryChanged -> {
 				state = state.copy(searchRequest = event.searchRequest)
-				searchForNews(query = state.searchRequest)
 				searchJob?.cancel()
 				searchJob = viewModelScope.launch {
 					delay(1000)
 					searchForNews(query = state.searchRequest)
 				}
-
 			}
 			is EventsHolder.OnSearchIconClicked -> {
-				state = state.copy(
-			     isResultsVisible = true,
-				 article = emptyList()
-				)
+				state = state.copy(isResultsVisible = true, article = emptyList())
 			}
 			is EventsHolder.OnArticleCardClicked -> {
 				state = state.copy(isSelected = event.article)
 			}
 		}
 	}
-	private fun getNewsArticles(category: String) {
-		viewModelScope.launch {
-			state = state.copy(isLoading = true)
-			val selectedCountry = repository.getSelectedCountry()?.code ?: "us"
-			val result = repository.getTopHeadlines(category = category,selectedCountry)
-			when (result) {
-				is Assets.Success -> {
-					state = state.copy(
-						article = result.data?: emptyList(),
-						isLoading = false,
-						error = null
-					)
-				}
-				is Assets.Error -> {
-				state = state.copy(
-					error = result.message,
-					isLoading = false,
-					article = emptyList()
-				)
-				}
-			}
+
+	fun updateCategoryAndFetchArticles(category: String) {
+		state = state.copy(category = category)
+		if (category in listOf("Sports", "Entertainment")) {
+			getNewsArticlesCustom(category)
+		} else {
+			getNewsArticles(category)
 		}
 	}
-	private fun getNewsArticlesCustom(category: String) {
+
+	private fun getNewsArticlesCustom(category: String, apiCountry: String = "us", lang: String = "en") {
 		viewModelScope.launch {
 			state = state.copy(isLoading = true)
-			val selectedCountry = repository.getSelectedCountry()?.code ?: "us"
-			when (val result = repository.getTopHeadlines(category = category, selectedCountry)) {
+			val result = repository.getTopHeadlines(
+				country = apiCountry,
+				category = category,
+				lang = lang
+			)
+			when (result) {
 				is Assets.Success -> {
-					val articles = result.data ?: emptyList()
+					val article = result.data?: emptyList()
 					if (category == "Sports") {
 						state = state.copy(
-							sportsArticles = articles,
+							sportsArticles = article,
 							isLoading = false,
 							error = null
 						)
-					} else if (category == "Entertainment") {
+					}
+					else if (category == "Entertainment") {
 						state = state.copy(
-							entertainmentArticles = articles,
+							entertainmentArticles = article,
 							isLoading = false,
 							error = null
 						)
@@ -110,35 +107,60 @@ class ArticleScreenViewModel @Inject constructor(
 				is Assets.Error -> {
 					state = state.copy(
 						error = result.message,
-						isLoading = false
+						isLoading = false,
+						article = emptyList()
 					)
 				}
 			}
 		}
 	}
-	private fun searchForNews(query: String) {
-		if (query.isEmpty()){
-			return
+
+	private fun getNewsArticles(category: String, apiCountry: String = "us", lang: String = "en") {
+		viewModelScope.launch {
+			state = state.copy(isLoading = true)
+			val result = repository.getTopHeadlines(
+				country = apiCountry,
+				category = category,
+				lang = lang
+			)
+			when (result) {
+				is Assets.Success -> {
+					state = state.copy(
+						article = result.data ?: emptyList(),
+						isLoading = false,
+						error = null
+					)
+				}
+				is Assets.Error -> {
+					state = state.copy(
+						error = result.message,
+						isLoading = false,
+						article = emptyList()
+					)
+				}
+			}
 		}
-		else {
-			viewModelScope.launch {
-				state = state.copy(isLoading = true)
-				val result = repository.searchRequest(query = query)
-				when (result) {
-					is Assets.Success -> {
-						state = state.copy(
-							article = result.data ?: emptyList(),
-							isLoading = false,
-							error = null
-						)
-					}
-					is Assets.Error -> {
-						state = state.copy(
-							error = result.message,
-							isLoading = false,
-							article = emptyList()
-						)
-					}
+	}
+
+	private fun searchForNews(query: String) {
+		if (query.isEmpty()) return
+
+		viewModelScope.launch {
+			state = state.copy(isLoading = true)
+			when (val result = repository.searchRequest(query)) {
+				is Assets.Success -> {
+					state = state.copy(
+						article = result.data ?: emptyList(),
+						isLoading = false,
+						error = null
+					)
+				}
+				is Assets.Error -> {
+					state = state.copy(
+						error = result.message,
+						isLoading = false,
+						article = emptyList()
+					)
 				}
 			}
 		}
