@@ -98,10 +98,10 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             val updatedArticle = article.copy(isBookedMarked = !article.isBookedMarked)
             if (updatedArticle.isBookedMarked) {
-                repository.insertedArticle(article)
+                repository.insertedArticle(updatedArticle)
                 Log.d("SharedViewModel", "Article bookmarked: ${updatedArticle.title}")
             } else {
-                repository.deleteArticle(article)
+                repository.deleteArticle(updatedArticle)
                 Log.d("SharedViewModel", "Article unbookmarked: ${updatedArticle.title}")
             }
             fetchBookedArticles()
@@ -111,7 +111,7 @@ class SharedViewModel @Inject constructor(
     fun isArticleBookmarked(url: String): Flow<Boolean> = flow {
         when (val result = repository.getBookedArticles()) {
             is Assets.Success -> {
-                result.data?.let { emit(it.any { it.url == url }) }
+                emit(result.data?.any { it.url == url } == true)
                 Log.d("SharedViewModel", "Loaded ${result.data?.size} bookmarked articles")
             }
             is Assets.Error -> {

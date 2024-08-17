@@ -3,7 +3,7 @@ package dev.mkao.weaver.domain.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "Articles")
@@ -15,6 +15,6 @@ data class Article(
 	val content: String?,
 	val description: String?,
 	var isBookedMarked: Boolean = false,
-	val urlToImage: String?,
+	val image: String?,
 	val publishedAt: String,
 ): Parcelable

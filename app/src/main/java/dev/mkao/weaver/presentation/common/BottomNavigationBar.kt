@@ -48,7 +48,7 @@ fun BottomNavigationBar(navController: NavController) {
             }
         )
         NavigationBarItem(
-            icon = { Icon(painter = painterResource(id = R.drawable.bookmark), contentDescription = "Bookmarks") },
+            icon = { Icon(painter = painterResource(id = R.drawable.bookmark), contentDescription = "bookmarks") },
             label = { Text(stringResource(R.string.bookmarks)) },
             selected = currentRoute == "bookmarks_screen",
             onClick = {

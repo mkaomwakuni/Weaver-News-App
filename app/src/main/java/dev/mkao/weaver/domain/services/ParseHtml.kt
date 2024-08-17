@@ -1,4 +1,4 @@
-package dev.mkao.weaver.domain.model
+package dev.mkao.weaver.domain.services
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

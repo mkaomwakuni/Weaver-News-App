@@ -1,28 +1,29 @@
 package dev.mkao.weaver.data.remote
 
-import dev.mkao.weaver.domain.model.NewsApiResponse
+import dev.mkao.weaver.domain.services.NewsApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface NewsApi {
-	//base url for the news api
-	//https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=
+
 	@GET("top-headlines")
 	suspend fun getTopHeadlines(
-		@Query("category") category:  String,
-		@Query ("country") country : String,
-		@Query("apikey") apiKey: String = API_KEY,
-	
+		@Query("country") country: String,
+		@Query("category") category: String = "General",
+		@Query("lang") lang: String,
+		@Query("max") max: Int = 10,
+		@Query("apikey") apiKey: String = API_KEY
 	): NewsApiResponse
 
-	@GET("everything")
+	@GET("search")
 	suspend fun searchRequest(
 		@Query("q") query: String,
-		@Query("apiKey") apiKey: String = API_KEY
+		@Query("max") max: Int = 6,
+		@Query("apikey") apiKey: String = API_KEY
 	): NewsApiResponse
 
-	companion object{
+	companion object {
 		const val API_KEY = "YOUR API KEY"
-		const val BASE_URL = "https://newsapi.org/v2/"
+		const val BASE_URL = "https://gnews.io/api/v4/"
 	}
 }

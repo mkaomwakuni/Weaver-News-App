@@ -6,13 +6,11 @@ import dev.mkao.weaver.util.Assets
 
 interface Repository {
 
-	suspend fun getTopHeadlines(category: String,country: String): Assets<List<Article>>
+	suspend fun getTopHeadlines(country: String, category: String,lang: String): Assets<List<Article>>
 
 	suspend fun searchRequest(query: String): Assets<List<Article>>
 
 	suspend fun deleteArticle(article: Article)
-
-	suspend fun getArticles():  Assets<List<Article>>
 
 	suspend fun insertedArticle(article: Article)
 

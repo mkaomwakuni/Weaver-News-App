@@ -51,7 +51,7 @@ fun CardArtiCleTop(
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(article.urlToImage)
+                    .data(article.image)
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds

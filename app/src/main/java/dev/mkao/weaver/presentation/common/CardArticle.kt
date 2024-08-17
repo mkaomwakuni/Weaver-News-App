@@ -63,7 +63,7 @@ fun CardArtiCle(
                     .height(140.dp)
                     .width(120.dp),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(article.urlToImage)
+                    .data(article.image)
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
