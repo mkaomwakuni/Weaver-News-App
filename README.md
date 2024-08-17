@@ -35,7 +35,7 @@
       <img src= https://github.com/user-attachments/assets/27657eda-a6f8-40ac-a7f0-08f6bad46680 width="350" alt="Screenshot 4">
     </td>
        <td align="center">
-      <img src="https://github.com/user-attachments/assets/8f9434b3-bd88-4778-9712-d59214cd4010" width="350" alt="Screenshot 1">
+      <img src="https://github.com/user-attachments/assets/c2e9d3e2-bb65-4e0d-bf5a-58edca0fc56f" width="350" alt="Screenshot 1">
     </td>
   </tr>
   <tr>
@@ -49,7 +49,7 @@
       <img src="https://github.com/user-attachments/assets/58e93298-0097-4951-b9f7-de0e7d012101 "width="350" alt="Screenshot 4">
     </td>
         <td align="center">
-      <img src="https://github.com/user-attachments/assets/beaebca9-bf7a-4429-a58c-1600edac5f77"  width="350" alt="Screenshot 5">
+      <img src="https://github.com/user-attachments/assets/b5344d42-5034-4ee2-bffa-dc73d778a9d5"  width="350" alt="Screenshot 5">
     </td>
     
   </tr>
