@@ -8,7 +8,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "Articles")
 data class Article(
-	@PrimaryKey val url: String,
+	@PrimaryKey(autoGenerate = true) val id: Int = 0,
+	val url: String,
 	val source: Source,
 	val author: String?,
 	val title: String,

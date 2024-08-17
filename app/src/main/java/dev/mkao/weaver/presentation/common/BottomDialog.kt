@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -53,7 +52,6 @@ fun BottomDialog(
 				.height(340.dp)) {
 				LoadingImage(
 					imageUrl = article.image,
-					contentScale = ContentScale.FillHeight,
 					modifier = Modifier
 						.fillMaxSize()
 						.scale(1.5f)
