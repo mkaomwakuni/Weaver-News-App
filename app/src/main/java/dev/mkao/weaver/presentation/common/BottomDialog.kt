@@ -53,7 +53,6 @@ fun BottomDialog(
 				.height(340.dp)) {
 				LoadingImage(
 					imageUrl = article.image,
-					contentScale = ContentScale.FillHeight,
 					modifier = Modifier
 						.fillMaxSize()
 						.scale(1.5f)
