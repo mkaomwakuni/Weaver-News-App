@@ -268,7 +268,7 @@ fun SourceInfo(sourceName: String?) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_logo),
+            painter = painterResource(R.drawable.sooce),
             contentDescription = stringResource(R.string.source_image),
             modifier = Modifier
                 .size(50.dp)
