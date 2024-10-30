@@ -6,7 +6,10 @@ import dev.mkao.weaver.util.Assets
 
 interface Repository {
 
-	suspend fun getTopHeadlines(country: String, category: String,lang: String): Assets<List<Article>>
+	suspend fun getTopHeadlines(
+		country: String,
+		category: String,
+		lang: String): Assets<List<Article>>
 
 	suspend fun searchRequest(query: String): Assets<List<Article>>
 

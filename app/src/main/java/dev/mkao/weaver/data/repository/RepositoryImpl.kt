@@ -31,9 +31,15 @@ class RepositoryImpl(
 	 * @param category The category of news to fetch.
 	 * @return A wrapped list of articles.
 	 */
-	override suspend fun getTopHeadlines(country: String,category: String,lang: String): Assets<List<Article>> {
+	override suspend fun getTopHeadlines(
+		country: String,
+		category: String,
+		lang: String): Assets<List<Article>> {
 		return try {
-			val response = newsApi.getTopHeadlines(country = country,category = category,lang = lang)
+			val response = newsApi.getTopHeadlines(
+				country = country,
+				category = category,
+				lang = lang)
 			val articles = response.articles
 			// Cache the articles
 			articles.forEach { newsDao.upsert(it) }

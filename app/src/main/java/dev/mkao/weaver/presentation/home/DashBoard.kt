@@ -71,7 +71,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopSection(
+fun DashBoard(
     state: ArticleStates,
     navController: NavController,
     sharedViewModel: SharedViewModel,
@@ -84,7 +84,7 @@ fun TopSection(
     var isLoading by remember { mutableStateOf(true) }
     var isCountrySelectorOpen by remember { mutableStateOf(false) }
     val selectedCountry by sharedViewModel.selectedCountry.collectAsState()
-    Log.d("TopSection", "Displaying flag for: ${selectedCountry?.name}")
+    Log.d("DashBoard", "Displaying flag for: ${selectedCountry?.name}")
 
     StatusbarEffect()
 
@@ -130,7 +130,7 @@ fun TopSection(
                     IconButton(
                         modifier = Modifier.size(50.dp),
                         onClick = {  navController.navigate(Screen.CountrySelector.route) }) {
-                        Log.d("TopSection", "Selected country set to: ${selectedCountry?.name},${selectedCountry?.code}")
+                        Log.d("DashBoard", "Selected country set to: ${selectedCountry?.name},${selectedCountry?.code}")
                             AsyncImage(
                                 model = "https://flagsapi.com/${selectedCountry?.code}/flat/64.png",
                                 contentDescription = "Selected Country Flag",

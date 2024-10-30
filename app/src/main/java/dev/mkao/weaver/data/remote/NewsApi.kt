@@ -9,7 +9,7 @@ interface NewsApi {
 	@GET("top-headlines")
 	suspend fun getTopHeadlines(
 		@Query("country") country: String,
-		@Query("category") category: String = "General",
+		@Query("category") category: String = "general",
 		@Query("lang") lang: String,
 		@Query("max") max: Int = 10,
 		@Query("apikey") apiKey: String = API_KEY
@@ -23,7 +23,7 @@ interface NewsApi {
 	): NewsApiResponse
 
 	companion object {
-		const val API_KEY = "YOUR API KEY"
+		const val API_KEY = "YOUR_API_KEY"
 		const val BASE_URL = "https://gnews.io/api/v4/"
 	}
 }

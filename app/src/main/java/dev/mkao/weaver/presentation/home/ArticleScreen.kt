@@ -48,6 +48,7 @@ import dev.mkao.weaver.presentation.common.BottomNavigationBar
 import dev.mkao.weaver.presentation.common.CardArtiCle
 import dev.mkao.weaver.presentation.common.TintedTextButton
 import dev.mkao.weaver.presentation.search.SearchAppBar
+import dev.mkao.weaver.util.NewsCategories
 import dev.mkao.weaver.viewModels.ArticleScreenViewModel
 import dev.mkao.weaver.viewModels.ArticleStates
 import dev.mkao.weaver.viewModels.SharedViewModel
@@ -66,7 +67,7 @@ fun ArticleScreen(
 	val screenState = rememberArticleScreenState()
 
 	LaunchedEffect(Unit) {
-		onEvent(EventsHolder.OnCategoryClicked("Technology"))
+		onEvent(EventsHolder.OnCategoryClicked(NewsCategories.General.apiValue))
 	}
 
 	Scaffold(
@@ -143,7 +144,7 @@ private fun ArticleScreenContent(
 
 		CategorySelector(
 			categories = screenState.categories,
-			selectedCategory = state.category,
+			selectedCategory = NewsCategories.values().find { it.apiValue == state.category } ?: NewsCategories.General,
 			onEvent = onEvent // Pass the onEvent parameter here
 		)
 
@@ -161,29 +162,31 @@ private fun ArticleScreenContent(
 	}
 }
 
+
 @Composable
 private fun CategorySelector(
-	categories: List<String>,
-	selectedCategory: String,
+	categories: List<NewsCategories>,
+	selectedCategory: NewsCategories,
 	onEvent: (EventsHolder) -> Unit
 ) {
 	val articleViewModel: ArticleScreenViewModel = hiltViewModel()
 	LazyRow(
 		contentPadding = PaddingValues(horizontal = 2.dp),
-		horizontalArrangement = Arrangement.spacedBy(2.dp)
+		horizontalArrangement = Arrangement.spacedBy(8.dp) // Increased spacing for better UI
 	) {
 		items(categories) { category ->
 			TintedTextButton(
 				isSelected = selectedCategory == category,
-				category = category,
+				category = category.displayName, // Use displayName for UI
 				onClick = {
-					articleViewModel.updateCategoryAndFetchArticles(category)
-					onEvent(EventsHolder.OnCategoryClicked(category))
+					articleViewModel.updateCategoryAndFetchArticles(category.apiValue,category.displayName)
+					onEvent(EventsHolder.OnCategoryClicked(category.apiValue))
 				}
 			)
 		}
 	}
 }
+
 
 @Composable
 private fun ArticleLoadingShimmer() {
@@ -240,7 +243,7 @@ private fun ArticleBottomSheet(
 
 @Composable
 fun rememberArticleScreenState(
-	categories: List<String> = listOf("General", "World", "Nation", "Business", "Technology","Science","Health"),
+	categories: List<NewsCategories> = NewsCategories.values().toList(),
 	coroutineScope: CoroutineScope = rememberCoroutineScope(),
 	focusManager: FocusManager = LocalFocusManager.current,
 	focusRequester: FocusRequester = remember { FocusRequester() },
@@ -256,7 +259,7 @@ fun rememberArticleScreenState(
 }
 
 class ArticleScreenState(
-	val categories: List<String>,
+	val categories: List<NewsCategories>,
 	private val coroutineScope: CoroutineScope,
 	private val focusManager: FocusManager,
 	val focusRequester: FocusRequester,

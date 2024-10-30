@@ -21,7 +21,6 @@ class ArticleScreenViewModel @Inject constructor(
 ) : ViewModel() {
 
 	var state by mutableStateOf(ArticleStates())
-		private set
 	private var searchJob: Job? = null
 
 	init {
@@ -69,21 +68,45 @@ class ArticleScreenViewModel @Inject constructor(
 		}
 	}
 
-	fun updateCategoryAndFetchArticles(category: String) {
-		state = state.copy(category = category)
-		if (category in listOf("Sports", "Entertainment")) {
-			getNewsArticlesCustom(category)
-		} else {
-			getNewsArticles(category)
+	fun updateCategoryAndFetchArticles(
+		categoryApiValue: String,
+		category: String,
+		apiCountry: String = "us",
+		lang: String = "en") {
+		viewModelScope.launch {
+			state = state.copy(isLoading = true)
+			val result = repository.getTopHeadlines(
+				category = categoryApiValue ,
+				country = apiCountry,
+				lang = lang
+			)
+			when (result) {
+				is Assets.Success -> {
+					state = state.copy(
+						article = result.data ?: emptyList(),
+						isLoading = false,
+						error = null,
+						category = categoryApiValue
+					)
+				}
+				is Assets.Error -> {
+					state = state.copy(
+						isLoading = false,
+						error = result.message,
+						article = emptyList()
+					)
+				}
+			}
 		}
 	}
 
 	private fun getNewsArticlesCustom(category: String, apiCountry: String = "us", lang: String = "en") {
 		viewModelScope.launch {
+			val normalizedCategory = category.lowercase()
 			state = state.copy(isLoading = true)
 			val result = repository.getTopHeadlines(
 				country = apiCountry,
-				category = category,
+				category = normalizedCategory,
 				lang = lang
 			)
 			when (result) {
