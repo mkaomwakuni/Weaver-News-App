@@ -1,9 +1,5 @@
 
-
-
-
-
-<h1 align="left">Weaver News App</h1>  
+<h1 align="left">Weaver News</h1>  
 
 <p align="left">  
   <b>Stay Informed with the Global Latest News</b>  
@@ -15,16 +11,6 @@
   <img src="https://cdn.dribbble.com/userupload/4987025/file/original-8039e9f39ace527b8e75f19223e6b303.png?resize=1504x1128" width="500" alt="Concept Image">  
 </p>  
 
-<p align="left">  
-  <a href="#key-features">Key Features</a> •  
-  <a href="#technologies">Technologies</a> •  
-  <a href="#installation">Installation</a> •  
-  <a href="#usage">Usage</a> •  
-  <a href="#api-integration">API Integration</a> •  
-  <a href="#screenshots">Screenshots</a> •  
-  <a href="#contributing">Contributing</a> •  
-  <a href="#license">License</a>  
-</p>  
 
 ## Screenshots
 
@@ -34,7 +20,7 @@
       <img src="https://raw.githubusercontent.com/mkaomwakuni/Weaver-News-App/139ff93742487ab051faeb6ce550f47e81c4af32/app/src/androidTest/java/dev/mkao/weaver/WhatsApp%20Image%202024-02-06%20at%207-portrait.png" width="510" alt="Screenshot 1">  
     </td>  
     <td align="center">  
-      <img src="https://github.com/user-attachments/assets/95b413b8-9370-40fe-8283-e3b46b5295fc" width= "130" alt="Screenshot 2">  
+      <img src="https://github.com/user-attachments/assets/95b413b8-9370-40fe-8283-e3b46b5295fc" width= "400" alt="Screenshot 2">  
     </td>  
         <td align="center">  
       <img src= https://github.com/user-attachments/assets/27657eda-a6f8-40ac-a7f0-08f6bad46680 width="400" alt="Screenshot 4">  
