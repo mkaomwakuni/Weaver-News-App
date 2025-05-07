@@ -1,7 +1,8 @@
 package dev.mkao.weaver.domain.model
 
-data class LanguageEdition(
+data class Edition(
     val code: String,
     val name: String,
-    val nativeName: String
+    val nativeName: String,
+    val abbreviations: List<String>
 )

@@ -32,7 +32,7 @@ import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.util.calculateElapsedTime
 
 @Composable
-fun CardArtiCleTop(
+fun DashboardCard(
     article: Article,
     onReadFullStoryClicked: () -> Unit
 ) {
@@ -113,7 +113,7 @@ fun CardArtiCleTop(
 //@Preview
 //@Composable
 //fun CardArtiCleTopPreview() {
-//    CardArtiCleTop(
+//    DashboardCard(
 //        article = Article(
 //            url = "",
 //            source = Source(id = "", name = "", url = "", category = ""),

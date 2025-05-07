@@ -15,6 +15,5 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     object Settings : Screen("settings_screen", "Settings", Icons.Default.Settings)
     object NewsArticle : Screen("news_article", "News Article", Icons.Default.Home)
     object About : Screen("about","about",  Icons.Filled.Info)
-    object CountrySelector : Screen("country","country",  Icons.Filled.Info)
-    object LanguageEdition : Screen("language","language",  Icons.Filled.Info)
+    object LanguageEditions : Screen("language","language",  Icons.Filled.Info)
 }

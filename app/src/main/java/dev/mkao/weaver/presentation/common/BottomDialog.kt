@@ -26,23 +26,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import dev.mkao.weaver.domain.model.Article
+import dev.mkao.weaver.presentation.bookmarks.BookmarkViewModel
 import dev.mkao.weaver.presentation.details.NewsArticleUi
-import dev.mkao.weaver.viewModels.SharedViewModel
 
 
 @Composable
 fun BottomDialog(
 	article: Article,
+	bookmarkViewModel: BookmarkViewModel,
 	onReadFullStoryButtonClicked: () -> Unit
 ) {
 	var showNewsArticleUi by remember { mutableStateOf(false) }
-	val sharedViewModel: SharedViewModel = hiltViewModel()
 
 	if (showNewsArticleUi) {
 		NewsArticleUi(
 			article = article,
+			bookmarkViewModel = bookmarkViewModel,
 			onBackPressed = { showNewsArticleUi = false }
 		)
 	} else {
@@ -76,7 +76,7 @@ fun BottomDialog(
 			) {
 				Spacer(modifier = Modifier.height(4.dp))
 				Text(
-					text = article.content?.take(550) ?: "none",
+					text = article.content?.take(550) ?: "No content available",
 					maxLines = 5,
 					textAlign = TextAlign.Justify,
 					overflow = TextOverflow.Ellipsis,
@@ -87,11 +87,11 @@ fun BottomDialog(
 					modifier = Modifier.fillMaxWidth(),
 					horizontalArrangement = Arrangement.SpaceBetween
 				) {
-					Text(
-						text = article.author ?: "Source",
-						style = MaterialTheme.typography.bodySmall,
-						fontWeight = FontWeight.Bold
-					)
+//					Text(
+//						text = article.author ?: "",
+//						style = MaterialTheme.typography.bodySmall,
+//						fontWeight = FontWeight.Bold
+//					)
 					Text(
 						text = article.source.name ?: "Google News",
 						style = MaterialTheme.typography.bodySmall,
@@ -112,29 +112,3 @@ fun BottomDialog(
 		}
 	}
 }
-
-
-//@Preview
-//@Composable
-//fun BottomDialogPreview() {
-//	val sampleArticle = Article(
-//		// Initialize the sample data for testing
-//		// Make sure to replace these values with actual data
-//		source = Source(name = "Sample Source", id = "bbc", category = "general", url = ""),
-//		author = "John Doe",
-//		title = "Sample Article Title",
-//		description = "Sample article content goes here.",
-//		urlToImage = "https://example.com/sample_image.jpg",
-//		publishedAt = "2024-01-29T12:34:56Z",
-//		content = "Sample article content goes here.",
-//		url = "https://example.com/sample_image.jpg"
-//	)
-//
-//	Surface {
-//		BottomDialog(
-//			article = sampleArticle,
-//			onReadFullStoryButtonClicked = { /* Handle click event if needed */ }
-//		)
-//	}
-//}
-

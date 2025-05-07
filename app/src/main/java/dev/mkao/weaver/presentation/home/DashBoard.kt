@@ -1,6 +1,5 @@
 package dev.mkao.weaver.presentation.home
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -55,45 +53,53 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
-import dev.mkao.weaver.domain.model.EventsHolder
+import dev.mkao.weaver.presentation.bookmarks.BookmarkViewModel
+import dev.mkao.weaver.presentation.common.AnimatedArticleCard
 import dev.mkao.weaver.presentation.common.ArticleCardShimmerEffect
 import dev.mkao.weaver.presentation.common.BottomDialog
 import dev.mkao.weaver.presentation.common.BottomNavigationBar
 import dev.mkao.weaver.presentation.common.CardArtiCle
-import dev.mkao.weaver.presentation.common.CardArtiCleTop
-import dev.mkao.weaver.presentation.common.StatusbarEffect
-import dev.mkao.weaver.presentation.country.CountrySelector
+import dev.mkao.weaver.presentation.home.state.ArticleEvent
+import dev.mkao.weaver.presentation.home.state.ArticleState
 import dev.mkao.weaver.presentation.navigation.Screen
-import dev.mkao.weaver.viewModels.ArticleStates
-import dev.mkao.weaver.viewModels.SharedViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashBoard(
-    state: ArticleStates,
+    state: ArticleState,
     navController: NavController,
-    sharedViewModel: SharedViewModel,
+    articleViewModel: ArticleViewModel,
+    bookmarkViewModel: BookmarkViewModel,
     onReadFullStoryButtonClick: (Article) -> Unit,
-    onEvent: (EventsHolder) -> Unit,
+    onEvent: (ArticleEvent) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     var shouldBottomSheetShow by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-    var isLoading by remember { mutableStateOf(true) }
-    var isCountrySelectorOpen by remember { mutableStateOf(false) }
-    val selectedCountry by sharedViewModel.selectedCountry.collectAsState()
-    Log.d("DashBoard", "Displaying flag for: ${selectedCountry?.name}")
+    var isEditionPaneOpen by remember { mutableStateOf(false) }
+    val articleState by articleViewModel.state.collectAsState()
+    val countryCode = articleState.selectedCountry?.code?.uppercase() ?: "US"
+    val flagUrl = "https://flagsapi.com/$countryCode/flat/64.png"
 
-    StatusbarEffect()
+
+    LaunchedEffect(
+        state.sportsArticles, state.entertainmentArticles) {
+        state.isLoading = state.sportsArticles.isEmpty() || state.entertainmentArticles.isEmpty()
+        if (state.isLoading) {
+            delay(2000)
+            state.isLoading = false
+        }
+    }
+
 
     if (shouldBottomSheetShow) {
         ModalBottomSheet(
             onDismissRequest = { shouldBottomSheetShow = false },
             sheetState = sheetState,
             content = {
-                state.isSelected?.let {
+                state.selectedArticle?.let {
                     BottomDialog(
                         article = it,
                         onReadFullStoryButtonClicked = {
@@ -101,7 +107,8 @@ fun DashBoard(
                             coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
                                 if (!sheetState.isVisible) shouldBottomSheetShow = false
                             }
-                        }
+                        },
+                        bookmarkViewModel = bookmarkViewModel
                     )
                 }
             }
@@ -113,11 +120,14 @@ fun DashBoard(
             TopAppBar(
                 modifier = Modifier
                     .padding(start = 10.dp, end = 10.dp, top = 50.dp)
-                    .height(60.dp)
+                    .height(80.dp)
                     .clip(shape = RoundedCornerShape(12.dp)),
                 title = { /* Optional title content */ },
                 navigationIcon = {
-                    IconButton(onClick ={ navController.navigate(Screen.LanguageEdition.route)  }) {
+                    IconButton(
+                        onClick = {
+                            navController.navigate(Screen.LanguageEditions.route)
+                        }) {
                         Icon(
                             modifier = Modifier.size(30.dp),
                             imageVector = Icons.Outlined.Menu,
@@ -127,20 +137,31 @@ fun DashBoard(
                     }
                 },
                 actions = {
-                    IconButton(
-                        modifier = Modifier.size(50.dp),
-                        onClick = {  navController.navigate(Screen.CountrySelector.route) }) {
-                        Log.d("DashBoard", "Selected country set to: ${selectedCountry?.name},${selectedCountry?.code}")
-                            AsyncImage(
-                                model = "https://flagsapi.com/${selectedCountry?.code}/flat/64.png",
-                                contentDescription = "Selected Country Flag",
-                                contentScale = ContentScale.FillBounds,
-                                modifier = Modifier
-                                    .size(50.dp)
-                                    .fillMaxSize()
-                                    .clip(shape = CircleShape)
-                            )
+                    
+                    key(countryCode) {
+                        IconButton(
+                            modifier = Modifier
+                                .clip(shape = CircleShape)
+                                .size(50.dp),
+                            onClick = {
+                                navController.navigate(
+                                    Screen.LanguageEditions.route
+                                )
+                            }
+                        ) {
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                AsyncImage(
+                                    model = flagUrl,
+                                    contentDescription = "Selected Country Flag",
+                                    contentScale = ContentScale.FillBounds,
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                        .clip(shape = CircleShape)
+                                        .scale(1.5f)
+                                )
+                            }
                         }
+                    }
                 }
             )
         },
@@ -173,7 +194,7 @@ fun DashBoard(
                         )
                     }
 
-                    if (isLoading) {
+                    if (state.isLoading) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -192,7 +213,7 @@ fun DashBoard(
                             articles = state.sportsArticles,
                             onReadFullStoryClicked = { article ->
                                 shouldBottomSheetShow = true
-                                onEvent(EventsHolder.OnArticleCardClicked(article))
+                                onEvent(ArticleEvent.ArticleSelected(article))
                             }
                         )
                     }
@@ -215,7 +236,7 @@ fun DashBoard(
                         )
                     }
 
-                    if (isLoading) {
+                    if (state.isLoading) {
                         repeat(6) {
                             ArticleCardShimmerEffect(
                                 modifier = Modifier
@@ -234,7 +255,7 @@ fun DashBoard(
                                     article = article,
                                     onReadFullStoryClicked = {
                                         shouldBottomSheetShow = true
-                                        onEvent(EventsHolder.OnArticleCardClicked(article))
+                                        onEvent(ArticleEvent.ArticleSelected(article))
                                     }
                                 )
                                 Spacer(modifier = Modifier.height(0.5.dp))
@@ -242,23 +263,11 @@ fun DashBoard(
                         }
                     }
                 }
-                if (isCountrySelectorOpen){
-                    CountrySelector(
-                        onCountrySelected = { country ->
-                            sharedViewModel.setSelectedCountry(country)
-                            isCountrySelectorOpen = false
-                        },
-                        sharedViewModel = sharedViewModel,
-                        onDismiss = {isCountrySelectorOpen = false},
-                    )
+                if (isEditionPaneOpen){
+
                 }
             }
     )
-
-    LaunchedEffect(true) {
-        delay(4000)
-        isLoading = false
-    }
 }
 @Composable
 fun AnimatedSportsArticlesCarousel(
@@ -266,14 +275,14 @@ fun AnimatedSportsArticlesCarousel(
     onReadFullStoryClicked: (Article) -> Unit
 ) {
     if (articles.isEmpty()) {
-        // Handle empty state, perhaps show a message
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp),
             contentAlignment = Alignment.Center
         ) {
-
+            "No articles available"
         }
         return
     }
@@ -300,7 +309,7 @@ fun AnimatedSportsArticlesCarousel(
             val article = articles[index]
 
             key(article.image) {
-                AnimatedArticleCard(
+                AnimatedArticleCard (
                     article = article,
                     position = i,
                     progress = animationProgress.value,
@@ -311,41 +320,3 @@ fun AnimatedSportsArticlesCarousel(
     }
 }
 
-@Composable
-fun AnimatedArticleCard(
-    article: Article,
-    position: Int,
-    progress: Float,
-    onReadFullStoryClicked: (Article) -> Unit
-) {
-    val cardWidth = 335f
-    val spacing = 1f
-    val xOffset: Float
-    val scale: Float
-
-    when (position) {
-        0 -> { // Outgoing article
-            xOffset = -cardWidth + spacing + (progress * (cardWidth + spacing))
-            scale = 0.8f + (progress * 0.2f)
-        }
-        1 -> { // Central article
-            xOffset = spacing + (progress * (cardWidth + spacing))
-            scale = 1f - (progress * 0.2f)
-        }
-        else -> { // Incoming article
-            xOffset = cardWidth + spacing + (progress * (cardWidth + spacing))
-            scale = 0.8f + (progress * 0.2f)
-        }
-    }
-
-    Box(
-        modifier = Modifier
-            .offset(x = xOffset.dp)
-            .scale(scale)
-    ) {
-        CardArtiCleTop(
-            article = article,
-            onReadFullStoryClicked = { onReadFullStoryClicked(article) }
-        )
-    }
-}

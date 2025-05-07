@@ -10,18 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,16 +38,10 @@ import dev.mkao.weaver.presentation.navigation.Screen
 fun SettingsScreen(navController: NavController) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text("Settings") },
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
+                }
             )
         }
     ) { paddingValues ->
@@ -61,18 +51,7 @@ fun SettingsScreen(navController: NavController) {
                 .padding(paddingValues)
         ) {
             item { SectionHeader("General") }
-            item { SettingsItem("Language") }
-            item { SettingsItem("Notification Settings") }
-            item { SettingsItemWithToggle("Alerts") }
-            item { SectionHeader("Account & Security") }
-            item { SettingsItem("Email and Mobile Number") }
-            item { SettingsItem("Security Settings") }
-            item { SettingsItem("Delete Account") }
-            item { SectionHeader("Other") }
-            item { SettingsItem("about Weaver App") {navController.navigate(Screen.About.route)} }
-            item { SettingsItem("Privacy Policy") }
-            item { SettingsItem("Terms and Conditions") }
-            item { SectionHeader("Share") }
+            item { SettingsItem("Weaver App") {navController.navigate(Screen.About.route)} }
             item { SettingsItem("Share via WhatsApp") { launchShareIntent(navController.context, "com.whatsapp") } }
             item { SettingsItem("Share via Facebook") { launchShareIntent(navController.context, "com.facebook.katana") } }
             item { SettingsItem("Share via Twitter") { launchShareIntent(navController.context, "com.twitter.android") } }

@@ -11,10 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import dev.mkao.weaver.R
 
 @Composable
@@ -72,11 +70,4 @@ fun BottomNavigationBar(navController: NavController) {
             }
         )
     }
-}
-
-@Preview
-@Composable
-fun PreviewBottomItems() {
-    val navController = rememberNavController()
-    BottomNavigationBar(navController = navController)
 }

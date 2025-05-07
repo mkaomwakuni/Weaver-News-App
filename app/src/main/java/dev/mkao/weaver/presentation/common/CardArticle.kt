@@ -113,12 +113,12 @@ fun CardArtiCle(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically) {
 
-                    Text(
-                        text = article.author?.split(",")?.firstOrNull() ?: stringResource(R.string.Contemporary_Sources),
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Bold,
-                        overflow = TextOverflow.Ellipsis
-                    )
+//                    Text(
+//                        text = article.author?.split(",")?.firstOrNull() ?: stringResource(R.string.Contemporary_Sources),
+//                        style = MaterialTheme.typography.bodySmall,
+//                        fontWeight = FontWeight.Bold,
+//                        overflow = TextOverflow.Ellipsis
+//                    )
                     Spacer(modifier = Modifier.width(Dimens.ExtraExtraPadding))
                     Text(
                         text = ".",
@@ -146,23 +146,3 @@ fun CardArtiCle(
         }
     }
 }
-//@Preview
-//@Composable
-//fun Ty1(){
-//    val sampleArticle = Article(
-//        // Initialize the sample data for testing
-//
-//        source = Source(name = "Sample Source", id = "bbc", category = "", url = ""),
-//        author = "John Doe",
-//        title = "Sample Article Title",
-//        content = "Sample article content goes here.",
-//        description = "Sample article content goes here.",
-//        urlToImage = "https://example.com/sample_image.jpg",
-//        publishedAt = "2024-01-29T12:34:56Z",
-//        url = "https://example.com/sample_image.jpg"
-//    )
-//    CardArtiCle(
-//        article = sampleArticle,
-//        onReadFullStoryClicked = { /* Handle click event if needed */ }
-//    )
-//}

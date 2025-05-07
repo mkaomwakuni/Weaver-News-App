@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Weaver</string>
     <string name="AppName">Weaver News</string>
-    <string name="fresh_stories_and_bold_ideas_to_help_you_live_curiously">Fresh stories and bold ideas to help you live curiously</string>
+    <string name="fresh_stories_and_bold_ideas_to_help_you_live_curiously">Fresh stories and bold ideas to help you\n live curiously</string>
     <string name="discover">Discover</string>
     <string name="bulletin">Bulletin</string>
     <string name="bookmarks">Bookmarks</string>
@@ -40,4 +40,10 @@
     <string name="Contemporary_Sources">Other Sources</string>
     <string name="source_image">Source Image</string>
     <string name="other_Sources">Other Sources</string>
+    <string name="theme">Theme</string>
+    <string name="current_theme">Current Theme</string>
+    <string name="current_language">Current Language</string>
+    <string name="widget_description">View the latest news headlines on your home screen.</string>
+    <string name="news_image">News image</string>
+    <string name="refresh">Refresh</string>
 </resources>

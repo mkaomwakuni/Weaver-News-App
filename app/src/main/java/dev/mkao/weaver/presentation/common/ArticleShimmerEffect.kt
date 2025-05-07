@@ -37,7 +37,7 @@ fun Modifier.shimmerEffect() = composed {
     // infinite transition for continuous animation
     val transition = rememberInfiniteTransition(label = "shimmer")
 
-    // Animate a float from 0f to 1000f (which will be used as the end coordinate for the gradient)
+    // Animate a float from 0f to 1000f
     val translateAnim = transition.animateFloat(
         initialValue = 0f,
         targetValue = 1000f,

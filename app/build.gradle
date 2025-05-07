@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace 'dev.mkao.weaver'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "dev.mkao.weaver"
-        minSdk 21
-        targetSdk 33
+        minSdk 24
+        targetSdk 35
         versionCode 1
-        versionName "1.0"
+        versionName "1.2"
 
         vectorDrawables {
             useSupportLibrary true

@@ -4,6 +4,6 @@ import dev.mkao.weaver.domain.model.Article
 
 data class NewsApiResponse(
     val articles: List<Article>,
-    val Status :String,
+    val status :String,
     val totalResults: Int
 )

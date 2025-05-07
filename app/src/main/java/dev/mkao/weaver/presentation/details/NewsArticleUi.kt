@@ -1,7 +1,6 @@
 package dev.mkao.weaver.presentation.details
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -20,6 +19,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -45,29 +49,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import dev.mkao.weaver.R
 import dev.mkao.weaver.domain.model.Article
 import dev.mkao.weaver.domain.services.fetchFullArticleContent
+import dev.mkao.weaver.presentation.bookmarks.BookmarkViewModel
 import dev.mkao.weaver.presentation.common.StatusbarEffect
 import dev.mkao.weaver.util.calculateElapsedTime
-import dev.mkao.weaver.viewModels.SharedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Composable
 fun NewsArticleUi(
     article: Article?,
+    bookmarkViewModel: BookmarkViewModel,
     onBackPressed: () -> Unit
 ) {
-    val viewModel: SharedViewModel = hiltViewModel()
     var articleContent by remember { mutableStateOf("Loading...") }
     StatusbarEffect()
 
     article?.let { news ->
-        val isBookmarked by viewModel.isArticleBookmarked(news.url).collectAsState(initial = false)
+        val isBookmarked by bookmarkViewModel.isArticleBookmarked(news.url)
+            .collectAsState(initial = false)
 
         // Fetch article content asynchronously
         LaunchedEffect(news.url) {
@@ -88,7 +91,10 @@ fun NewsArticleUi(
                     title = news.title,
                     publishedAt = news.publishedAt,
                     url = news.url,
-                    onBookmarkClicked = { viewModel.toggleBookmark(news) },
+                    isBookmarked = isBookmarked,
+                    onBookmarkClicked = {
+                        bookmarkViewModel.toggleBookmark(news)
+                    },
                 )
             }
             ArticleContent(
@@ -107,11 +113,11 @@ fun ArticleImage(
     title: String,
     url: String,
     publishedAt: String?,
+    isBookmarked: Boolean,
     onBookmarkClicked: () -> Unit
 ) {
     val imagePainter = rememberAsyncImagePainter(imageUrl)
     val elapsedTime = calculateElapsedTime(publishedAt)
-    var isBookmarked by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     Box(
@@ -177,31 +183,34 @@ fun ArticleImage(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp, end = 16.dp, top = 32.dp)
                 .align(Alignment.TopCenter),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ActionButton(
                 onClick = onBackPressed,
-                icon = R.drawable.arrowback,
+                icon = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back"
             )
             Row {
                 ActionButton(
                     onClick = {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        startActivity(context, intent, null)
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "Have you read this? $title\n$url"
+                            putExtra(Intent.EXTRA_SUBJECT, title)
+                            putExtra(Intent.EXTRA_TEXT, "$title\n$url")
+                        }
+                        context.startActivity(Intent.createChooser(shareIntent, "Share Article"))
                     },
-                    icon = R.drawable.morehoriz,
+                    icon = Icons.Default.Share,
                     contentDescription = "Share Article"
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 ActionButton(
                     onClick = {
-                        isBookmarked = !isBookmarked
                         onBookmarkClicked()
                     },
-                    icon = R.drawable.bookmark,
+                    icon = Icons.Default.Favorite,
                     contentDescription = "Bookmark",
                     tint = if (isBookmarked) Color.Yellow else Color.White
                 )
@@ -213,7 +222,7 @@ fun ArticleImage(
 @Composable
 fun ActionButton(
     onClick: () -> Unit,
-    icon: Int,
+    icon: ImageVector,
     contentDescription: String,
     tint: Color = Color.White
 ) {
@@ -223,7 +232,7 @@ fun ActionButton(
             .background(Color.White.copy(alpha = 0.2f), shape = RoundedCornerShape(8.dp))
     ) {
         Icon(
-            painter = painterResource(icon),
+            imageVector = icon,
             contentDescription = contentDescription,
             tint = tint
         )

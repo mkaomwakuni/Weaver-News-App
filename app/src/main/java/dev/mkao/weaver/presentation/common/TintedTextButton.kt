@@ -24,7 +24,7 @@ fun TintedTextButton(
     category: String,
     onClick: () -> Unit
 ) {
-    // Background and text colors are based on the selection state
+
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.DarkGray,
         label = ""
@@ -33,19 +33,17 @@ fun TintedTextButton(
         targetValue = if (isSelected) Color.LightGray else Color.White, label = ""
     )
 
-    // Shape for the background
     val buttonShape = RoundedCornerShape(12.dp)
 
-    // Button composable with optimized padding and click handling
+
     TextButton(
         onClick = onClick,
         shape = buttonShape,
         colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 10.dp)
-            .semantics { contentDescription = category } // Improved accessibility
+            .semantics { contentDescription = category }
     ) {
-        // Text composable with animated color and style properties
         Text(
             text = category,
             color = textColor,
