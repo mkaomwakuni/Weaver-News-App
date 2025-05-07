@@ -31,10 +31,10 @@
   </tr>  
   <tr>  
     <td align="center">  
-      <img src="https://github.com/user-attachments/assets/06117615-d0a4-429e-8c74-0073037b3792" width="400" alt="Screenshot 3">  
+      <img src="https://github.com/user-attachments/assets/06117615-d0a4-429e-8c74-0073037b3792" width="220" alt="Screenshot 3">  
     </td>  
        <td align="center">  
-      <img src="https://github.com/user-attachments/assets/cbeded64-be2c-4eb1-b7b3-39cfd75e6b84" width="500" alt="Screenshot 1">  
+      <img src="https://github.com/user-attachments/assets/cbeded64-be2c-4eb1-b7b3-39cfd75e6b84" width="400" alt="Screenshot 1">  
     </td>  
     <td align="center">  
       <img src="https://github.com/user-attachments/assets/58e93298-0097-4951-b9f7-de0e7d012101 "width="400" alt="Screenshot 4">  
